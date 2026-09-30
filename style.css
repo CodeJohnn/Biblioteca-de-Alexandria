@@ -698,6 +698,39 @@ img[alt="Soldado 1"], img[alt="Soldado 2"], img[alt="Soldado 3"] {
     flex-wrap: wrap;
 }
 
+/* Layout dos tutoriais e downloads na página de jogo */
+.game-download-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 300px) minmax(0, 1fr);
+    align-items: start;
+    gap: 16px;
+    width: min(100%, 1100px);
+    margin: 50px auto 0;
+    text-align: center;
+}
+
+.game-download-card,
+.game-download-links {
+    box-sizing: border-box;
+    width: 100%;
+    justify-self: center;
+}
+
+.game-download-card {
+    max-width: 360px;
+}
+
+.game-download-links {
+    max-width: 340px;
+}
+
+.game-download-video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+}
+
 /* Responsive Styles - Unificado e Limpo */
 @media (max-width: 700px) {
     .container {
@@ -745,6 +778,17 @@ img[alt="Soldado 1"], img[alt="Soldado 2"], img[alt="Soldado 3"] {
         height: auto;
     }
     .footer-links { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+}
+
+@media (max-width: 640px) {
+    .game-download-layout {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .game-download-card,
+    .game-download-links {
+        max-width: min(100%, 420px);
+    }
 }
 
 /* ---------------------------------------------------- */

@@ -1743,6 +1743,32 @@ window.addEventListener("load", () => {
         // ======================================================================
         function criarPaginaJogo(jogo) {
             const backgroundImage = ""; 
+            const normalizarVideoDemo = (url) => {
+                try {
+                    const parsedUrl = new URL(String(url).trim().replace(/[.,]+$/, ''));
+                    const host = parsedUrl.hostname.toLowerCase();
+                    let videoId = '';
+
+                    if (host === 'youtu.be') {
+                        videoId = parsedUrl.pathname.slice(1).split('/')[0];
+                    } else if (['youtube.com', 'www.youtube.com', 'm.youtube.com'].includes(host)) {
+                        if (parsedUrl.pathname === '/watch') {
+                            videoId = parsedUrl.searchParams.get('v') || '';
+                        } else {
+                            videoId = parsedUrl.pathname.match(/^\/(?:embed|shorts|live)\/([^/]+)/)?.[1] || '';
+                        }
+                    }
+
+                    return /^[\w-]{11}$/.test(videoId)
+                        ? `https://www.youtube-nocookie.com/embed/${videoId}`
+                        : null;
+                } catch {
+                    return null;
+                }
+            };
+            const videosDemoValidos = Array.isArray(jogo.videosDemo)
+                ? jogo.videosDemo.map(normalizarVideoDemo).filter(Boolean)
+                : [];
 
             const gerarBotoesDownload = () => {
                 let botoesDownloadJogo = '';
@@ -1807,29 +1833,18 @@ window.addEventListener("load", () => {
                 };
 
                 const layoutCompleto = `
-    <div style="
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        gap: 60px;
-        flex-wrap: wrap;
-        margin-top: 50px;
-        text-align: center;
-    ">
+    <div class="game-download-layout">
 
         <!-- VÍDEO ESQUERDO -->
-        <div style="
+        <div class="game-download-card" style="
             background-color: #0a0a0a;
             border: 2px solid red;
             border-radius: 12px;
             padding: 15px;
-            width: 100%;
-            max-width: 360px;
             box-shadow: 0 0 20px rgba(255,0,0,0.6);
         ">
             <h3 style="color: #ff4040; text-align: center; margin-bottom: 10px;">Como Passar pelo Encurtador</h3>
-            <iframe 
-                width="100%" height="200" 
+            <iframe class="game-download-video"
                 src="https://drive.google.com/file/d/1e6tL4KRZmxT0cbFurja5imxEmNmCq-ar/preview" 
                 title="Como passar pelo encurtador" 
                 frameborder="0" allowfullscreen
@@ -1838,7 +1853,7 @@ window.addEventListener("load", () => {
         </div>
 
         <!-- DOWNLOADS CENTRALIZADOS -->
-        <div style="
+        <div class="game-download-links" style="
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1847,8 +1862,6 @@ window.addEventListener("load", () => {
             padding: 25px;
             border-radius: 12px;
             box-shadow: 0 0 20px rgba(255, 26, 61, 0.4);
-            width: 100%;
-            max-width: 340px;
         ">
             <p style="
                 color: #ffcc00;
@@ -1861,18 +1874,15 @@ window.addEventListener("load", () => {
         </div>
 
         <!-- VÍDEO DIREITO -->
-        <div style="
+        <div class="game-download-card" style="
             background-color: #0a0a0a;
             border: 2px solid red;
             border-radius: 12px;
             padding: 15px;
-            width: 100%;
-            max-width: 360px;
             box-shadow: 0 0 20px rgba(255,0,0,0.6);
         ">
             <h3 style="color: #ff4040; text-align: center; margin-bottom: 10px;">Como Baixar Após Extrair</h3>
-            <iframe 
-                width="100%" height="200" 
+            <iframe class="game-download-video"
                 src="https://drive.google.com/file/d/1t0rZBIcJxhuGqTt7OlXeet58PHc-Hsmd/preview" 
                 title="Como baixar o jogo após extrair" 
                 frameborder="0" allowfullscreen
@@ -1968,7 +1978,7 @@ window.addEventListener("load", () => {
                 </div>
                 ` : ''}
 
-                ${jogo.videosDemo && jogo.videosDemo.length > 0 ? `
+                ${videosDemoValidos.length > 0 ? `
                 <div class="demo-videos" style="
                     width: 100%;
                     max-width: 900px;
@@ -1978,7 +1988,7 @@ window.addEventListener("load", () => {
                     justify-content: center;
                     flex-wrap: wrap;
                 ">
-                    ${jogo.videosDemo.map(videoUrl => `
+                    ${videosDemoValidos.map(videoUrl => `
                         <div style="text-align: center;">
                             <iframe
                                 src="${videoUrl}"
