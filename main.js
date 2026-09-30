@@ -1,4 +1,3 @@
-            // Lista de anúncios (use as imagens dos seus jogos torrent)
         
 
 /* PEGA TODOS OS LINKS */
