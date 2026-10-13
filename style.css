@@ -1,704 +1,1045 @@
-/* Este é o seletor universal. Ele aplica estilos a TODOS os elementos na página. */
+/* ==========================================================================
+   ÍNDICE
+   --------------------------------------------------------------------------
+   01. Reset e variáveis
+   02. Base (body, container)
+   03. Cabeçalho (logo, navegação, ícones sociais)
+   04. Conteúdo principal (boas-vindas, categorias, botões)
+   05. Rodapé
+   06. Modal
+   07. Cards de teste (T.I / Fiscal)
+   08. Barra de pesquisa
+   09. SPA Academy (transição, temas)
+   10. Widgets flutuantes (feedback, bot, comunidade)
+   11. Página de jogo (downloads)
+   12. Animações decorativas (olhos, sombra)
+   13. Keyframes
+   14. Responsivo (tablet e celular)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   01. RESET E VARIÁVEIS
+   ========================================================================== */
 * {
-    /* Define margem zero em todos os lados. */
     margin: 0;
-    /* Define preenchimento (padding) zero em todos os lados. */
     padding: 0;
-    /* Garante que o padding e a borda sejam incluídos na largura e altura total do elemento, facilitando o layout. */
     box-sizing: border-box;
-    /* Define uma família de fontes padrão para todo o projeto. */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* O seletor :root define variáveis CSS (propriedades personalizadas) acessíveis em todo o documento. 
-Isso facilita a gestão de cores e a torna mais consistente.
-*/
 :root {
-    /* Cor primária: um azul escuro. */
-    --primary: #1a4b8c;
-    /* Cor secundária: um azul ligeiramente mais claro. */
+    --primary: #c7c9cc;
     --secondary: #2a5ca9;
-    /* Cor de destaque/realce: um verde ciano vibrante. */
     --accent: #00c896;
-    /* Cor escura principal. */
+    --neon: #00ff00;
+    --neon-soft: #00ff66;
     --dark: #121212;
-    /* Cor ainda mais escura (para fundos ou sombras mais profundas). */
     --darker: #0a0a0a;
-    /* Cor clara (para texto ou fundos claros). */
     --light: #f5f5f5;
-    /* Um tom de cinza escuro. */
     --gray: #2a2a2a;
+    --text-muted: #ccc;
 }
 
-/* Estilos aplicados ao corpo da página. */
+
+/* ==========================================================================
+   02. BASE
+   ========================================================================== */
 body {
-    /* Define o fundo da página com a cor escura (variável --dark). */
     background-color: var(--dark);
-    /* Define a cor padrão do texto com a cor clara (variável --light). */
     color: var(--light);
-    /* Define o espaçamento entre linhas (altura da linha). */
     line-height: 1.6;
+    padding-bottom: 100px;
+    /* espaço para os widgets flutuantes */
 }
 
-/* Estilos para um contêiner centralizado e com largura limitada. */
+img {
+    max-width: 100%;
+}
+
 .container {
-    /* Largura padrão de 90% da área visível. */
     width: 90%;
-    /* Largura máxima, para não esticar demais em telas grandes. */
     max-width: 1200px;
-    /* Centraliza o contêiner horizontalmente (0 para margens superior/inferior, auto para laterais). */
     margin: 0 auto;
-    /* Adiciona preenchimento interno. */
     padding: 20px;
 }
 
-/* Header Styles */
-/* Garante que o cabeçalho, conteúdo principal e rodapé tenham fundo transparente. */
-header, main, footer {
+header,
+main,
+footer {
     background: transparent !important;
 }
 
-/* Layout do conteúdo do cabeçalho. */
+
+/* ==========================================================================
+   03. CABEÇALHO
+   ========================================================================== */
 .header-content {
-    /* Usa Flexbox para organizar os itens (logo, navegação, ícones sociais). */
     display: flex;
-    /* Distribui o espaço entre os itens. */
     justify-content: space-between;
-    /* Alinha os itens verticalmente ao centro. */
     align-items: center;
+    gap: 10px;
 }
 
-/* Estilo do agrupamento do logo (ícone + texto). */
+/* ---- Logo ---- */
 .logo {
-    /* Usa Flexbox para alinhar o ícone e o texto. */
     display: flex;
-    /* Alinha os itens verticalmente ao centro. */
     align-items: center;
 }
-/* Estilo para links de ícones sociais. */
-.social-icons a {
-    /* Garante que os ícones fiquem na mesma linha e permite definir margens. */
-    display: inline-block;
-    /* Espaçamento à direita. */
-    margin-right: 30px;
-    /* Aplica a animação 'slideFade' por 7 segundos, linear e repetidamente. */
-    animation: slideFade 7s linear infinite;
-}
 
-/* Definição da animação 'slideFade'. */
-@keyframes slideFade {
-    /* Início da animação (0%). */
-    0% {
-        /* Move o elemento para fora da tela à direita. */
-        transform: translateX(100%);
-        /* Totalmente invisível. */
-        opacity: 0;
-    }
-    /* Ponto médio da animação (50%). (Nota: 'translateX(100)' é um valor inválido e será ignorado/resetado) */
-    50% {
-        /* Valor destinado a manter o elemento na posição (deveria ser 'translateX(0)' para o centro). */
-        transform: translateX(0);
-        /* Totalmente visível. */
-        opacity: 1;
-    }
-    100% {
-        /* Move o elemento para fora da tela à esquerda. */
-        transform: translateX(-100%);
-        /* Totalmente invisível. */
-        opacity: 0;
-    }
-}
-
-/* Estilo para o ícone/escudo que faz parte do logo. */
 .shield {
-    /* Dimensões do escudo. */
-    width: 40px;
-    height: 50px;
-    /* Fundo com gradiente de cor usando as variáveis --primary e --secondary. */
-    background: linear-gradient(145deg, var(--primary), var(--secondary));
-    /* Cantos arredondados. */
-    border-radius: 8px;
-    /* Necessário para posicionar elementos internos/pseudoelementos em relação a ele. */
     position: relative;
-    /* Espaçamento à direita do texto do logo. */
-    margin-right: 15px;
-    /* Sombra para dar profundidade. */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* Usa Flexbox para centralizar o conteúdo interno (.shield-inner). */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Esconde qualquer conteúdo que ultrapasse os limites. */
+    width: 40px;
+    height: 50px;
+    margin-right: 15px;
+    background: linear-gradient(145deg, var(--primary), var(--secondary));
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(243, 243, 243, 0.993);
     overflow: hidden;
 }
 
-/* Pseudoelemento para o efeito de brilho ou reflexo no topo do escudo. */
-.shield:before {
-    /* Conteúdo vazio (necessário para pseudoelementos). */
+/* Reflexo no topo do escudo */
+.shield::before {
     content: '';
-    /* Posicionamento absoluto em relação ao .shield. */
     position: absolute;
     top: 0;
     left: 0;
-    /* Ocupa a largura total e 40% da altura. */
     width: 100%;
     height: 40%;
-    /* Fundo translúcido (branco com 15% de opacidade). */
     background: rgba(255, 255, 255, 0.15);
 }
 
-/* Estilo para o círculo interno do escudo. */
 .shield-inner {
-    /* Dimensões. */
+    position: relative;
     width: 15px;
     height: 15px;
-    /* Borda branca. */
-    border: 2px solid white;
-    /* Transforma em círculo. */
+    border: 2px solid #fff;
     border-radius: 50%;
-    /* Necessário para posicionar o pseudoelemento interno :after. */
-    position: relative;
 }
 
-/* Pseudoelemento para o ponto central dentro do círculo. */
-.shield-inner:after {
+/* Ponto central */
+.shield-inner::after {
     content: '';
     position: absolute;
-    /* Centraliza o elemento. */
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    /* Dimensões. */
     width: 6px;
     height: 6px;
-    /* Fundo branco. */
-    background: white;
-    /* Transforma em círculo. */
+    background: #fff;
     border-radius: 50%;
+    transform: translate(-50%, -50%);
 }
 
-/* Agrupamento para o texto do logo (nome e tagline). */
 .logo-text {
-    /* Organiza os elementos verticalmente. */
     display: flex;
     flex-direction: column;
 }
 
-/* Estilo para o nome principal do logo. */
 .logo-name {
     font-size: 24px;
     font-weight: bold;
-    /* Cor clara. */
     color: var(--light);
-    /* Espaçamento entre letras. */
     letter-spacing: 1px;
 }
 
-/* Estilo para o slogan ou subtítulo do logo. */
 .logo-tagline {
-    font-size: 10px;
-    /* Cor de destaque. */
+    font-size: 15px;
     color: var(--accent);
     letter-spacing: 1.5px;
-    /* Converte todo o texto para letras maiúsculas. */
     text-transform: uppercase;
 }
 
-/* Estilo da lista de navegação. */
+/* ---- Navegação ---- */
 nav ul {
-    /* Usa Flexbox para organizar os links horizontalmente. */
     display: flex;
-    /* Remove os marcadores de lista (bolinhas/pontos). */
     list-style: none;
 }
 
-/* Estilo para cada item da lista (link de navegação). */
 nav ul li {
-    /* Espaçamento à esquerda de cada item. */
     margin-left: 25px;
 }
 
-/* Estilo para os links de navegação. */
 nav ul li a {
-    /* Cor do texto. */
     color: var(--light);
-    /* Remove o sublinhado padrão dos links. */
     text-decoration: none;
-    font-weight: 500;
-    /* Define uma transição suave para a mudança de cor. */
-    transition: color 0.3s;
     font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
-/* Efeito ao passar o mouse sobre o link de navegação. */
 nav ul li a:hover {
-    /* Muda a cor do texto para a cor de destaque. */
     color: var(--accent);
 }
 
-/* Main Content Styles */
-/* Estilos para a seção de conteúdo principal. */
+/* ---- Ícones sociais que se move ---- */
+.social-icons a {
+    display: inline-block;
+    margin-right: 10px;
+    animation: slideFade 0s linear infinite;
+}
+
+.social-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+
+    color: #d1d5db;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 12px;
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.social-link>i:first-child {
+    font-size: 20px;
+    transition: transform 0.25s ease;
+}
+
+.social-link .external-icon {
+    font-size: 11px;
+    opacity: 0.45;
+    margin-left: 40px;
+}
+
+.social-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(41, 118, 77, 0.974);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 22px rgba(0, 255, 120, 0.08);
+}
+
+.social-link:hover>i:first-child {
+    transform: scale(1.15);
+}
+
+.discord:hover {
+    color: #8b9dff;
+    border-color: #5865F2;
+}
+
+.github:hover {
+    color: #ffffff;
+    border-color: #aaaaaa;
+}
+
+.instagram:hover {
+    color: #f472b6;
+    border-color: #e1306c;
+}
+
+.whatsapp:hover {
+    color: #4ade80;
+    border-color: #25D366;
+}
+
+.social-link:focus-visible {
+    outline: 2px solid #00ff78;
+    outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+    .social-icons {
+        gap: 8px;
+    }
+
+    .social-link {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+}
+
+
+
+/* ==========================================================================
+   04. CONTEÚDO PRINCIPAL
+   ========================================================================== */
 .main-content {
-    /* Adiciona preenchimento vertical. */
     padding: 40px 0;
 }
 
-/* Estilos para a seção de boas-vindas. */
+/* ---- Boas-vindas ---- */
 .welcome-section {
-    /* Fundo com gradiente sutil. */
-    background: linear-gradient(to right, var(--darker), var(--gray));
-    /* Preenchimento interno. */
-    padding: 30px;
-    /* Cantos arredondados. */
-    border-radius: 10px;
-    /* Margem inferior. */
     margin-bottom: 30px;
-    /* Sombra para dar destaque. */
+    padding: 30px;
+    background: linear-gradient(to right, var(--darker), var(--gray));
+    border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-/* Estilos para o título H1 da seção de boas-vindas. */
 .welcome-section h1 {
+    margin: 0 auto 15px;
     font-size: 28px;
-    margin-bottom: 15px;
-    /* Cor de destaque. */
+    letter-spacing: 0.08em;
     color: var(--accent);
-    /* Prepara para o efeito de 'digitação'. */
-    overflow: hidden;
-    /* Cria a barra vertical (cursor) que pisca. */
-    border-right: .15em solid #00ff00;
-    /* Garante que o texto fique em uma única linha. */
     white-space: nowrap;
-    margin: 0 auto;
-    letter-spacing: .08em;
-    /* Aplica duas animações: 'typing' (digitação) e 'blink-caret' (cursor piscando). */
+    overflow: hidden;
+    border-right: 0.15em solid var(--neon);
+    /* cursor */
     animation:
         typing 2.2s steps(30, end),
-        blink-caret .7s step-end infinite;
+        blink-caret 0.7s step-end infinite;
 }
 
-/* Definição da animação 'typing' (efeito de digitação). */
-@keyframes typing {
-    /* Começa com largura zero (texto escondido). */
-    from { width: 0 }
-    /* Termina com largura total (texto visível). */
-    to { width: 100% }
-}
-
-/* Definição da animação 'blink-caret' (efeito de cursor piscando). */
-@keyframes blink-caret {
-    /* 0%, 100% (to) - Borda transparente. */
-    from, to { border-color: transparent }
-    /* 50% - Borda verde visível. */
-    50% { border-color: #00ff00; }
-}
-
-/* Estilos para os parágrafos na seção de boas-vindas. */
 .welcome-section p {
     margin-bottom: 10px;
-    /* Um cinza claro para o texto. */
-    color: #ccc;
+    color: var(--text-muted);
 }
 
-/* Layout para a grade de categorias. */
+/* ---- Categorias ---- */
 .categories {
-    /* Usa CSS Grid para criar um layout responsivo de cards. */
     display: grid;
-    /* Melhoria: auto-fit garante que os cards preencham o espaço disponível */
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    /* Espaçamento (gap) entre os cards. */
     gap: 20px;
     width: 100%;
     margin-top: 40px;
 }
 
-/* Estilos para cada card de categoria. */
 .category-card {
-    /* Fundo com a cor cinza escuro. */
-    background-color: var(--gray);
-    /* Cantos arredondados. */
-    border-radius: 8px;
-    /* Preenchimento interno. */
-    padding: 20px;
-    /* Transições suaves para transform e box-shadow. */
-    transition: transform 0.3s, box-shadow 0.3s;
-    /* Sombra padrão. */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-
-    /* **Adicionado:** Usa Flexbox para controlar o posicionamento do botão. */
     display: flex;
-    /* Organiza os itens verticalmente. */
     flex-direction: column;
+    padding: 20px;
+    background-color: var(--gray);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-/* Estilos para o parágrafo dentro do card. */
-.category-card p {
-    color: #ccc;
-    font-size: 14px;
-    margin-bottom: 15px;
-
-    /* **Faz o texto ocupar o espaço e empurrar o botão pra baixo:** */
-    /* Garante que o parágrafo ocupe o máximo de espaço vertical disponível, forçando o botão para o rodapé. */
-    flex-grow: 1;
-}
-
-/* Alinhamento do botão para o rodapé do card. */
-.category-card .btn {
-    /* Força a margem superior a ser automática, empurrando o botão para o final do contêiner flexível. */
-    margin-top: auto; 
-}
-
-
-/* Efeito ao passar o mouse sobre o card de categoria. */
 .category-card:hover {
-    /* Eleva o card sutilmente. */
-    transform: translateY(-5px);
-    /* Efeitos de sombra mais complexos e luminosos (efeito neon/brilho). */
-    box-shadow: 0 0 32px #00ff00, 0 0 64px #00ff0044;
-    /* Eleva e aumenta ligeiramente o tamanho. */
     transform: translateY(-6px) scale(1.03);
-    /* (Nota: Esta linha sobrescreve o transform anterior) Define uma cor de borda (embora o card não tenha borda explícita). */
-    border-color: #00ff00;
+    border-color: var(--neon);
+    box-shadow: 0 0 32px var(--neon), 0 0 64px #fdfffd44;
 }
 
-/* Estilos para o ícone da categoria. */
-.category-icon {
-    font-size: 24px;
-    /* Cor de destaque. */
-    color: var(--accent);
-    margin-bottom: 15px;
-}
-
-/* Estilos para o título H3 da categoria. */
 .category-card h3 {
-    font-size: 20px;
     margin-bottom: 10px;
-    /* Cor clara. */
+    font-size: 20px;
     color: var(--light);
 }
 
-/* Estilos para o botão genérico. */
+.category-card p {
+    flex-grow: 1;
+    /* empurra o botão para o rodapé do card */
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.category-card .btn {
+    margin-top: auto;
+}
+
+.category-icon {
+    margin-bottom: 15px;
+    font-size: 24px;
+    color: var(--accent);
+}
+
+.category-icon i {
+    font-size: 50px;
+}
+
+/* ---- Botão genérico ---- */
 .btn {
-    /* Exibe como bloco em linha para aceitar padding e ser afetado pelo flexbox do card. */
     display: inline-block;
-    /* Cor de fundo principal. */
-    background-color: var(--primary);
-    /* Cor do texto branca. */
-    color: rgb(0, 0, 0);
-    /* Preenchimento interno. */
     padding: 8px 15px;
-    /* Cantos arredondados. */
-    border-radius: 5px;
-    /* Remove o sublinhado. */
-    text-decoration: none;
+    background-color: var(--primary);
+    color: #fff;
     font-weight: 500;
-    /* Transição suave para a mudança de cor de fundo. */
+    text-decoration: none;
+    border-radius: 5px;
     transition: background-color 0.3s;
 }
 
-/* Efeito ao passar o mouse sobre o botão. */
 .btn:hover {
-    /* Muda a cor de fundo para a cor secundária. */
     background-color: var(--secondary);
 }
 
-/* Footer Styles */
-/* Estilos para o rodapé da página. */
-footer{
-    background: rgba(0, 0, 0, 0.92);
-    border-top: 1px solid rgba(0,255,0,0.15);
-    backdrop-filter: blur(6px);
-    padding: 35px 20px;
+/* ---- Imagens circulares (depoimentos) ---- */
+img[alt="Soldado 1"],
+img[alt="Soldado 2"],
+img[alt="Soldado 3"] {
+    width: 120px !important;
+    height: 120px !important;
+    object-fit: cover;
+    border-radius: 50% !important;
+    box-shadow: 0 4px 16px rgba(255, 250, 250, 0.15);
+}
+
+
+/* ==========================================================================
+   05. RODAPÉ
+   ========================================================================== */
+footer {
     position: relative;
+    padding: 35px 20px;
+    background: rgba(0, 0, 0, 0.92);
+    border-top: 1px solid rgba(0, 255, 0, 0.15);
+    backdrop-filter: blur(6px);
     overflow: hidden;
 }
 
-.footer{
-    width:100%;
-    max-width:1200px;
-
-    margin:auto;
-    margin-top:50px;
-
-    padding:35px 45px;
-
-    background:rgba(10,10,10,.92);
-
-    border:1px solid rgba(0,255,0,.15);
-
-    border-radius:22px;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    gap:45px;
-
-    backdrop-filter:blur(8px);
-
-    box-shadow:
-        0 0 30px rgba(0,255,0,.08);
-
-    overflow:hidden;
-
-    position:relative;
-}
-
-.footer::before{
-    content:'';
-
-    position:absolute;
-
-    inset:0;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(0,255,0,.03),
-            transparent
-        );
-
-    pointer-events:none;
-}
-
-.footer-left{
-    display:flex;
-    align-items:center;
-
-    gap:24px;
-}
-
-.footer-logo{
-    width:140px;
-
-    filter:
-        drop-shadow(0 0 12px rgba(0,255,0,.25));
-}
-
-.footer-text{
-    font-family:'Courier New', monospace;
-}
-
-.footer-quote{
-    color:#fff;
-
-    font-size:1.05rem;
-
-    max-width:260px;
-
-    line-height:1.7;
-}
-
-.footer-dev{
-    margin-top:16px;
-
-    color:#ff0000;
-
-    display:flex;
-    align-items:center;
-
-    gap:10px;
-}
-
-.footer-divider{
-    width:1px;
-    height:130px;
-
-    background:
-        linear-gradient(
-            transparent,
-            rgba(0,255,0,.4),
-            transparent
-        );
-}
-
-.footer-links{
-    display:flex;
-    align-items:center;
-
-    gap:24px;
-}
-
-.footer-links a{
-    display:flex;
-    flex-direction:column;
-
-    align-items:center;
-
-    gap:1px;
-
-    color:#fff;
-
-    text-decoration:none;
-
-    font-family:'Courier New', monospace;
-
-    transition:.25s;
-}
-
-.footer-links a:hover{
-    transform:translateY(-4px);
-
-    color:#00ff66;
-
-    text-shadow:0 0 10px #00ff66;
-}
-
-.footer-links a i{
-    font-size:1.7rem;
-
-    color:#00ff66;
-}
-
-.footer-links a span{
-    position:relative;
-}
-
-.footer-links a span::after{
-    content:'';
-
-    position:absolute;
-
-    left:0;
-    bottom:-7px;
-
-    width:100%;
-    height:1px;
-
-    background:#00ff66;
-
-    box-shadow:0 0 8px #00ff66;
-}
-
-.footer-btn{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    gap:10px;
-
-    min-width:250px;
-
-    padding:10px 28px;
-
-    border-radius:180;
-
-    background:rgba(255,255,255,.03);
-
-    border:1px solid rgba(5, 5, 5, 0.25);
-
-    text-decoration:none;
-
-    color:#fff;
-
-    font-weight:bold;
-
-    font-size:1.15rem;
-
-    transition:.3s;
-
-    box-shadow:
-        0 0 18px rgba(19, 19, 19, 0.08);
-}
-
-.footer-btn:hover{
-    transform:translateY(-3px);
-
-    border-color:#00ff66;
-
-    box-shadow:
-        0 0 25px rgba(0,255,0,.18);
-}
-
-.footer-btn i{
-    color:#00ff15;
-
-    font-size:1.5rem;
-}
-/* Estilo para a seção de links rápidos. */
-.quick-links ul {
-    /* Organiza os links horizontalmente. */
+.footer {
+    position: relative;
     display: flex;
-    /* Remove os marcadores de lista. */
+    align-items: center;
+    justify-content: space-between;
+    gap: 45px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 50px auto 0;
+    padding: 35px 45px;
+    background: rgba(10, 10, 10, 0.92);
+    border: 1px solid rgba(0, 255, 0, 0.15);
+    border-radius: 22px;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.08);
+    backdrop-filter: blur(8px);
+    overflow: hidden;
+}
+
+/* Brilho sutil que atravessa o rodapé */
+.footer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.03), transparent);
+    pointer-events: none;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.footer-logo {
+    width: 140px;
+    filter: drop-shadow(0 0 12px rgba(0, 255, 0, 0.25));
+}
+
+.footer-text {
+    font-family: 'Courier New', monospace;
+}
+
+.footer-quote {
+    max-width: 260px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #fff;
+}
+
+.footer-dev {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    color: #ff0000;
+}
+
+.footer-divider {
+    width: 1px;
+    height: 130px;
+    background: linear-gradient(transparent, rgba(0, 255, 0, 0.4), transparent);
+}
+
+.footer-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.footer-links a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    font-family: 'Courier New', monospace;
+    color: #fff;
+    text-decoration: none;
+    transition: 0.25s;
+}
+
+.footer-links a:hover {
+    transform: translateY(-4px);
+    color: var(--neon-soft);
+    text-shadow: 0 0 10px var(--neon-soft);
+}
+
+.footer-links a i {
+    font-size: 1.7rem;
+    color: var(--neon-soft);
+}
+
+.footer-links a span {
+    position: relative;
+}
+
+.footer-links a span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -7px;
+    width: 100%;
+    height: 1px;
+    background: var(--neon-soft);
+    box-shadow: 0 0 8px var(--neon-soft);
+}
+
+.footer-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    min-width: 250px;
+    padding: 10px 28px;
+    font-size: 1.15rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(5, 5, 5, 0.25);
+    border-radius: 180px;
+    box-shadow: 0 0 18px rgba(19, 19, 19, 0.08);
+    transition: 0.3s;
+}
+
+.footer-btn:hover {
+    transform: translateY(-3px);
+    border-color: var(--neon-soft);
+    box-shadow: 0 0 25px rgba(0, 255, 0, 0.18);
+}
+
+.footer-btn i {
+    font-size: 1.5rem;
+    color: #00ff15;
+}
+
+/* ---- Links rápidos ---- */
+.quick-links ul {
+    display: flex;
     list-style: none;
 }
 
-/* Espaçamento entre os links rápidos. */
 .quick-links ul li {
     margin-left: 20px;
 }
 
-/* Estilo para os links rápidos. */
 .quick-links ul li a {
-    color: #ccc;
-    text-decoration: none;
     font-size: 14px;
-    /* Transição suave de cor. */
+    color: var(--text-muted);
+    text-decoration: none;
     transition: color 0.3s;
 }
 
-/* Efeito ao passar o mouse sobre os links rápidos. */
 .quick-links ul li a:hover {
-    /* Muda a cor do texto para a cor de destaque. */
     color: var(--accent);
 }
 
-/* Modal listas com scroll para não quebrar a página */
-/* Estilos para listas dentro de modais que precisam de rolagem. */
-.modal-list {
-    /* Altura máxima da lista. */
-    max-height: 320px;
-    /* Habilita a rolagem vertical se o conteúdo exceder a altura máxima. */
-    overflow-y: auto;
-    /* Adiciona um pequeno padding para a barra de rolagem não tocar o conteúdo. */
-    padding-right: 6px;
-    
-    /* Opcional: Estiliza a barra de rolagem (compatível com Firefox) */
-    scrollbar-width: thin;
-    /* Cor do 'polegar' (barra) e do 'trilho' (fundo da barra). */
-    scrollbar-color: #00ff00 #222;
+
+/* ==========================================================================
+   06. MODAL
+   ========================================================================== */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 999;
 }
-/* Estiliza a barra de rolagem (compatível com Webkit - Chrome, Edge, Safari). */
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-card {
+    position: relative;
+    min-width: 320px;
+    max-width: 90vw;
+    max-height: 90vh;
+    padding: 32px 24px;
+    background: #000;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.932);
+    overflow-y: auto;
+    animation: modalFadeIn 0.3s;
+}
+
+.modal-card h2 {
+    margin-bottom: 18px;
+    font-size: 1.5em;
+    color: #fff;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 1.4em;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: #007bff;
+}
+
+.modal-back {
+    display: none;
+    /* ativado via JS */
+    margin-bottom: 10px;
+    padding: 8px 18px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ---- Lista do modal (com scroll) ---- */
+.modal-list {
+    max-height: 320px;
+    padding-right: 6px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--neon) #222;
+}
+
 .modal-list::-webkit-scrollbar {
-    /* Largura da barra de rolagem. */
     width: 6px;
-    /* Fundo do trilho da barra de rolagem. */
     background: #222;
 }
-/* Estiliza a alça (thumb) da barra de rolagem. */
+
 .modal-list::-webkit-scrollbar-thumb {
-    /* Cor da alça (o verde de destaque). */
-    background: #00ff00;
-    /* Cantos arredondados na alça. */
+    background: var(--neon);
     border-radius: 4px;
 }
 
-/* Imagens dos testes em formato circular */
-/* Estilos aplicados especificamente a imagens com os atributos alt "Soldado 1" ou "Soldado 2". */
-img[alt="Soldado 1"], img[alt="Soldado 2"], img[alt="Soldado 3"] {
-    /* Transforma a imagem em um círculo, ignorando a forma original (usa !important para garantir a aplicação). */
-    border-radius: 50% !important;
-    /* Garante que a imagem preencha a área sem distorção, cortando as bordas. */
-    object-fit: cover;
-    /* Define largura e altura fixas. */
-    width: 120px !important;
-    height: 120px !important;
-    /* Adiciona uma sombra suave. */
-    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+.modal-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px 16px;
+    background: #181818;
+    color: #fff;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-weight: bold;
+    border: 1px solid var(--neon);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #ffffffea;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
 }
 
-/* Container de testes unificado */
+.modal-list li:hover {
+    background: #190eaf;
+    box-shadow: 0 4px 16px #fff;
+    transform: scale(1.03);
+}
+
+.modal-list .list-icon {
+    width: 70px;
+    height: 70px;
+    margin-right: 12px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+
+.modal-list i {
+    margin-right: 12px;
+    font-size: 1.3em;
+    color: var(--neon);
+    transition: color 0.2s;
+}
+
+.modal-list a {
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--neon);
+    text-decoration: none;
+    transition: text-shadow 0.2s;
+}
+
+.modal-list a:hover {
+    text-shadow: 0 0 8px var(--neon);
+}
+
+/* Ícone pequeno genérico */
+.list-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    object-fit: contain;
+}
+
+/* Borda "elétrica" */
+.electric-border {
+    border: 2px solid var(--neon) !important;
+    border-radius: 16px;
+    box-shadow: none !important;
+}
+
+/* Mensagem com fade */
+.fade-in-msg {
+    opacity: 0;
+    animation: fadeInMsg 1.2s forwards;
+}
+
+
+/* ==========================================================================
+   07. CARDS DE TESTE (T.I / FISCAL)
+   ========================================================================== */
 .test-cards-container {
-    width: 100%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
     gap: 40px;
+    width: 100%;
     margin-top: 40px;
-    flex-wrap: wrap;
 }
 
-/* Layout dos tutoriais e downloads na página de jogo */
+.test-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 18px 24px 24px;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 18px;
+    box-shadow: 0 4px 24px #36068533;
+    transition: box-shadow 0.3s, transform 0.2s;
+}
+
+.test-card:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 8px 32px var(--neon), 0 0 32px #00ff0044;
+}
+
+.test-card:hover .test-img {
+    transform: scale(1.07) rotate(-2deg);
+}
+
+.test-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+    padding: 10px 28px;
+    background: #0baa0b;
+    color: #181818;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px #00ff0044;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.test-btn:hover {
+    background: #00cc00;
+    color: #fff;
+    box-shadow: 0 4px 16px var(--neon);
+}
+
+.test-btn i {
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.test-img-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 140px;
+    height: 140px;
+    background: #111;
+    border-radius: 50%;
+    box-shadow: 0 0 24px var(--neon);
+    overflow: hidden;
+}
+
+.test-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 3px solid var(--neon);
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+
+
+/* ==========================================================================
+   08. BARRA DE PESQUISA
+   ========================================================================== */
+.search-container {
+    display: none;
+    /* ativado via JS */
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 5px 15px;
+    background: #222;
+    border: 1px solid var(--neon);
+    border-radius: 20px;
+}
+
+.search-input {
+    flex-grow: 1;
+    font-size: 1em;
+    color: var(--neon);
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #666;
+}
+
+.search-icon {
+    margin-left: 10px;
+    color: var(--neon);
+}
+
+
+/* ==========================================================================
+   09. SPA ACADEMY
+   ========================================================================== */
+#hacker-transition {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    z-index: 10000;
+    transition: opacity 0.5s ease;
+}
+
+.loader-bar {
+    position: relative;
+    width: 300px;
+    max-width: 80vw;
+    height: 4px;
+    margin-top: 20px;
+    background: #111;
+    border: 1px solid var(--neon);
+    overflow: hidden;
+}
+
+.loader-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--neon);
+    box-shadow: 0 0 15px var(--neon);
+    animation: spaLoad 1.5s infinite;
+}
+
+.academy-container {
+    transition: all 0.5s ease;
+}
+
+.themes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.card-spa {
+    background: rgba(10, 10, 10, 0.95);
+    border-radius: 15px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card-spa:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 0 20px #00ff0055;
+}
+
+.back-home {
+    padding: 8px 15px;
+    color: var(--neon);
+    background: transparent;
+    border: 1px solid var(--neon);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Transição de página */
+.page-transition {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transition: opacity 0.45s ease;
+}
+
+.page-transition.active {
+    opacity: 1;
+}
+
+
+/* ==========================================================================
+   10. WIDGETS FLUTUANTES
+   ========================================================================== */
+
+/* ---- Feedback (botão + texto) ---- */
+#feedback-widget-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 1000;
+}
+
+#feedback-text {
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+    animation: fadeIn 0.5s ease;
+}
+
+#chat-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    background: #007bff;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#chat-button:hover {
+    background: #0056b3;
+    transform: scale(1.1);
+}
+
+#chat-icon,
+#chat-button i#chat-icon {
+    display: block;
+    font-size: 24px;
+    color: #fff;
+}
+
+/* ---- Bot (iframe em tela cheia) ---- */
+#bot-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background: transparent;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 9998;
+    transition: all 0.3s ease;
+}
+
+#bot-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#bot-container iframe {
+    width: 90%;
+    height: 90%;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ---- Botão da comunidade ---- */
+.comunidade-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 0 0 8px #fff;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.comunidade-icon {
+    width: 110px;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 50%;
+    filter: drop-shadow(0 0 6px #3d3c3c);
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.comunidade-icon:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px #00ff4c);
+}
+
+.comunidade-text {
+    margin-top: 5px;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+    transition: text-shadow 0.3s ease, color 0.3s ease;
+}
+
+
+/* ==========================================================================
+   11. PÁGINA DE JOGO (DOWNLOADS)
+   ========================================================================== */
 .game-download-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(220px, 300px) minmax(0, 1fr);
@@ -711,7 +1052,6 @@ img[alt="Soldado 1"], img[alt="Soldado 2"], img[alt="Soldado 3"] {
 
 .game-download-card,
 .game-download-links {
-    box-sizing: border-box;
     width: 100%;
     justify-self: center;
 }
@@ -731,955 +1071,497 @@ img[alt="Soldado 1"], img[alt="Soldado 2"], img[alt="Soldado 3"] {
     aspect-ratio: 16 / 9;
 }
 
-/* Responsive Styles - Unificado e Limpo */
-@media (max-width: 700px) {
-    .container {
-        width: 95%;
-        padding: 10px;
+
+/* ==========================================================================
+   12. ANIMAÇÕES DECORATIVAS (OLHOS E SOMBRA)
+   ========================================================================== */
+#eye,
+#eye1 {
+    position: absolute;
+    top: 30px;
+    width: 40px;
+    height: 50px;
+}
+
+#eye {
+    left: 10px;
+}
+
+#eye1 {
+    right: 30px;
+}
+
+#eye::before,
+#eye1::before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 50px;
+    background-color: #fff;
+    transform: translateX(10px);
+}
+
+#eye::after,
+#eye1::after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 40px;
+    height: 30px;
+    background-color: #fff;
+    transform: translateY(10px);
+}
+
+#pupil,
+#pupil1 {
+    position: absolute;
+    top: 50px;
+    width: 20px;
+    height: 20px;
+    background-color: blue;
+    z-index: 1;
+    animation: eyesMovement 3s infinite;
+}
+
+#pupil {
+    left: 10px;
+}
+
+#pupil1 {
+    right: 50px;
+}
+
+#shadow {
+    position: absolute;
+    top: 80%;
+    width: 140px;
+    height: 140px;
+    background-color: #000;
+    border-radius: 50%;
+    filter: blur(20px);
+    transform: rotateX(80deg);
+    animation: shadowMovement 0.5s infinite;
+}
+
+
+/* ==========================================================================
+   13. KEYFRAMES
+   ========================================================================== */
+@keyframes slideFade {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
     }
 
-    /* Header e Logo */
-    .header-content { flex-direction: column; gap: 15px; text-align: center; }
-    .logo img { height: 120px !important; }
-    .logo { flex-direction: column; }
-    .shield { margin: 0 0 10px 0; }
+    50% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 
-    /* Navegação e Social */
-    nav ul { flex-wrap: wrap; justify-content: center; gap: 10px; }
-    .social-icons { margin-top: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; animation: none; }
-    .social-icons a { margin-right: 0; animation: none; font-size: 13px; }
+    100% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+}
 
-    /* Seção de Boas-vindas */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: var(--neon);
+    }
+}
+
+@keyframes flicker0 {
+
+    0%,
+    49% {
+        background-color: red;
+    }
+
+    50%,
+    100% {
+        background-color: transparent;
+    }
+}
+
+@keyframes flicker1 {
+
+    0%,
+    49% {
+        background-color: transparent;
+    }
+
+    50%,
+    100% {
+        background-color: red;
+    }
+}
+
+@keyframes eyesMovement {
+
+    0%,
+    49% {
+        transform: translateX(0);
+    }
+
+    50%,
+    99% {
+        transform: translateX(10px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes shadowMovement {
+
+    0%,
+    49% {
+        opacity: 0.5;
+    }
+
+    50%,
+    100% {
+        opacity: 0.2;
+    }
+}
+
+@keyframes spaLoad {
+    0% {
+        width: 0;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+@keyframes modalFadeIn {
+    from {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        transform: translateX(10px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInMsg {
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* ==========================================================================
+   14. RESPONSIVO
+   Estratégia desktop-first: do maior para o menor breakpoint.
+   ========================================================================== */
+
+/* ---------- Tablet / notebook pequeno (até 992px) ---------- */
+@media (max-width: 992px) {
+
+    /* Rodapé empilhado */
+    .footer {
+        flex-direction: column;
+        gap: 30px;
+        padding: 30px 24px;
+        text-align: center;
+    }
+
+    .footer-left {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .footer-quote {
+        max-width: 100%;
+    }
+
+    .footer-dev {
+        justify-content: center;
+    }
+
+    /* Divisor passa de vertical para horizontal */
+    .footer-divider {
+        width: 70%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.4), transparent);
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* Downloads: 1 coluna */
+    .game-download-layout {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        margin-top: 30px;
+    }
+}
+
+/* ---------- Celular grande / tablet vertical (até 768px) ---------- */
+@media (max-width: 768px) {
+
+    .container {
+        width: 94%;
+        padding: 14px;
+    }
+
+    /* Cabeçalho */
+    .header-content {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px 18px;
+    }
+
+    nav ul li {
+        margin-left: 0;
+    }
+
+    nav ul li a {
+        font-size: 15px;
+    }
+
+    .social-icons {
+        text-align: center;
+    }
+
+    .social-icons a {
+        margin: 0 12px;
+    }
+
+    /* Conteúdo */
+    .main-content {
+        padding: 24px 0;
+    }
+
+    .welcome-section {
+        padding: 22px 18px;
+    }
+
+    /* Texto longo não cabe no efeito de digitação: quebra de linha */
     .welcome-section h1 {
-        font-size: 1.4em;
+        font-size: 22px;
+        letter-spacing: 0.04em;
         white-space: normal;
         border-right: none;
         animation: none;
     }
 
-    /* Grid de Categorias */
     .categories {
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 10px;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin-top: 28px;
     }
-    .category-card { padding: 15px; text-align: center; align-items: center; }
-    .category-card h3 { font-size: 16px; }
 
-    /* Test Cards - Lado a Lado */
-    .test-cards-container { gap: 10px; margin-top: 20px; }
-    .test-card { flex: 0 0 calc(33% - 10px); }
-    .test-img-wrap { width: 80px; height: 80px; }
+    .category-card:hover {
+        transform: translateY(-3px);
+        /* hover mais discreto no toque */
+    }
 
-    /* Footer */
+    .test-cards-container {
+        gap: 24px;
+    }
+
+    .quick-links ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px 0;
+    }
+
+    /* Modal quase tela cheia */
+    .modal-card {
+        width: 94vw;
+        min-width: 0;
+        padding: 26px 16px 20px;
+    }
+
+    .modal-list {
+        max-height: 55vh;
+    }
+
+    .modal-list .list-icon {
+        width: 52px;
+        height: 52px;
+    }
+
+    /* Widgets: bot em tela quase cheia, texto do feedback escondido */
+    #feedback-text {
+        display: none;
+    }
+
+    #bot-container iframe {
+        width: 96%;
+        height: 92%;
+    }
+
+    .comunidade-btn {
+        left: 14px;
+        bottom: 16px;
+        font-size: 13px;
+    }
+
+    .comunidade-icon {
+        width: 70px;
+        height: 70px;
+    }
+}
+
+/* ---------- Celular (até 480px) ---------- */
+@media (max-width: 480px) {
+
+    .logo-name {
+        font-size: 20px;
+    }
+
+    .shield {
+        width: 34px;
+        height: 44px;
+        margin-right: 10px;
+    }
+
+    .welcome-section h1 {
+        font-size: 19px;
+    }
+
+    .welcome-section p {
+        font-size: 14px;
+    }
+
+    .category-card h3 {
+        font-size: 18px;
+    }
+
+    .category-icon i {
+        font-size: 40px;
+    }
+
+    /* Botões ocupam a largura toda: mais fácil de tocar */
+    .btn {
+        width: 100%;
+        padding: 12px 15px;
+        text-align: center;
+    }
+
+    /* Rodapé compacto */
     .footer {
-        flex-direction: column;
-        padding: 20px;
-        gap: 30px;
-        height: auto;
-    }
-    .footer-links { flex-direction: row; flex-wrap: wrap; justify-content: center; }
-}
-
-@media (max-width: 640px) {
-    .game-download-layout {
-        grid-template-columns: minmax(0, 1fr);
+        margin-top: 30px;
+        padding: 24px 16px;
+        border-radius: 16px;
     }
 
-    .game-download-card,
-    .game-download-links {
-        max-width: min(100%, 420px);
+    .footer-logo {
+        width: 100px;
     }
-}
 
-/* ---------------------------------------------------- */
-/* As regras abaixo parecem ser para elementos de animação/design específicos (e não padrões do layout). */
-/* ---------------------------------------------------- */
-
-/* Animação para criar um efeito de 'piscar' com a cor vermelha. */
-@keyframes flicker0 {
-    /* Do início até 49%: Fundo vermelho. */
-    0%,
-    49% {
-        background-color: red;
+    .footer-links {
+        gap: 18px;
     }
-    /* De 50% até 100%: Fundo transparente. */
-    50%,
-    100% {
-        background-color: transparent;
+
+    .footer-btn {
+        width: 100%;
+        min-width: 0;
+        padding: 12px 20px;
+        font-size: 1rem;
     }
-}
 
-/* Animação complementar de 'piscar' (oposta à flicker0). */
-@keyframes flicker1 {
-    /* Do início até 49%: Fundo transparente. */
-    0%,
-    49% {
-        background-color: transparent;
+    /* Cards de teste */
+    .test-card {
+        width: 100%;
+        padding: 16px;
     }
-    /* De 50% até 100%: Fundo vermelho. */
-    50%,
-    100% {
-        background-color: red;
+
+    .test-img-wrap {
+        width: 110px;
+        height: 110px;
     }
-}
 
-/* Contêiner de um olho (ou parte de uma animação de figura). */
-#eye {
-    width: 40px;
-    height: 50px;
-    /* Posicionamento absoluto (provavelmente em relação a um contêiner pai). */
-    position: absolute;
-    /* Posição no topo e à esquerda. */
-    top: 30px;
-    left: 10px;
-}
-
-/* Pseudoelemento para uma parte do olho (uma barra vertical branca). */
-#eye::before {
-    content: "";
-    background-color: white;
-    width: 20px;
-    height: 50px;
-    /* Move o elemento 10px para a direita. */
-    transform: translateX(10px);
-    display: block;
-    position: absolute;
-}
-
-/* Pseudoelemento para outra parte do olho (uma barra horizontal branca). */
-#eye::after {
-    content: "";
-    background-color: white;
-    width: 40px;
-    height: 30px;
-    /* Move o elemento 10px para baixo. */
-    transform: translateY(10px);
-    display: block;
-    position: absolute;
-}
-
-/* O segundo contêiner de olho. */
-#eye1 {
-    width: 40px;
-    height: 50px;
-    position: absolute;
-    /* Posição no topo e à direita. */
-    top: 30px;
-    right: 30px;
-}
-
-/* Partes do segundo olho (estrutura idêntica ao #eye). */
-#eye1::before {
-    content: "";
-    background-color: white;
-    width: 20px;
-    height: 50px;
-    transform: translateX(10px);
-    display: block;
-    position: absolute;
-}
-
-#eye1::after {
-    content: "";
-    background-color: white;
-    width: 40px;
-    height: 30px;
-    transform: translateY(10px);
-    display: block;
-    position: absolute;
-}
-
-/* A pupila do primeiro olho. */
-#pupil {
-    width: 20px;
-    height: 20px;
-    background-color: blue;
-    position: absolute;
-    top: 50px;
-    left: 10px;
-    /* Garante que fique sobre as outras partes do olho. */
-    z-index: 1;
-    /* Aplica a animação de movimento dos olhos. */
-    animation: eyesMovement infinite 3s;
-}
-
-/* A pupila do segundo olho. */
-#pupil1 {
-    width: 20px;
-    height: 20px;
-    background-color: blue;
-    position: absolute;
-    top: 50px;
-    right: 50px;
-    z-index: 1;
-    /* Aplica a animação de movimento dos olhos. */
-    animation: eyesMovement infinite 3s;
-}
-
-/* Animação de movimento para as pupilas. */
-@keyframes eyesMovement {
-    /* 0% até 49%: Posição inicial (sem movimento horizontal). */
-    0%,
-    49% {
-        transform: translateX(0px);
+    img[alt="Soldado 1"],
+    img[alt="Soldado 2"],
+    img[alt="Soldado 3"] {
+        width: 90px !important;
+        height: 90px !important;
     }
-    /* 50% até 99%: Move a pupila 10px para a direita. */
-    50%,
-    99% {
-        transform: translateX(10px);
+
+    /* Modal */
+    .modal-card h2 {
+        font-size: 1.25em;
     }
-    /* 100%: Retorna à posição inicial. */
-    100% {
-        transform: translateX(0px);
+
+    .modal-list li {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+
+    /* Widgets menores */
+    #chat-button {
+        width: 52px;
+        height: 52px;
+    }
+
+    #feedback-widget-container {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .comunidade-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .comunidade-text {
+        font-size: 11px;
     }
 }
 
-/* Elemento para criar uma sombra (provavelmente de um objeto principal). */
-#shadow {
-    background-color: black;
-    width: 140px;
-    height: 140px;
-    position: absolute;
-    /* Transforma em círculo. */
-    border-radius: 50%;
-    /* Distorce a sombra, achatando-a para simular perspectiva no chão. */
-    transform: rotateX(80deg);
-    /* Desfoca a sombra. */
-    filter: blur(20px);
-    /* Posiciona perto da parte inferior (80%). */
-    top: 80%;
-    /* Aplica a animação de movimento da sombra. */
-    animation: shadowMovement infinite 0.5s;
-}
+/* ---------- Respeita quem prefere menos movimento ---------- */
+@media (prefers-reduced-motion: reduce) {
 
-/* Animação para a sombra. */
-@keyframes shadowMovement {
-    /* 0% até 49%: Opacidade normal (0.5). */
-    0%,
-    49% {
-        opacity: 0.5;
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
-    /* 50% até 100%: Opacidade reduzida (0.2), criando um efeito de pulsação/oscilação. */
-    50%,
-    100% {
-        opacity: 0.2;
-        
-        
-    }
-    
-    
-    
 }
-
-/* ESTILOS SPA ACADEMY */
-#hacker-transition {
-    position: fixed;
-    inset: 0;
-    background: #000;
-    z-index: 10000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.5s ease;
-}
-
-.loader-bar {
-    width: 300px;
-    height: 4px;
-    background: #111;
-    border: 1px solid #00ff00;
-    position: relative;
-    margin-top: 20px;
-    overflow: hidden;
-}
-
-.loader-bar::after {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; height: 100%;
-    background: #00ff00;
-    box-shadow: 0 0 15px #00ff00;
-    animation: spaLoad 1.5s infinite;
-}
-
-@keyframes spaLoad { 0% { width: 0; } 100% { width: 100%; } }
-
-.academy-container { transition: all 0.5s ease; }
-
-.themes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 25px;
-}
-
-.card-spa {
-    background: rgba(10, 10, 10, 0.95);
-    border-radius: 15px;
-    overflow: hidden;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.card-spa:hover { transform: translateY(-10px); box-shadow: 0 0 20px #00ff0055; }
-
-.back-home { background: transparent; border: 1px solid #00ff00; color: #00ff00; padding: 8px 15px; cursor: pointer; border-radius: 5px; }
- #chat-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, #00bcd4, #0066ff);
-            color: #fff;
-            border-radius: 50%;
-            width: 65px;
-            height: 65px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            z-index: 10000;
-        }
-
-        #chat-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Container do bot */
-        #bot-container {
-            position: fixed;
-            bottom: 100px;
-            right: 20px;
-            width: 350px;
-            height: 500px;
-            display: none;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            overflow: hidden;
-            background: #fff;
-            z-index: 9999;
-            animation: fadeIn 0.3s ease;
-        }
-
-        #bot-container.active {
-            display: block;
-        }
-
-        /* Animação de abertura */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        #bot-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* ===================== MODAL OVERLAY ===================== */
-        /* Fundo escuro transparente que cobre a tela inteira */
-        .modal-overlay {
-            display: none;
-            /* invisível por padrão */
-            position: fixed;
-            /* fixa na tela */
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            /* fundo preto semi-transparente */
-            z-index: 999;
-            /* acima de outros elementos */
-            justify-content: center;
-            /* centraliza horizontalmente */
-            align-items: center;
-            /* centraliza verticalmente */
-        }
-
-        /* Quando ativo, mostra o modal */
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        /* ===================== MODAL CARD ===================== */
-        /* Cartão branco que aparece dentro do modal */
-        .modal-card {
-            background: #000000;
-            border-radius: 18px;
-            /* cantos arredondados */
-            box-shadow: 0 8px 32px rgba(255, 255, 255, 0.932);
-            /* sombra suave */
-            padding: 32px 24px;
-            /* espaço interno */
-            min-width: 320px;
-            /* largura mínima */
-            max-width: 90vw;
-            /* largura máxima responsiva */
-            animation: modalFadeIn 0.3s;
-            /* animação de entrada */
-            position: relative;
-            /* permite posicionar botões internos */
-        }
-
-        /* Animação de entrada do modal */
-        @keyframes modalFadeIn {
-            from {
-                transform: translateY(40px);
-                /* começa mais baixo */
-                opacity: 0;
-                /* invisível */
-            }
-
-            to {
-                transform: translateY(0);
-                /* sobe para posição final */
-                opacity: 1;
-                /* fica visível */
-            }
-        }
-        
-
-        /* ===================== TÍTULO DO MODAL ===================== */
-        .modal-card h2 {
-            margin-bottom: 18px;
-            /* espaço abaixo do título */
-            color: #ffffff;
-            /* cor do texto */
-            font-size: 1.5em;
-            /* tamanho da fonte */
-        }
-
-        /* ===================== LISTA NO MODAL ===================== */
-        .modal-list .list-icon {
-            width: 70px;
-            /* tamanho do ícone */
-            height: 70px;
-            margin-right: 12px;
-            /* espaço entre ícone e texto */
-            object-fit: cover;
-            /* ajusta a imagem sem distorcer */
-            border-radius: 100%;
-            /* deixa circular */
-        }
-
-        .modal-list li {
-            background: #181818;
-            /* fundo escuro */
-            color: #ffffff;
-            /* texto verde */
-            font-weight: bold;
-            /* negrito */
-            font-family: 'JetBrains Mono', 'Courier New', monospace;
-            /* fonte monoespaçada */
-            margin-bottom: 10px;
-            /* espaço entre itens */
-            padding: 10px 16px;
-            /* espaçamento interno */
-            border-radius: 10px;
-            /* cantos arredondados */
-            box-shadow: 0 2px 8px #ffffffea;
-            /* sombra leve */
-            display: flex;
-            /* alinha ícone e texto */
-            align-items: center;
-            /* centraliza verticalmente */
-            transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
-            /* animações suaves */
-            cursor: pointer;
-            /* cursor de clique */
-            border: 1px solid #00ff00;
-            /* borda verde */
-        }
-
-        /* Efeito ao passar o mouse sobre o item */
-        .modal-list li:hover {
-            background: #190eaf;
-            /* fundo mais escuro */
-            box-shadow: 0 4px 16px #ffffff;
-            /* sombra maior */
-            transform: scale(1.03);
-            /* leve zoom */
-        }
-
-        /* ===================== ÍCONES E LINKS ===================== */
-        .modal-list i {
-            margin-right: 12px;
-            color: #00ff00;
-            font-size: 1.3em;
-            transition: color 0.2s;
-            /* muda suavemente a cor */
-        }
-
-        .modal-list a {
-            color: #00ff00;
-            /* cor do link */
-            text-decoration: none;
-            /* remove sublinhado */
-            font-weight: 500;
-            font-size: 1em;
-            transition: text-shadow 0.2s;
-        }
-
-        .modal-list a:hover {
-            text-shadow: 0 0 8px #00ff00;
-            /* efeito de brilho */
-        }
-
-        /* ===================== BOTÃO FECHAR MODAL ===================== */
-        .modal-close {
-            position: absolute;
-            top: 12px;
-            right: 16px;
-            background: none;
-            border: none;
-            font-size: 1.4em;
-            color: #888;
-            /* cinza claro */
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .modal-close:hover {
-            color: #007bff;
-            /* azul quando passa o mouse */
-        }
-
-        /* ===================== BOTÕES E ÍCONES DE CATEGORIA ===================== */
-        .category-icon i {
-            font-size: 50px;
-        }
-
-        .modal-back {
-            background: #007bff;
-            color: #fff;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            display: none;
-            /* só aparece quando ativado via JS */
-        }
-
-        /* ===================== BORDAS ELÉTRICAS ===================== */
-        .electric-border {
-            border: 2px solid #00ff00 !important;
-            /* força a borda verde */
-            border-radius: 16px;
-            box-shadow: none !important;
-            /* remove sombras existentes */
-        }
-
-        /* ===================== LIST ICON PEQUENO ===================== */
-        .list-icon {
-            width: 24px;
-            height: 24px;
-            margin-right: 12px;
-            object-fit: contain;
-            /* ajusta a imagem sem cortar */
-        }
-
-        /* ===================== ANIMAÇÃO DE DIGITAÇÃO ===================== */
-        @keyframes typing {
-            from {
-                width: 0;
-            }
-
-            to {
-                width: 100%;
-            }
-        }
-
-        @keyframes blink-caret {
-
-            from,
-            to {
-                border-color: transparent;
-            }
-        }
-
-        /* ===================== MENSAGEM COM FADE ===================== */
-        .fade-in-msg {
-            opacity: 0;
-            /* invisível inicialmente */
-            animation: fadeInMsg 1.2s forwards;
-            /* animação para aparecer */
-        }
-
-        @keyframes fadeInMsg {
-            to {
-                opacity: 1;
-            }
-
-            /* termina visível */
-        }
-
-        /* ===================== FUNDO DO TEST CARD DE T.I E FISCAL ===================== */
-        .test-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.85);
-            border-radius: 18px;
-            box-shadow: 0 4px 24px #36068533;
-            padding: 18px 24px 24px 24px;
-            margin-bottom: 12px;
-            transition: box-shadow 0.3s, transform 0.2s;
-            /* }
-
-        .test-card:hover {
-            box-shadow: 0 8px 32px #00ff00, 0 0 32px #00ff0044;
-            /* sombra verde intensa */
-            transform: translateY(-4px) scale(1.04);
-            /* leve elevação e zoom */
-        }
-
-        /*
-
-        /* ===================== BOTÃO TESTE DE TI E FICAL ===================== */
-        .test-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #0baa0b;
-            color: #181818;
-            font-weight: bold;
-            font-size: 1.1em;
-            border-radius: 12px;
-            padding: 10px 28px;
-            margin-bottom: 18px;
-            text-decoration: none;
-            box-shadow: 0 2px 8px #00ff0044;
-            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-        }
-
-        .test-btn:hover {
-            background: #00cc00;
-            /* verde mais escuro */
-            color: #fff;
-            box-shadow: 0 4px 16px #00ff00;
-            /* sombra mais intensa */
-        }
-
-        .test-btn i {
-            margin-right: 8px;
-            font-size: 1.2em;
-        }
-
-        /* ===================== IMAGEM DO TEST CARD ===================== */
-        .test-img-wrap {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            /* círculo */
-            overflow: hidden;
-            box-shadow: 0 0 24px #00ff00;
-            background: #111;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 0;
-        }
-
-        .test-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 3px solid #00ff00;
-            transition: transform 0.3s;
-        }
-
-        .test-card:hover .test-img {
-            transform: scale(1.07) rotate(-2deg);
-            /* zoom + leve rotação */
-        }
-
-        /* ===================== BARRA DE PESQUISA ===================== */
-        .search-container {
-            display: none;
-            /* invisível inicialmente */
-            align-items: center;
-            border: 1px solid #00ff00;
-            border-radius: 20px;
-            padding: 5px 15px;
-            margin-bottom: 20px;
-            background: #222;
-            /* fundo escuro */
-        }
-
-        .search-input {
-            border: none;
-            background: transparent;
-            outline: none;
-            /* remove contorno */
-            flex-grow: 1;
-            /* ocupa espaço restante */
-            font-size: 1em;
-            color: #00ff00;
-        }
-
-        .search-input::placeholder {
-            color: #666;
-            /* cor do placeholder */
-        }
-
-        .search-icon {
-            margin-left: 10px;
-            color: #00ff00;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding-bottom: 100px;
-            background-color: #f4f4f9;
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* CONTÊINER PAI (PONTO DE ANCORAGEM FIXO) */
-        /* ------------------------------------------------------------------ */
-        #feedback-widget-container {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-
-            display: flex;
-            align-items: center;
-
-            z-index: 100;
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* ESTILO DO ÍCONE (O CÍRCULO - FICA SEMPRE VISÍVEL) */
-        /* ------------------------------------------------------------------ */
-        #chat-button {
-            width: 60px;
-            height: 60px;
-            cursor: pointer;
-
-            background-color: #007bff;
-            border-radius: 50%;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            transition: transform 0.3s ease-in-out, background-color 0.3s ease;
-            animation: none;
-        }
-
-        #chat-button:hover {
-            background-color: #0056b3;
-            transform: scale(1.05);
-        }
-
-        /* ESTILO DO ÍCONE DENTRO DO BOTÃO */
-        #chat-button i#chat-icon {
-            font-size: 30px;
-            color: white;
-            display: block;
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* ESTILO DA MENSAGEM "Deixe sua Opinião" (APARECE NO HOVER) */
-        /* ------------------------------------------------------------------ */
-        #feedback-text {
-            position: absolute;
-            right: 70px;
-
-            background-color: #333;
-            color: white;
-
-            font-size: 1.0em;
-            padding: 8px 15px;
-
-            font-weight: bold;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            white-space: nowrap;
-            animation: fadeIn 0.5s ease;
-        }
-
-        #feedback-widget-container:hover #feedback-text {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        /* ------------------------------------------------------------------ */
-        /* CONTÊINER DO BOT (O IFRAME) */
-        /* ------------------------------------------------------------------ */
-
-        #feedback-widget-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        #feedback-text {
-            background: rgba(0, 0, 0, 0.8);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            white-space: nowrap;
-            animation: fadeIn 0.5s ease;
-        }
-
-        #chat-button {
-            width: 60px;
-            height: 60px;
-            background: #007bff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-            flex-shrink: 0;
-        }
-
-        #chat-button:hover {
-            background: #0056b3;
-            transform: scale(1.1);
-        }
-
-        #chat-icon {
-            color: white;
-            font-size: 24px;
-        }
-
-        /* CONTAINER DO BOT - FUNDO TRANSPARENTE */
-        #bot-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: transparent;
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #bot-container.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        #bot-container iframe {
-            width: 90%;
-            height: 90%;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            background: transparent;
-            /* FUNDO TRANSPARENTE */
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-        .comunidade-btn {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    /* --- Alterações aqui: Inicia o Flexbox em Coluna --- */
-    display: flex;
-    flex-direction: column; /* Alinha os itens verticalmente (coluna) */
-    align-items: center;    /* Centraliza os itens horizontalmente */
-    gap: 4px; /* Reduzi o gap para a separação vertical */
-    /* ---------------------------------------------------- */
-    text-decoration: none;
-    color: #ffffff;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 16px;
-    text-shadow: 0 0 8px #ffffff;
-    transition: all 0.3s ease;
-    background: transparent;
-    border: none;
-    outline: none;
-    z-index: 1000;
-    cursor: pointer; /* Adiciona cursor de ponteiro para indicar que é clicável */
-    padding: 10px; /* Adiciona padding para aumentar a área de clique */
-}
-
-.comunidade-icon {
-    height: 110px;
-    width: 110px;
-    border-radius: 50%; /* deixa o ícone redondo */
-    object-fit: cover;  /* garante que a imagem preencha o círculo sem deformar */
-    filter: drop-shadow(0 0 6px #3d3c3c); /* brilho verde */
-    transition: transform 0.3s ease, filter 0.3s ease;
-}
-.comunidade-icon:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 0 12px #00ff4c);
-}
-
-
-.comunidade-text {
-    letter-spacing: 0.6px;
-    transition: text-shadow 0.3s ease, color 0.3s ease;
-    /* Certifica que o texto não tem um tamanho fixo que atrapalhe o alinhamento */
-    white-space: nowrap; 
-    margin-top: 5px; /* Adiciona uma margem extra entre o ícone e o texto */
-}
-/* TRANSIÇÃO DE PÁGINA */
-
-.page-transition{
-
-    position:fixed;
-
-    inset:0;
-
-    background:#000;
-
-    z-index:99999;
-
-    opacity:0;
-
-    pointer-events:none;
-
-    transition:opacity .45s ease;
-}
-
-.page-transition.active{
-
-    opacity:1;
-}
-
-
