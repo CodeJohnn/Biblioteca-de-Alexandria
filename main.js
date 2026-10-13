@@ -1,25 +1,15 @@
         
-
 /* PEGA TODOS OS LINKS */
-
 const links = document.querySelectorAll("a");
-
 /* OVERLAY */
-
 const transition =
 document.querySelector(".page-transition");
-
 /* CLIQUE */
-
 links.forEach(link => {
-
     link.addEventListener("click", function(e){
-
         const href =
         this.getAttribute("href");
-
         /* IGNORA LINKS VAZIOS */
-
         if(
             !href ||
             href === "#" ||
@@ -40,28 +30,21 @@ links.forEach(link => {
             // Se não houver elemento de transição, navega imediatamente
             window.location.href = href;
         }
-
     });
-
 });
-
 /* REMOVE AO CARREGAR */
-
 window.addEventListener("load", () => {
 
     if (transition) {
         transition.classList.remove("active");
     }
-
 });
-
-
-            const anuncios = [
-                {
-                    nome: "Resident Evil 4 Remake",
-                    imagem: "Assets/icon/Categorias 2/Torrent/Jp/8.png"
-                },
-                {
+    const anuncios = [
+       {
+        nome: "Resident Evil 4 Remake",
+        imagem: "Assets/icon/Categorias 2/Torrent/Jp/8.png"
+       },
+       {
                     nome: "Hollow Knight Silksong",
                     imagem: "Assets/icon/Categorias 2/Torrent/Jp/5.png"
                 },
@@ -2174,7 +2157,7 @@ window.addEventListener("load", () => {
             </section>
             
             <footer style="text-align: center; padding: 20px; background: rgba(0, 0, 0, 0.8); color: #666; backdrop-filter: blur(5px);">
-                <p>&copy; 2025 GuedesSEC. DEV. ARKANROOT</p>
+                <p>&copy; 2025 GuedesSEC.</p>
             </footer>
         </div>
     `;
