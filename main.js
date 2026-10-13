@@ -462,7 +462,7 @@ window.addEventListener("load", () => {
                     videosDemo: [
                         "https://www.youtube.com/embed/VRaobDJjiec",
                     ],
-                    // "linkcrack": "https://exemplo.com/dublagem-miles-morales",
+                    // "linkferramenta": "https://exemplo.com/dublagem-miles-morales",
                     //"linksExtras": [],
                     //"linksExtras": [],
                     "requisitos": {
@@ -480,7 +480,7 @@ window.addEventListener("load", () => {
                     videosDemo: [
                         "https://www.youtube.com/embed/GqPLeQJ6lJk?si=atyg8pQc09Gk_pXI",
                     ],
-                    // "linkcrack": "https://exemplo.com/dublagem-miles-morales",
+                    // "linkferramenta": "https://exemplo.com/dublagem-miles-morales",
                     //"linksExtras": [],
                     //"linksExtras": [],
                     "requisitos": {
@@ -582,7 +582,7 @@ window.addEventListener("load", () => {
                     "nome": "CALL OF DUTY: MODERN WARFARE – REMASTERED",
                     "linkJogo": "https://fir3.net/QeotOH9",
                     "linkJogo2": "https://fir3.net/QeotOH9",
-                    "linkcrack": "https://www.mediafire.com/file/pzk89leps27bl21/MWII+Campaign+Patch+V2.7z/file",
+                    "linkferramenta": "https://www.mediafire.com/file/pzk89leps27bl21/MWII+Campaign+Patch+V2.7z/file",
                     // "linkDublagem": "",
                     // "link": "",
                     //"linksExtras": [],
@@ -643,7 +643,7 @@ window.addEventListener("load", () => {
                     "nome": "WACTH DOGS I",
                     "linkJogo": "https://fir3.net/CITDby",
                     "linkJogo2": "https://fir3.net/TMSs0VYz",
-                    "linkcrack": "https://4br.me/69H2z5Q",
+                    "linkferramenta": "https://4br.me/69H2z5Q",
                     // "linkDublagem": "",
                     // "linksExtras": [],
                     "imagem": "Assets/icon/Categorias 2/Torrent/Jp/10.png",
@@ -659,7 +659,7 @@ window.addEventListener("load", () => {
                     "nome": "WACTH DOGS 2",
                     "linkJogo": "https://fir3.net/uaZrfyD2e",
                     "linkJogo2": "https://fir3.net/QISl8i2V",
-                    //"linkcrack": "",
+                    //"linkferramenta": "",
                     // "linkDublagem": "",
                     // "linksExtras": [],
                     "imagem": "Assets/icon/Categorias 2/Torrent/Jp/44.png",
@@ -709,7 +709,7 @@ window.addEventListener("load", () => {
                     "linkJogo": "https://fir3.net/DIU0D49ONZ",
                     "linkJogo2": "https://mineurl.com/79a179",
                     "linkJogo3": "https://fir3.net/DIU0D49ONZ",
-                    "linkcrack": "https://encurtalink.online/YB9J0yF",
+                    "linkferramenta": "https://encurtalink.online/YB9J0yF",
                     //"linkDublagem": "",
                     "imagem": "Assets/icon/Categorias 2/Torrent/Jp/13.png",
                     "requisitos": {
@@ -1490,7 +1490,7 @@ window.addEventListener("load", () => {
             const todosJogos = (jogos[cat] || []);
 
             const tituloModal = document.querySelector("#modalJogos .modal-card h2");
-            if (cat === 'acao') tituloModal.textContent = "Explore 41 Jogos Piratas e mergulhe na diversão!";
+            if (cat === 'acao') tituloModal.textContent = "Explore Jogos e mergulhe na diversão!";
 
             // Renderiza todos os jogos, e depois destaca os que batem com o termo
             lista.innerHTML = "";
@@ -1804,8 +1804,8 @@ window.addEventListener("load", () => {
                 if (jogo.linkbios && jogo.linkbios !== '') {
                     botoesDownloadJogo += `<a href="${jogo.linkbios}" target="_blank" style="${baseStyle}" ${hoverEffects}>DOWNLOAD BIOS</a>`;
                 }
-                if (jogo.linkcrack && jogo.linkcrack !== '') {
-                    botoesDownloadJogo += `<a href="${jogo.linkcrack}" target="_blank" style="${baseStyle}" ${hoverEffects}>DOWNLOAD CRACK</a>`;
+                if (jogo.linkferramenta && jogo.linkferramenta !== '') {
+                    botoesDownloadJogo += `<a href="${jogo.linkferramenta}" target="_blank" style="${baseStyle}" ${hoverEffects}>DOWNLOAD ferramenta</a>`;
                 }
 
                 if (jogo.linksExtras && jogo.linksExtras.length > 0) {
