@@ -14,7 +14,8 @@ links.forEach(link => {
             !href ||
             href === "#" ||
             href === "?" ||
-            href.startsWith("javascript")
+            href.startsWith("javascript") ||
+            this.target === "_blank"
         ) {
             return;
         }
@@ -39,7 +40,7 @@ window.addEventListener("load", () => {
         transition.classList.remove("active");
     }
 });
-const anuncios = [
+const anunciosPadrao = [
     {
         nome: "Resident Evil 4 Remake",
         imagem: "Assets/icon/Categorias 2/Torrent/Jp/8.png"
@@ -58,22 +59,38 @@ const anuncios = [
     }
     // Adicione mais jogos conforme desejar
 ];
+const anuncios = window.AlexandriaContent
+    ? window.AlexandriaContent.getItems()
+    : anunciosPadrao;
 
 let anuncioAtual = 0;
 let intervaloAnuncio;
 
 function mostrarAnuncio(idx) {
     const slide = document.getElementById('anuncio-slide');
-    if (!slide) return;
-    slide.innerHTML = `<img src="${anuncios[idx].imagem}" alt="${anuncios[idx].nome}" style="width:100%; height:100%; object-fit:cover; border-radius:16px; box-shadow:0 0 16px #00ff00; background:#000; display:block;">`;
+    const anuncio = anuncios[idx];
+    if (!slide || !anuncio) return;
+    const image = document.createElement("img");
+    image.src = anuncio.imagem;
+    image.alt = anuncio.nome;
+    image.style.cssText = "width:100%;height:100%;object-fit:cover;border-radius:16px;box-shadow:0 0 16px #00ff00;background:#000;display:block;";
+    slide.replaceChildren(image);
+    if (anuncio.descricao) {
+        slide.style.position = "relative";
+        const caption = document.createElement("span");
+        caption.textContent = anuncio.descricao;
+        caption.style.cssText = "position:absolute;inset:auto 0 0;padding:10px 14px;background:linear-gradient(transparent,rgba(0,0,0,.9));color:#fff;font-size:13px;";
+        slide.appendChild(caption);
+    }
 }
 
 function iniciarRotacao() {
     if (intervaloAnuncio) clearInterval(intervaloAnuncio);
-    intervaloAnuncio = setInterval(proximoAnuncio, 5000);
+    if (anuncios.length > 1) intervaloAnuncio = setInterval(proximoAnuncio, 5000);
 }
 
 function proximoAnuncio() {
+    if (!anuncios.length) return;
     anuncioAtual = (anuncioAtual + 1) % anuncios.length;
     mostrarAnuncio(anuncioAtual);
 }
@@ -103,6 +120,16 @@ const anuncioSlide = document.getElementById('anuncio-slide');
 if (anuncioSlide) {
     anuncioSlide.style.cursor = 'pointer';
     anuncioSlide.onclick = function () {
+        if (!anuncios.length) return;
+        const destino = anuncios[anuncioAtual].link;
+        if (destino && destino !== "#") {
+            if (window.AlexandriaContent && !window.AlexandriaContent.isSafeUrl(destino, false)) {
+                console.error("Destino de banner inválido:", destino);
+                return;
+            }
+            window.location.href = destino;
+            return;
+        }
         const nomeJogo = anuncios[anuncioAtual].nome;
         console.log('anuncio clicado:', nomeJogo);
         const match = findMatchJogo(nomeJogo);
@@ -121,6 +148,7 @@ if (anuncioSlide) {
 const btnPrev = document.getElementById('anuncio-prev');
 if (btnPrev) {
     btnPrev.onclick = function () {
+        if (!anuncios.length) return;
         anuncioAtual = (anuncioAtual - 1 + anuncios.length) % anuncios.length;
         mostrarAnuncio(anuncioAtual);
         iniciarRotacao(); // Reinicia o tempo ao clicar
@@ -135,7 +163,12 @@ if (btnNext) {
 }
 
 // Inicializa o anúncio
-mostrarAnuncio(anuncioAtual);
+if (!anuncios.length) {
+    const slide = document.getElementById("anuncio-slide");
+    if (slide) slide.textContent = "Nenhum banner cadastrado.";
+} else {
+    mostrarAnuncio(anuncioAtual);
+}
 iniciarRotacao();
 
 const container = document.querySelector('.lista-codigos');
@@ -1304,6 +1337,42 @@ const Sites = {
 // FUNÇÕES PRINCIPAIS DE NAVEGAÇÃO E RESET
 // ======================================================================
 
+function appendManagedItems(list, section, subcategory) {
+    if (!window.AlexandriaContent || !list) return;
+    const items = window.AlexandriaContent.getItemsFor(section, subcategory, []);
+    items.forEach(item => {
+        const row = document.createElement("li");
+        if (section === "Torrent") {
+            row.className = "jogo-item";
+            row.dataset.nome = item.nome.toLowerCase();
+        }
+
+        if (item.imagem && window.AlexandriaContent.isSafeUrl(item.imagem, true)) {
+            const image = document.createElement("img");
+            image.src = item.imagem;
+            image.alt = item.nome;
+            image.className = "list-icon";
+            row.appendChild(image);
+        }
+
+        const details = document.createElement("span");
+        details.className = "managed-list-details";
+        const link = document.createElement("a");
+        link.href = window.AlexandriaContent.isSafeUrl(item.link, false) ? item.link : "#";
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = item.nome;
+        details.appendChild(link);
+        if (item.descricao) {
+            const description = document.createElement("small");
+            description.textContent = item.descricao;
+            details.appendChild(description);
+        }
+        row.appendChild(details);
+        list.appendChild(row);
+    });
+}
+
 function openModal(id) {
     const modal = document.getElementById(id);
     if (modal) {
@@ -1385,9 +1454,12 @@ function abrirCategoria(cat, termoPesquisa = '') {
     lista.dataset.categoria = cat;
     const termo = (termoPesquisa || document.getElementById("searchInputIsos").value || '').toLowerCase();
 
-    const isosFiltrados = categorias[cat] ? categorias[cat].filter(item =>
+    const isosFiltrados = (categorias[cat] || []).filter(item =>
         item.nome.toLowerCase().includes(termo)
-    ) : [];
+    );
+    const managedMatches = window.AlexandriaContent
+        ? window.AlexandriaContent.getItemsFor("Isos", cat, []).filter(item => item.nome.toLowerCase().includes(termo))
+        : [];
 
     const tituloModal = document.querySelector("#modalIsos .modal-card h2");
     tituloModal.textContent = {
@@ -1398,7 +1470,7 @@ function abrirCategoria(cat, termoPesquisa = '') {
 
     lista.innerHTML = "";
 
-    if (isosFiltrados.length === 0) {
+    if (isosFiltrados.length === 0 && managedMatches.length === 0) {
         lista.innerHTML = `<li style="justify-content:center;">Nenhuma ISO encontrada para "${termo}"</li>`;
         return;
     }
@@ -1411,6 +1483,13 @@ function abrirCategoria(cat, termoPesquisa = '') {
                 <a href="${item.link}" target="_blank" style="color: #00ff00; text-decoration: none;">${item.nome}</a>
             </li>`;
     });
+    appendManagedItems(lista, "Isos", cat);
+    if (termo) {
+        lista.querySelectorAll(".managed-list-details a").forEach(link => {
+            const row = link.closest("li");
+            row.hidden = !link.textContent.toLowerCase().includes(termo);
+        });
+    }
 }
 
 // ======================================================================
@@ -1435,7 +1514,10 @@ function showLivros(cat, termoPesquisa = '') {
     ul.dataset.categoria = cat;
     const termo = termoPesquisa.toLowerCase() || document.getElementById("searchInputLivros").value.toLowerCase();
 
-    const livrosFiltrados = livros[cat].filter(item => item.nome.toLowerCase().includes(termo));
+    const livrosFiltrados = (livros[cat] || []).filter(item => item.nome.toLowerCase().includes(termo));
+    const managedMatches = window.AlexandriaContent
+        ? window.AlexandriaContent.getItemsFor("Livros", cat, []).filter(item => item.nome.toLowerCase().includes(termo))
+        : [];
 
     const titulos = {
         programacao: "Livros de Programação",
@@ -1448,7 +1530,7 @@ function showLivros(cat, termoPesquisa = '') {
 
     ul.innerHTML = "";
 
-    if (livrosFiltrados.length === 0) {
+    if (livrosFiltrados.length === 0 && managedMatches.length === 0) {
         ul.innerHTML = `<li style="justify-content:center;">Nenhum livro encontrado para "${termo}"</li>`;
         return;
     }
@@ -1462,6 +1544,12 @@ function showLivros(cat, termoPesquisa = '') {
             </li>
         `;
     });
+    appendManagedItems(ul, "Livros", cat);
+    if (termo) {
+        ul.querySelectorAll(".managed-list-details a").forEach(link => {
+            link.closest("li").hidden = !link.textContent.toLowerCase().includes(termo);
+        });
+    }
 }
 
 // ======================================================================
@@ -1503,6 +1591,7 @@ function showJogos(cat, termoPesquisa = '') {
             </li>
         `;
     });
+    appendManagedItems(lista, "Torrent", cat);
 
     // Se houver termo, adiciona classes de destaque em vez de remover itens
     if (termo && termo.length > 0) {
@@ -1590,8 +1679,11 @@ function showSites(cat, termoPesquisa = '') {
     const termo = (termoPesquisa || document.getElementById("searchInputSites").value || '').toLowerCase();
 
     const sitesFiltrados = (Sites[cat] || []).filter(item => item.nome.toLowerCase().includes(termo));
+    const managedMatches = window.AlexandriaContent
+        ? window.AlexandriaContent.getItemsFor("Sites", cat, []).filter(item => item.nome.toLowerCase().includes(termo))
+        : [];
 
-    ul.innerHTML = sitesFiltrados.length === 0
+    ul.innerHTML = sitesFiltrados.length === 0 && managedMatches.length === 0
         ? `<li style="justify-content:center;">Nenhum site encontrado para "${termo}"</li>`
         : '';
 
@@ -1604,6 +1696,12 @@ function showSites(cat, termoPesquisa = '') {
             </li>
         `;
     });
+    appendManagedItems(ul, "Sites", cat);
+    if (termo) {
+        ul.querySelectorAll(".managed-list-details a").forEach(link => {
+            link.closest("li").hidden = !link.textContent.toLowerCase().includes(termo);
+        });
+    }
 }
 
 // ======================================================================

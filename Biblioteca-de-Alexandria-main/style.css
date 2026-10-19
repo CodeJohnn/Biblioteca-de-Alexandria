@@ -210,6 +210,12 @@ nav ul li a:hover {
     transition: transform 0.25s ease;
 }
 
+.social-link img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
 .social-link .external-icon {
     font-size: 11px;
     opacity: 0.45;
@@ -684,6 +690,24 @@ footer {
 
 .modal-list a:hover {
     text-shadow: 0 0 8px var(--neon);
+}
+
+.managed-list-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.managed-list-details a {
+    color: var(--neon);
+    text-decoration: none;
+}
+
+.managed-list-details small {
+    color: var(--text-muted);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    white-space: normal;
 }
 
 /* Ícone pequeno genérico */

@@ -6,6 +6,7 @@
     <title>GuedesSEC</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="site-content.js" defer></script>
     <script src="main.js" defer></script>
     <!-- MONITORAR QUEM ACESSA MEU SITE -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-S2QJ2BQSRZ"></script>
@@ -91,22 +92,19 @@
                     <li>
                         <div class="social-icons">
                             <a href="https://discord.gg/MgUc3x6nCC" class="social-link discord" target="_blank"
-                                rel="noopener noreferrer">
+                                rel="noopener noreferrer" aria-label="Discord">
                                 <i class="fa-brands fa-discord"></i>
                             </a>
-
                             <a href="https://github.com/codejohnn" class="social-link github" target="_blank"
-                                rel="noopener noreferrer">
+                                rel="noopener noreferrer" aria-label="GitHub">
                                 <i class="fa-brands fa-github"></i>
                             </a>
-
                             <a href="https://www.instagram.com/" class="social-link instagram" target="_blank"
-                                rel="noopener noreferrer">
+                                rel="noopener noreferrer" aria-label="Instagram">
                                 <i class="fa-brands fa-instagram"></i>
                             </a>
-
                             <a href="https://w.app/zxpm5j" class="social-link whatsapp" target="_blank"
-                                rel="noopener noreferrer">
+                                rel="noopener noreferrer" aria-label="WhatsApp">
                                 <i class="fa-brands fa-whatsapp"></i>
                             </a>
                         </div>
@@ -305,76 +303,28 @@
 
         <section class="categories">
             <div class="category-card electric-border">
-                <div class="category-icon">
-                    <img src="Assets/icon/Categorias/isos.png" alt="ISOs" style="height: 50px" />
-                </div>
+                <div class="category-icon"><img src="Assets/icon/Categorias/isos.png" alt="ISOs" style="height: 50px" /></div>
                 <h3>Isos</h3>
-                <p>
-                    Explore uma coleção completa de sistemas operacionais
-                    prontos para uso. Ideal para testes, formatações ou
-                    instalações rápidas.
-                </p>
-                <button onclick="openModal('modalIsos')" class="btn" style="
-                            background: #ffffff;
-                            color: #000000;
-                            font-weight: bold;
-                        ">
-                    Acessar Isos
-                </button>
+                <p>Explore uma coleção completa de sistemas operacionais prontos para uso. Ideal para testes, formatações ou instalações rápidas.</p>
+                <button onclick="openModal('modalIsos')" class="btn" style="background:#fff;color:#000;font-weight:bold;">Acessar Isos</button>
             </div>
-
             <div class="category-card electric-border">
-                <div class="category-icon">
-                    <img src="Assets/icon/Categorias/livros.png" alt="Livros" style="height: 50px" />
-                </div>
+                <div class="category-icon"><img src="Assets/icon/Categorias/livros.png" alt="Livros" style="height: 50px" /></div>
                 <h3>Livros</h3>
-                <p>
-                    Descubra obras incríveis: conhecimento, aprendizado e
-                    entretenimento em um só lugar.
-                </p>
-                <button onclick="openModal('modalLivros')" class="btn" style="
-                            background: #ffffff;
-                            color: #000000;
-                            font-weight: bold;
-                        ">
-                    Acessar Livros
-                </button>
+                <p>Descubra obras incríveis: conhecimento, aprendizado e entretenimento em um só lugar.</p>
+                <button onclick="openModal('modalLivros')" class="btn" style="background:#fff;color:#000;font-weight:bold;">Acessar Livros</button>
             </div>
-
             <div class="category-card electric-border">
-                <div class="category-icon">
-                    <img src="Assets/icon/Categorias/jogos.png" alt="Jogos" style="height: 50px" />
-                </div>
+                <div class="category-icon"><img src="Assets/icon/Categorias/jogos.png" alt="Jogos" style="height: 50px" /></div>
                 <h3>Torrent</h3>
-                <p>
-                    Jogos para PC prontos para download via torrent.
-                    Diversão garantida a um clique de distância.
-                </p>
-                <button onclick="openModal('modalJogos')" class="btn" style="
-                            background: #ffffff;
-                            color: #000000;
-                            font-weight: bold;
-                        ">
-                    Acessar links Torrents
-                </button>
+                <p>Jogos para PC prontos para download via torrent. Diversão garantida a um clique de distância.</p>
+                <button onclick="openModal('modalJogos')" class="btn" style="background:#fff;color:#000;font-weight:bold;">Acessar links Torrents</button>
             </div>
-
             <div class="category-card electric-border">
-                <div class="category-icon">
-                    <img src="Assets/icon/Categorias/sites.png" alt="Sites" style="height: 50px" />
-                </div>
+                <div class="category-icon"><img src="Assets/icon/Categorias/sites.png" alt="Sites" style="height: 50px" /></div>
                 <h3>Sites</h3>
-                <p>
-                    Inteligência Artificial, Filmes séries, páginas de
-                    estudos.
-                </p>
-                <button onclick="openModal('modalSites')" class="btn" style="
-                            background: hsl(0, 0%, 100%);
-                            color: #000000;
-                            font-weight: bold;
-                        ">
-                    Acessar websites
-                </button>
+                <p>Inteligência Artificial, filmes, séries e páginas de estudos.</p>
+                <button onclick="openModal('modalSites')" class="btn" style="background:#fff;color:#000;font-weight:bold;">Acessar websites</button>
             </div>
         </section>
 
@@ -829,6 +779,7 @@
 
                 <span>Suporte</span>
             </a>
+
         </div>
 
         <a href="https://buildcores.com/builds/Z9mHaNwCa" target="_blank" class="footer-btn">
