@@ -1,0 +1,272 @@
+:root {
+    color-scheme: dark;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #090d0b;
+    color: #edf5ef;
+    --green: #00ff66;
+    --panel: rgba(12, 20, 15, 0.94);
+    --muted: #9eada2;
+    --line: rgba(0, 255, 102, 0.25);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    padding: 32px 18px 64px;
+    background:
+        radial-gradient(ellipse at top, rgba(0, 255, 102, 0.09), transparent 55%),
+        #090d0b;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+.admin-shell {
+    width: min(1120px, 100%);
+    margin: 0 auto;
+}
+
+.admin-header {
+    margin: 20px 0 30px;
+}
+
+.back-link {
+    color: var(--green);
+    text-decoration: none;
+}
+
+.eyebrow {
+    margin: 36px 0 6px;
+    color: var(--green);
+    font: 600 12px/1.5 Consolas, monospace;
+    letter-spacing: 0.14em;
+}
+
+h1,
+h2,
+p {
+    margin-top: 0;
+}
+
+h1 {
+    margin-bottom: 8px;
+    font-size: clamp(30px, 5vw, 44px);
+}
+
+.admin-header > p:last-child,
+.muted {
+    color: var(--muted);
+}
+
+.panel {
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--panel);
+    box-shadow: 0 0 26px rgba(0, 255, 102, 0.07);
+    padding: 24px;
+}
+
+.login-panel {
+    width: min(440px, 100%);
+}
+
+form {
+    display: grid;
+    gap: 10px;
+}
+
+label {
+    margin-top: 8px;
+    color: #d7e2d9;
+    font-size: 14px;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+    border: 1px solid #33463a;
+    border-radius: 8px;
+    background: #080d0a;
+    color: #edf5ef;
+    padding: 11px 12px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--green);
+    outline: 2px solid rgba(0, 255, 102, 0.15);
+}
+
+textarea {
+    resize: vertical;
+}
+
+.primary-button,
+.secondary-button,
+.delete-button {
+    min-height: 40px;
+    border: 1px solid var(--green);
+    border-radius: 8px;
+    padding: 9px 14px;
+    cursor: pointer;
+}
+
+.primary-button {
+    background: var(--green);
+    color: #061008;
+    font-weight: 700;
+}
+
+.secondary-button {
+    background: transparent;
+    color: #e6f1e8;
+}
+
+.delete-button {
+    border-color: #a93b3b;
+    background: transparent;
+    color: #ff9a9a;
+}
+
+button:hover {
+    filter: brightness(1.12);
+}
+
+.error-message {
+    margin: 4px 0 0;
+    color: #ff9090;
+}
+
+.dashboard-heading,
+.items-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.dashboard-heading {
+    margin: 0 0 18px;
+}
+
+.dashboard-heading h2,
+.items-heading h2 {
+    margin-bottom: 4px;
+}
+
+.dashboard-heading p {
+    margin-bottom: 0;
+}
+
+.storage-note {
+    border-left: 3px solid #d6a33a;
+    margin: 0 0 22px;
+    background: rgba(214, 163, 58, 0.09);
+    color: #e8d9b4;
+    padding: 12px 14px;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+    align-items: start;
+    gap: 20px;
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.form-message {
+    min-height: 1.5em;
+    margin: 0;
+    color: var(--green);
+}
+
+.item-count {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.item-list {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.managed-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid #28352c;
+    border-radius: 9px;
+    padding: 12px;
+}
+
+.managed-item h3 {
+    margin: 0 0 3px;
+    font-size: 16px;
+}
+
+.managed-item p {
+    overflow-wrap: anywhere;
+    margin: 0;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.item-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.item-actions button {
+    min-height: 34px;
+    padding: 6px 10px;
+}
+
+.empty-list {
+    color: var(--muted);
+    text-align: center;
+    padding: 28px 10px;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+@media (max-width: 760px) {
+    body {
+        padding: 18px 12px 40px;
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .managed-item {
+        grid-template-columns: 1fr;
+    }
+
+    .item-actions {
+        justify-content: flex-start;
+    }
+}
