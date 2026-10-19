@@ -1,0 +1,338 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  .ac-root{font-family:'Inter',system-ui,sans-serif;background:#080b12;color:#e2e8f0;border-radius:16px;overflow:hidden;height:580px;display:flex;flex-direction:column}
+  .ac-shell{display:flex;flex:1;overflow:hidden}
+  .ac-side{width:210px;background:#0c1018;border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;flex-shrink:0}
+  .ac-logo{padding:16px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10}
+  .ac-logo-icon{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,#38bdf8,#6366f1);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;box-shadow:0 0 20px rgba(56,189,248,.35);flex-shrink:0}
+  .ac-logo-txt{font-weight:800;font-size:16px;letter-spacing:-0.5px;background:linear-gradient(90deg,#f0f9ff,#94a3b8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .ac-nav{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:2}
+  .ac-nav-lbl{padding:8px 12px 4px;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.2)}
+  .ac-nbtn{display:flex;align-items:center;gap:10;padding:9px 12px;border-radius:10px;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.45);cursor:pointer;transition:all .2s}
+  .ac-nbtn:hover{background:rgba(255,255,255,.05);color:#f0f9ff}
+  .ac-nbtn.active{background:rgba(56,189,248,.15);color:#38bdf8;font-weight:600}
+  .ac-nbtn .dot{margin-left:auto;width:4px;height:4px;border-radius:2px;background:#38bdf8}
+  .ac-main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+  .ac-top{height:52px;padding:0 24px;display:flex;align-items:center;gap:12;border-bottom:1px solid rgba(255,255,255,.05);background:rgba(8,11,18,.85);flex-shrink:0}
+  .ac-bc{display:flex;align-items:center;gap:5;font-size:12px;flex:1;color:rgba(255,255,255,.4)}
+  .ac-bc span{color:#38bdf8;font-weight:600}
+  .ac-search{display:flex;align-items:center;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:9px;padding:6px 12px;gap:7;color:rgba(255,255,255,.25);font-size:12px}
+  .ac-scroll{flex:1;overflow-y:auto;padding:24px 24px 16px}
+  ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px}
+  .ac-hero{border-radius:16px;background:linear-gradient(135deg,#0d1424,#0a1628,#0d1220);border:1px solid rgba(56,189,248,.15);padding:28px 32px;position:relative;overflow:hidden;margin-bottom:24px}
+  .ac-hero-orb{position:absolute;border-radius:50%;filter:blur(50px);pointer-events:none}
+  .ac-hero-tag{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#38bdf8;margin-bottom:8px;display:flex;align-items:center;gap:8}
+  .ac-hero-tag:before{content:'';display:inline-block;width:20px;height:1px;background:#38bdf8}
+  .ac-hero h1{font-size:28px;font-weight:900;line-height:1.1;letter-spacing:-1.5px;color:#f0f9ff;margin-bottom:8px}
+  .ac-hero h1 em{font-style:normal;background:linear-gradient(90deg,#38bdf8,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .ac-hero p{font-size:13px;color:rgba(255,255,255,.42);line-height:1.65;max-width:400px}
+  .ac-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
+  .ac-stat{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:14px 16px}
+  .ac-stat-n{font-size:22px;font-weight:900;letter-spacing:-1px;margin-bottom:2px}
+  .ac-stat-l{font-size:11px;color:rgba(255,255,255,.32);font-weight:500}
+  .ac-sec-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);margin:24px 0 12px}
+  .ac-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .ac-ccard{border-radius:16px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);padding:20px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden}
+  .ac-ccard:hover{transform:translateY(-3px);border-color:rgba(56,189,248,.4);background:rgba(56,189,248,.07);box-shadow:0 16px 50px rgba(56,189,248,.18)}
+  .ac-ccard-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px}
+  .ac-ccard-emoji{font-size:32px}
+  .ac-badge{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:5px}
+  .ac-ccard h3{font-size:17px;font-weight:800;color:#f0f9ff;letter-spacing:-0.5px;margin-bottom:6px}
+  .ac-ccard p{font-size:11.5px;color:rgba(255,255,255,.38);line-height:1.6;margin-bottom:14px}
+  .ac-ccard-foot{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:600}
+  .ac-ccard-bar{height:2px;background:linear-gradient(90deg,#38bdf8,transparent);position:absolute;bottom:0;left:0;right:0;opacity:0;transition:opacity .2s}
+  .ac-ccard:hover .ac-ccard-bar{opacity:1}
+  .ac-vgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:4px}
+  .ac-vcard{border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);cursor:pointer;transition:all .25s}
+  .ac-vcard:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(56,189,248,.15);border-color:rgba(56,189,248,.4)}
+  .ac-vthumb{position:relative;padding-top:56.25%;overflow:hidden;background:#111}
+  .ac-vthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s}
+  .ac-vcard:hover .ac-vthumb img{transform:scale(1.05)}
+  .ac-vthumb-over{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),rgba(0,0,0,.15) 50%,transparent)}
+  .ac-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+  .ac-play-btn{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:14px;transition:all .25s}
+  .ac-vcard:hover .ac-play-btn{background:#38bdf8;border:none;box-shadow:0 0 20px rgba(56,189,248,.6);transform:scale(1.1)}
+  .ac-vdur{position:absolute;bottom:7px;right:8px;background:rgba(0,0,0,.7);border-radius:4px;padding:2px 6px;font-size:10px;color:rgba(255,255,255,.7);font-weight:500}
+  .ac-vinfo{padding:12px}
+  .ac-vinfo h4{font-size:12px;font-weight:700;color:#f0f9ff;line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .ac-vinfo p{font-size:10.5px;color:rgba(255,255,255,.28)}
+  .ac-vbtns{display:flex;gap:7px;margin-top:10px}
+  .ac-vplay{flex:1;padding:7px 0;border-radius:8px;border:none;cursor:pointer;background:rgba(56,189,248,.15);color:#38bdf8;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5}
+  .ac-vext{padding:7px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.3);cursor:pointer;font-size:11px;display:flex;align-items:center}
+  .screen{display:none}.screen.active{display:block}
+</style>
+
+<div class="ac-root">
+  <div class="ac-shell">
+    <!-- sidebar -->
+    <aside class="ac-side">
+      <div class="ac-logo">
+        <div class="ac-logo-icon">A</div>
+        <div class="ac-logo-txt">Academy</div>
+      </div>
+      <nav class="ac-nav">
+        <div class="ac-nbtn active" onclick="show('home')" id="nb-home">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Início <span class="dot"></span>
+        </div>
+        <div class="ac-nav-lbl">Trilhas</div>
+        <div class="ac-nbtn" onclick="showCat('frontend','🖥️','Front End','#38bdf8')" id="nb-fe">🖥️ &nbsp;Front End</div>
+        <div class="ac-nbtn" onclick="showCat('backend','⚙️','Back End','#a78bfa')" id="nb-be">⚙️ &nbsp;Back End</div>
+        <div class="ac-nbtn" onclick="showCat('db','🗄️','Banco de Dados','#2dd4bf')" id="nb-db">🗄️ &nbsp;Banco de Dados</div>
+        <div class="ac-nbtn" onclick="showCat('hw','🔧','Montagem de PC','#f472b6')" id="nb-hw">🔧 &nbsp;Montagem de PC</div>
+      </nav>
+    </aside>
+
+    <!-- main -->
+    <div class="ac-main">
+      <header class="ac-top">
+        <div class="ac-bc" id="bc">
+          <span id="bc-home" style="cursor:pointer;color:rgba(255,255,255,.4)" onclick="show('home')">Início</span>
+          <span id="bc-sep1" style="display:none;color:rgba(255,255,255,.2)"> › </span>
+          <span id="bc-cat" style="display:none"></span>
+          <span id="bc-sep2" style="display:none;color:rgba(255,255,255,.2)"> › </span>
+          <span id="bc-tech" style="display:none"></span>
+        </div>
+        <div class="ac-search">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          Buscar curso…
+        </div>
+      </header>
+
+      <div class="ac-scroll">
+
+        <!-- HOME -->
+        <div class="screen active" id="s-home">
+          <div class="ac-hero">
+            <div class="ac-hero-orb" style="width:250px;height:250px;background:rgba(56,189,248,.08);right:60px;top:-60px"></div>
+            <div class="ac-hero-orb" style="width:180px;height:180px;background:rgba(99,102,241,.07);right:200px;bottom:-40px"></div>
+            <div class="ac-hero-tag">Plataforma de Ensino</div>
+            <h1>Aprenda. Evolua.<br><em>Domine.</em></h1>
+            <p>Trilhas de aprendizado curadas com os melhores vídeos do YouTube. Do zero ao avançado.</p>
+          </div>
+          <div class="ac-stats">
+            <div class="ac-stat"><div class="ac-stat-n" style="color:#38bdf8">4</div><div class="ac-stat-l">Trilhas</div></div>
+            <div class="ac-stat"><div class="ac-stat-n" style="color:#a78bfa">14</div><div class="ac-stat-l">Tecnologias</div></div>
+            <div class="ac-stat"><div class="ac-stat-n" style="color:#2dd4bf">56+</div><div class="ac-stat-l">Vídeos</div></div>
+            <div class="ac-stat"><div class="ac-stat-n" style="color:#f472b6">100%</div><div class="ac-stat-l">Gratuito</div></div>
+          </div>
+          <div class="ac-sec-title">Trilhas Disponíveis</div>
+          <div class="ac-grid">
+            <div class="ac-ccard" onclick="showCat('frontend','🖥️','Front End','#38bdf8')">
+              <div class="ac-ccard-top"><span class="ac-ccard-emoji">🖥️</span><span class="ac-badge" style="background:rgba(56,189,248,.15);color:#38bdf8">Dev Web</span></div>
+              <h3>Front End</h3>
+              <p>Crie interfaces modernas e experiências visuais memoráveis para a web.</p>
+              <div class="ac-ccard-foot"><span style="color:#38bdf8">4 tecnologias</span><span style="color:rgba(255,255,255,.25)">→</span></div>
+              <div class="ac-ccard-bar" style="background:linear-gradient(90deg,#38bdf8,transparent)"></div>
+            </div>
+            <div class="ac-ccard" onclick="showCat('backend','⚙️','Back End','#a78bfa')">
+              <div class="ac-ccard-top"><span class="ac-ccard-emoji">⚙️</span><span class="ac-badge" style="background:rgba(167,139,250,.15);color:#a78bfa">Servidor</span></div>
+              <h3>Back End</h3>
+              <p>APIs robustas, lógica de negócio e servidores de alto desempenho.</p>
+              <div class="ac-ccard-foot"><span style="color:#a78bfa">3 tecnologias</span><span style="color:rgba(255,255,255,.25)">→</span></div>
+              <div class="ac-ccard-bar" style="background:linear-gradient(90deg,#a78bfa,transparent)"></div>
+            </div>
+            <div class="ac-ccard" onclick="showCat('db','🗄️','Banco de Dados','#2dd4bf')">
+              <div class="ac-ccard-top"><span class="ac-ccard-emoji">🗄️</span><span class="ac-badge" style="background:rgba(45,212,191,.15);color:#2dd4bf">Dados</span></div>
+              <h3>Banco de Dados</h3>
+              <p>Modele e otimize dados em bancos relacionais e NoSQL de produção.</p>
+              <div class="ac-ccard-foot"><span style="color:#2dd4bf">3 tecnologias</span><span style="color:rgba(255,255,255,.25)">→</span></div>
+              <div class="ac-ccard-bar" style="background:linear-gradient(90deg,#2dd4bf,transparent)"></div>
+            </div>
+            <div class="ac-ccard" onclick="showCat('hw','🔧','Montagem de PC','#f472b6')">
+              <div class="ac-ccard-top"><span class="ac-ccard-emoji">🔧</span><span class="ac-badge" style="background:rgba(244,114,182,.15);color:#f472b6">Hardware</span></div>
+              <h3>Montagem de PC</h3>
+              <p>Monte, configure e otimize computadores do zero com confiança.</p>
+              <div class="ac-ccard-foot"><span style="color:#f472b6">4 tecnologias</span><span style="color:rgba(255,255,255,.25)">→</span></div>
+              <div class="ac-ccard-bar" style="background:linear-gradient(90deg,#f472b6,transparent)"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CATEGORY -->
+        <div class="screen" id="s-cat">
+          <div id="cat-hero" style="margin-bottom:24px;border-radius:16px;padding:24px 28px;border:1px solid rgba(56,189,248,.25);background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(56,189,248,.07))">
+            <div style="display:flex;align-items:center;gap:16">
+              <div id="cat-icon-lg" style="width:56px;height:56px;border-radius:14px;background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.35);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0"></div>
+              <div>
+                <div id="cat-tag" style="font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#38bdf8;margin-bottom:5px"></div>
+                <h2 id="cat-title" style="font-size:24px;font-weight:900;color:#f0f9ff;letter-spacing:-1px;margin-bottom:6px"></h2>
+                <p id="cat-desc" style="font-size:13px;color:rgba(255,255,255,.42);line-height:1.6;max-width:450px"></p>
+              </div>
+            </div>
+          </div>
+          <div class="ac-sec-title">Escolha uma Tecnologia</div>
+          <div id="tech-grid" class="ac-grid"></div>
+        </div>
+
+        <!-- TECH / VIDEOS -->
+        <div class="screen" id="s-tech">
+          <div id="tech-hero" style="margin-bottom:24px;border-radius:16px;padding:22px 26px;border:1px solid rgba(56,189,248,.25);background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(56,189,248,.07))">
+            <div style="display:flex;align-items:center;gap:16">
+              <div id="tech-icon-lg" style="width:54px;height:54px;border-radius:14px;background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.35);display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0"></div>
+              <div>
+                <h2 id="tech-title-h" style="font-size:22px;font-weight:900;color:#f0f9ff;letter-spacing:-0.5px;margin-bottom:5px"></h2>
+                <p id="tech-desc-p" style="font-size:13px;color:rgba(255,255,255,.42);line-height:1.6"></p>
+              </div>
+            </div>
+          </div>
+          <div id="player-wrap" style="display:none;margin-bottom:20px">
+            <div style="position:relative;border-radius:14px;overflow:hidden;max-width:860px;border:1px solid rgba(56,189,248,.3);box-shadow:0 0 50px rgba(56,189,248,.2)">
+              <div style="padding-top:56.25%;position:relative">
+                <iframe id="yt-player" style="position:absolute;inset:0;width:100%;height:100%" title="player" allow="autoplay;fullscreen" allowfullscreen src=""></iframe>
+              </div>
+            </div>
+            <button onclick="document.getElementById('player-wrap').style.display='none';document.getElementById('yt-player').src=''" style="margin-top:8px;background:none;border:none;color:rgba(255,255,255,.3);cursor:pointer;font-size:11px;display:flex;align-items:center;gap:5">✕ fechar player</button>
+          </div>
+          <div class="ac-sec-title">Aulas Recomendadas</div>
+          <div id="video-grid" class="ac-vgrid"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  frontend:{emoji:"🖥️",title:"Front End",tag:"Desenvolvimento Web",accent:"#38bdf8",desc:"Crie interfaces modernas, responsivas e experiências visuais memoráveis para a web.",
+    techs:[
+      {emoji:"🧱",title:"HTML5",accent:"#f97316",desc:"A espinha dorsal da web. Semântica, acessibilidade e estrutura.",videos:[{id:"epDCjksKMok",title:"HTML5 Completo para Iniciantes",ch:"Curso em Vídeo",dur:"4h30"},{id:"GJFBOpDUqkE",title:"HTML Semântico na Prática",ch:"Rafaella Ballerini",dur:"1h15"},{id:"3oSIqIqzN3M",title:"Formulários HTML Avançados",ch:"Código Fonte TV",dur:"52min"},{id:"pQN-pnXPaVg",title:"HTML5 APIs Modernas",ch:"Filipe Deschamps",dur:"1h05"}]},
+      {emoji:"🎨",title:"CSS3",accent:"#818cf8",desc:"Grid, Flexbox, animações e design responsivo.",videos:[{id:"wRNinF7YQqQ",title:"CSS Grid e Flexbox Completo",ch:"Cod3r Cursos",dur:"3h20"},{id:"BTC-snBj4oY",title:"CSS Animations do Zero",ch:"Kevin Powell",dur:"2h10"},{id:"FqmB-Zj2-PA",title:"Tailwind CSS na Prática",ch:"Filipe Deschamps",dur:"1h45"},{id:"yfoY53QXEnI",title:"CSS Variables e Design Tokens",ch:"Rocketseat",dur:"48min"}]},
+      {emoji:"⚡",title:"JavaScript",accent:"#fbbf24",desc:"ES6+, async/await, DOM e o ecossistema JS.",videos:[{id:"W6NZfCO5SIk",title:"JavaScript Moderno Completo",ch:"Jonas Schmedtmann",dur:"8h00"},{id:"jS4aFq5-91M",title:"JavaScript do Zero ao Avançado",ch:"Curso em Vídeo",dur:"5h30"},{id:"PkZNo7MFNFg",title:"Promises e Async/Await",ch:"freeCodeCamp",dur:"3h20"},{id:"t2CEgPsws3U",title:"Closures e Escopo",ch:"Rocketseat",dur:"1h20"}]},
+      {emoji:"⚛️",title:"React",accent:"#34d399",desc:"Componentes, hooks, Context API e estado global.",videos:[{id:"w7ejDZ8SWv8",title:"React com Hooks do Zero",ch:"Traversy Media",dur:"3h10"},{id:"4UZrsTqkcW4",title:"React + TypeScript Completo",ch:"Rocketseat",dur:"4h45"},{id:"dpw9EHDh2bM",title:"Context API e Zustand",ch:"Filipe Deschamps",dur:"2h00"},{id:"bMknfKXIFA8",title:"React Performance na Prática",ch:"Jack Herrington",dur:"1h35"}]},
+    ]},
+  backend:{emoji:"⚙️",title:"Back End",tag:"Servidor & APIs",accent:"#a78bfa",desc:"Construa APIs robustas, lógica de negócio e servidores escaláveis de alto desempenho.",
+    techs:[
+      {emoji:"🟢",title:"Node.js",accent:"#4ade80",desc:"JavaScript no servidor. REST, WebSockets e real-time.",videos:[{id:"fBNz5xF-Kx4",title:"Node.js Completo do Zero",ch:"Traversy Media",dur:"6h00"},{id:"TlB_eWDSMt4",title:"Node.js + Express",ch:"Rocketseat",dur:"3h30"},{id:"Oe421EPjeBE",title:"APIs RESTful com Node.js",ch:"Cod3r Cursos",dur:"4h15"},{id:"mC93zsEsSrg",title:"Node.js em Produção",ch:"Código Fonte TV",dur:"1h50"}]},
+      {emoji:"🐍",title:"Python",accent:"#60a5fa",desc:"Versátil para web, dados, IA e automação.",videos:[{id:"_uQrJ0TkZlc",title:"Python para Iniciantes",ch:"Programming with Mosh",dur:"6h15"},{id:"rfscVS0vtbw",title:"Flask e Django",ch:"freeCodeCamp",dur:"5h00"},{id:"HGOBQPFzWKo",title:"Python Avançado: Decorators",ch:"Corey Schafer",dur:"2h30"},{id:"8ext9G7xMUs",title:"FastAPI do Zero",ch:"Rocketseat",dur:"3h20"}]},
+      {emoji:"☕",title:"Java",accent:"#fb923c",desc:"Linguagem robusta para sistemas enterprise.",videos:[{id:"A74TOX803D0",title:"Java Completo para Iniciantes",ch:"Prog with Mosh",dur:"5h30"},{id:"DvbT_QNgOJo",title:"Spring Boot do Zero",ch:"Loiano Greca",dur:"4h00"},{id:"eIrMbAQSU34",title:"Java POO na Prática",ch:"DevDojo",dur:"3h15"},{id:"9RHO6jU--GU",title:"Microserviços com Java",ch:"Código Fonte TV",dur:"2h40"}]},
+    ]},
+  db:{emoji:"🗄️",title:"Banco de Dados",tag:"Dados & Storage",accent:"#2dd4bf",desc:"Modele, consulte e otimize dados em bancos relacionais e NoSQL de produção.",
+    techs:[
+      {emoji:"🐬",title:"MySQL",accent:"#38bdf8",desc:"O banco relacional mais popular. SQL e otimização.",videos:[{id:"7S_tz1z_5bA",title:"MySQL Completo do Zero",ch:"Prog with Mosh",dur:"3h15"},{id:"eTIpLMQUNdg",title:"SQL Avançado na Prática",ch:"Curso em Vídeo",dur:"4h20"},{id:"HXV3zeQKqGY",title:"Workbench e Modelagem",ch:"Bro Code",dur:"2h00"},{id:"p3qvj9hO_Bo",title:"Otimização de Queries",ch:"TechWorld",dur:"1h30"}]},
+      {emoji:"🐘",title:"PostgreSQL",accent:"#818cf8",desc:"Banco open-source avançado com JSON e extensões.",videos:[{id:"qw--VYLpxG4",title:"PostgreSQL para Iniciantes",ch:"freeCodeCamp",dur:"4h00"},{id:"SpfIwlAYaKk",title:"PostgreSQL Avançado",ch:"Hussein Nasser",dur:"3h30"},{id:"Dd2ej-QKrWY",title:"PostgreSQL + Node.js",ch:"Traversy Media",dur:"2h15"},{id:"btjBIfkqgGI",title:"Indexação e Performance",ch:"Código Fonte TV",dur:"1h45"}]},
+      {emoji:"🍃",title:"MongoDB",accent:"#4ade80",desc:"NoSQL orientado a documentos, escalável e flexível.",videos:[{id:"ExcRbA7fy_A",title:"MongoDB em 1 Hora",ch:"Web Dev Simplified",dur:"1h05"},{id:"ofme2o29ngU",title:"MongoDB com Node.js",ch:"Traversy Media",dur:"3h45"},{id:"-bt_y4Loofg",title:"Mongoose: Schema e Models",ch:"Rocketseat",dur:"2h20"},{id:"c2M-rlkkT5o",title:"MongoDB Atlas",ch:"Código Fonte TV",dur:"1h15"}]},
+    ]},
+  hw:{emoji:"🔧",title:"Montagem de PC",tag:"Hardware & Setup",accent:"#f472b6",desc:"Aprenda a montar, configurar e otimizar computadores do zero com confiança.",
+    techs:[
+      {emoji:"🧠",title:"Processador",accent:"#60a5fa",desc:"Cores, threads, clock e como escolher a CPU ideal.",videos:[{id:"vqs_0W-MSB0",title:"Como Funciona um Processador",ch:"Linus Tech Tips",dur:"18min"},{id:"g0gNJehkK8w",title:"Intel vs AMD",ch:"Hardware Canucks",dur:"24min"},{id:"o_O3qMEBmgI",title:"Overclock de CPU",ch:"Diolinux",dur:"45min"},{id:"d86ws7mQYIg",title:"Como Instalar CPU",ch:"Jayztwocents",dur:"30min"}]},
+      {emoji:"🎮",title:"Placa de Vídeo",accent:"#34d399",desc:"VRAM, DLSS, Ray Tracing e guia de GPUs.",videos:[{id:"S80gX5-Lbm4",title:"Como Funciona uma GPU",ch:"Branch Education",dur:"22min"},{id:"RkHfYBEDHKQ",title:"Como Instalar GPU",ch:"Diolinux",dur:"35min"},{id:"Y6dPbJXIgR8",title:"GPU para Iniciantes",ch:"Paulo Kretcheu",dur:"48min"},{id:"T-hMG4BucVg",title:"Melhor GPU Custo-Benefício",ch:"Hardware Canucks",dur:"28min"}]},
+      {emoji:"💾",title:"Memória RAM",accent:"#c084fc",desc:"DDR4, DDR5, dual channel e XMP.",videos:[{id:"PVad0c2cljo",title:"Como Escolher a RAM",ch:"Linus Tech Tips",dur:"15min"},{id:"kx0ynC8Thlw",title:"Instalando RAM",ch:"Diolinux",dur:"20min"},{id:"QnlG3olQy18",title:"DDR4 vs DDR5",ch:"Digital Foundry",dur:"18min"},{id:"bIh5_a3lMnc",title:"Overclock com XMP",ch:"Jayztwocents",dur:"32min"}]},
+      {emoji:"⚡",title:"SSD / Storage",accent:"#fbbf24",desc:"NVMe vs SATA e como maximizar o armazenamento.",videos:[{id:"YT0994y5B1o",title:"SSD NVMe vs SATA",ch:"Paulo Kretcheu",dur:"25min"},{id:"5Mh3o886qpg",title:"Instalando SSD M.2",ch:"Diolinux",dur:"22min"},{id:"r3TSlmK1WLo",title:"Formatar e Configurar SSD",ch:"Linus Tech Tips",dur:"18min"},{id:"EU5zbdDGwsY",title:"Vida Útil do SSD",ch:"Código Fonte TV",dur:"30min"}]},
+    ]},
+};
+
+let currentCat=null, currentTech=null;
+
+function show(s){
+  document.querySelectorAll('.screen').forEach(e=>e.classList.remove('active'));
+  document.getElementById('s-'+s).classList.add('active');
+  document.querySelectorAll('.ac-nbtn').forEach(e=>e.classList.remove('active'));
+  if(s==='home') document.getElementById('nb-home').classList.add('active');
+  document.getElementById('bc-sep1').style.display='none';
+  document.getElementById('bc-cat').style.display='none';
+  document.getElementById('bc-sep2').style.display='none';
+  document.getElementById('bc-tech').style.display='none';
+}
+
+function showCat(id,emoji,title,accent){
+  const cat=DATA[id]; currentCat=cat;
+  document.querySelectorAll('.ac-nbtn').forEach(e=>e.classList.remove('active'));
+  const map={frontend:'nb-fe',backend:'nb-be',db:'nb-db',hw:'nb-hw'};
+  if(map[id]) document.getElementById(map[id]).classList.add('active');
+
+  document.getElementById('cat-icon-lg').textContent=cat.emoji;
+  document.getElementById('cat-icon-lg').style.background=cat.accent+'22';
+  document.getElementById('cat-icon-lg').style.borderColor=cat.accent+'50';
+  document.getElementById('cat-tag').textContent=cat.tag;
+  document.getElementById('cat-tag').style.color=cat.accent;
+  document.getElementById('cat-title').textContent=cat.title;
+  document.getElementById('cat-desc').textContent=cat.desc;
+  document.getElementById('cat-hero').style.borderColor=cat.accent+'30';
+  document.getElementById('cat-hero').style.background=`linear-gradient(135deg,rgba(255,255,255,.03),${cat.accent}0e)`;
+
+  const bc=document.getElementById('bc-cat');
+  bc.textContent=cat.title; bc.style.color=cat.accent; bc.style.fontWeight=600; bc.style.cursor='pointer';
+  bc.onclick=()=>showCat(id,emoji,title,accent);
+  document.getElementById('bc-sep1').style.display='';
+  bc.style.display='';
+  document.getElementById('bc-sep2').style.display='none';
+  document.getElementById('bc-tech').style.display='none';
+
+  const grid=document.getElementById('tech-grid'); grid.innerHTML='';
+  cat.techs.forEach((t,i)=>{
+    const d=document.createElement('div');
+    d.className='ac-ccard';
+    d.style.animationDelay=i*50+'ms';
+    d.innerHTML=`
+      <div class="ac-ccard-top">
+        <div style="width:44px;height:44px;border-radius:12px;background:${t.accent}1a;border:1px solid ${t.accent}40;display:flex;align-items:center;justify-content:center;font-size:22px">${t.emoji}</div>
+        <span style="font-size:10px;font-weight:700;color:${t.accent};background:${t.accent}18;padding:3px 9px;border-radius:5px;letter-spacing:.5px">${t.videos.length} aulas</span>
+      </div>
+      <h3>${t.title}</h3>
+      <p>${t.desc}</p>
+      <div class="ac-ccard-foot"><span style="color:${t.accent}">Ver aulas →</span></div>
+      <div class="ac-ccard-bar" style="background:linear-gradient(90deg,${t.accent},transparent)"></div>`;
+    d.querySelector('.ac-ccard-bar').style.opacity=0;
+    d.addEventListener('mouseenter',()=>{d.style.borderColor=t.accent+'55';d.style.background=t.accent+'0d';d.style.boxShadow=`0 14px 40px ${t.accent}22`;d.querySelector('.ac-ccard-bar').style.opacity=1;d.style.transform='translateY(-3px)'});
+    d.addEventListener('mouseleave',()=>{d.style.borderColor='rgba(255,255,255,.07)';d.style.background='rgba(255,255,255,.03)';d.style.boxShadow='none';d.querySelector('.ac-ccard-bar').style.opacity=0;d.style.transform='none'});
+    d.onclick=()=>showTech(t,cat);
+    grid.appendChild(d);
+  });
+
+  show('cat');
+}
+
+function showTech(tech,cat){
+  currentTech=tech;
+  document.getElementById('tech-icon-lg').textContent=tech.emoji;
+  document.getElementById('tech-icon-lg').style.background=tech.accent+'1a';
+  document.getElementById('tech-icon-lg').style.borderColor=tech.accent+'40';
+  document.getElementById('tech-title-h').textContent=tech.title;
+  document.getElementById('tech-desc-p').textContent=tech.desc;
+  document.getElementById('tech-hero').style.borderColor=tech.accent+'30';
+  document.getElementById('tech-hero').style.background=`linear-gradient(135deg,rgba(255,255,255,.03),${tech.accent}0d)`;
+
+  const bcTech=document.getElementById('bc-tech');
+  bcTech.textContent=tech.title; bcTech.style.color='#f0f9ff'; bcTech.style.fontWeight=600;
+  document.getElementById('bc-sep2').style.display='';
+  bcTech.style.display='';
+
+  document.getElementById('player-wrap').style.display='none';
+  document.getElementById('yt-player').src='';
+
+  const vg=document.getElementById('video-grid'); vg.innerHTML='';
+  tech.videos.forEach((v,i)=>{
+    const d=document.createElement('div');
+    d.className='ac-vcard';
+    d.style.animationDelay=i*60+'ms';
+    d.innerHTML=`
+      <div class="ac-vthumb">
+        <img src="https://img.youtube.com/vi/${v.id}/mqdefault.jpg" alt="${v.title}" loading="lazy">
+        <div class="ac-vthumb-over"></div>
+        <div class="ac-play"><div class="ac-play-btn">▶</div></div>
+        <div class="ac-vdur">${v.dur}</div>
+      </div>
+      <div class="ac-vinfo">
+        <h4>${v.title}</h4>
+        <p>${v.ch}</p>
+        <div class="ac-vbtns">
+          <button class="ac-vplay" style="background:${tech.accent}1a;color:${tech.accent}">▶ Assistir</button>
+          <a href="https://youtube.com/watch?v=${v.id}" target="_blank" style="text-decoration:none"><button class="ac-vext">↗</button></a>
+        </div>
+      </div>`;
+    d.querySelector('.ac-vplay').onclick=()=>{
+      const pw=document.getElementById('player-wrap');
+      document.getElementById('yt-player').src=`https://youtube.com/embed/${v.id}?autoplay=1`;
+      pw.style.display='block';
+      pw.scrollIntoView({behavior:'smooth',block:'start'});
+    };
+    vg.appendChild(d);
+  });
+
+  show('tech');
+}
+</script>
