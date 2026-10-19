@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Quiz 50 Perguntas — Matemática</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <canvas id="matrixCanvas"></canvas>
+    <div class="app">
+
+    <style>
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: black;
+        }
+
+        .app {
+            position: relative;
+            z-index: 1;
+        }
+        
+        :root {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --accent: #06b6d4;
+            --muted: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: Inter, system-ui, Arial, sans-serif;
+            background: url('img/matriz.png') no-repeat center center fixed, linear-gradient(180deg, #041025 0%, #071627 100%);
+            background-size: cover;
+            color: #e6eef6;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px
+        }
+
+        .app {
+            width: 100%;
+            max-width: 980px
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        select,
+        button {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: inherit;
+            padding: 8px 12px;
+            border-radius: 8px
+        }
+
+        .card {
+            background: var(--card);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+        }
+
+        .meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px
+        }
+
+        .meta .chip {
+            background: var(--glass);
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--muted)
+        }
+
+        .question-area {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 16px
+        }
+
+        .qbox {
+            padding: 12px;
+            border-radius: 8px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+        }
+
+        .qtext {
+            font-size: 18px;
+            margin-bottom: 12px
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+        
+        .answers.disabled > .answer {
+            pointer-events: none;
+        }
+
+        .answer {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            cursor: pointer
+        }
+
+        .answer:hover {
+            transform: translateY(-2px)
+        }
+
+        .answer.correct {
+            outline: 2px solid rgba(34, 197, 94, 0.16);
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.06), transparent)
+        }
+
+        .answer.wrong {
+            outline: 2px solid rgba(239, 68, 68, 0.12);
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.04), transparent)
+        }
+
+        .side {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .score {
+            font-size: 24px;
+            font-weight: 700
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .footer {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 12px
+        }
+
+        @media (max-width:900px) {
+            .question-area {
+                grid-template-columns: 1fr;
+            }
+
+            .side {
+                order: 2
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header>
+            <h1>50 Perguntas — Teste seus conhecimentos Sobre Matemática</h1>
+            <div class="controls">
+                <label class="small">Dificuldade:</label>
+                <select id="difficultySelect">
+                    <option value="all">Todas (aleatório)</option>
+                    <option value="1">1 - Fácil</option>
+                    <option value="2">2 - Médio</option>
+                    <option value="3">3 - Difícil</option>
+                    <option value="4">4 - Expert</option>
+                </select>
+                <button id="startBtn">Iniciar Jogo</button>
+            </div>
+        </header>
+
+        <div class="card">
+            <div class="meta">
+                <div class="chip">Pergunta <span id="currentIdx">0</span>/50</div>
+                <div class="chip">Pontuação: <strong id="score">0</strong></div>
+                <div class="chip">Recorde (All): <strong id="recordAll">0</strong></div>
+                <div class="chip small">Recorde por nível: <span id="recordByLevel">-</span></div>
+            </div>
+
+            <div class="question-area">
+                <div class="qbox">
+                    <div class="qtext" id="questionText">Clique em "Iniciar Jogo" para começar.</div>
+                    <div class="answers" id="answers"></div>
+                    <div class="footer">
+                        <button id="nextBtn" disabled>Próxima</button>
+                        <button id="resetBtn">Reiniciar</button>
+                    </div>
+                </div>
+
+                <aside class="side">
+                    <div class="card" style="padding:12px">
+                        <div class="score"><span id="scoreLarge">0</span></div>
+                        <div class="small">Pontos atuais</div>
+                    </div>
+
+                    <div class="card" style="padding:12px">
+                        <div class="small">Tempo por pergunta (opcional)</div>
+                        <div style="display:flex;gap:8px;margin-top:8px">
+                            <input id="timerToggle" type="checkbox" /> <label for="timerToggle">Ativar tempo (15s)</label>
+                        </div>
+                        <div id="timer" class="small" style="margin-top:8px">00:15</div>
+                    </div>
+
+                    <div class="card" style="padding:12px">
+                        <div class="small">Resumo</div>
+                        <div style="margin-top:8px"><span id="correctCount">0</span> corretas · <span id="wrongCount">0</span> erradas</div>
+                    </div>
+
+                </aside>
+            </div>
+
+        </div>
+    </div>
+    <img src="baner/p.png.png" alt="Logo GuedesSEC" style="height:100px; margin-right:16px;">
+    <div class="footer-text">
+        <p>Dev. ArkanRoot-JM &copy; 14/09/2025</p>
+    </div>
+<script>
+    
+// Banco de 50 perguntas com níveis (1=fácil, 4=expert)
+const QUESTIONS = [
+    {q:"Qual o resultado de 8 x 7?", choices:["49","56","63","72"], a:1, level:1},
+    {q:"Quanto é 120 dividido por 5?", choices:["24","20","25","30"], a:0, level:1},
+    {q:"Se você tem 15 maçãs e come 3, quantas sobram?", choices:["11","12","13","14"], a:1, level:1},
+    {q:"Qual a raiz quadrada de 16?", choices:["2","4","8","10"], a:1, level:1},
+    {q:"Quanto é 25% de 200?", choices:["25","50","75","100"], a:1, level:1},
+    {q:"Qual o próximo número na sequência: 2, 4, 8, 16, ...", choices:["24","30","32","36"], a:2, level:1},
+    {q:"Qual o perímetro de um quadrado com lado de 5cm?", choices:["10cm","20cm","25cm","30cm"], a:1, level:1},
+    {q:"Quanto é 3/4 de 12?", choices:["6","9","10","12"], a:1, level:1},
+    {q:"Resolva: x + 5 = 15", choices:["x=5","x=10","x=20","x=25"], a:1, level:1},
+    {q:"Se o preço de um pão é R$2,50, quanto custam 4 pães?", choices:["R$8,00","R$9,00","R$10,00","R$12,00"], a:2, level:1},
+    {q:"Qual a área de um retângulo com 10cm de comprimento e 5cm de largura?", choices:["15cm²","30cm²","50cm²","500cm²"], a:2, level:2},
+    {q:"Resolva: 2x - 3 = 17", choices:["x=5","x=8","x=10","x=12"], a:2, level:2},
+    {q:"Quanto é 0,75 em forma de fração?", choices:["1/4","2/4","3/4","4/4"], a:2, level:2},
+    {q:"Qual o valor de pi (π) aproximado?", choices:["3,12","3,14","3,16","3,18"], a:1, level:2},
+    {q:"Qual a área de um triângulo com base 8cm e altura 6cm?", choices:["14cm²","24cm²","48cm²","36cm²"], a:1, level:2},
+    {q:"Se uma camisa custa R$80 e tem um desconto de 10%, qual o preço final?", choices:["R$70","R$72","R$88","R$85"], a:1, level:2},
+    {q:"Calcule o volume de um cubo com lado de 3m.", choices:["9m³","12m³","18m³","27m³"], a:3, level:2},
+    {q:"Qual o resultado de (-5) x 4?", choices:["-20","-15","1","20"], a:0, level:2},
+    {q:"Quanto é 1/2 + 1/4?", choices:["1/4","1/2","3/4","5/4"], a:2, level:2},
+    {q:"Qual a hipotenusa de um triângulo retângulo com catetos de 3 e 4?", choices:["4","5","6","7"], a:1, level:2},
+    {q:"Um trem percorre 240km em 3 horas. Qual a sua velocidade média?", choices:["60 km/h","70 km/h","80 km/h","90 km/h"], a:2, level:3},
+    {q:"Resolva a equação quadrática: x² - 4 = 0", choices:["x=2","x=4","x=±2","x=±4"], a:2, level:3},
+    {q:"Qual o valor de 'y' no sistema de equações: x+y=7 e x-y=3?", choices:["y=1","y=2","y=3","y=4"], a:1, level:3},
+    {q:"Qual o seno de um ângulo de 30°?", choices:["1/2","√3/2","1","0"], a:0, level:3},
+    {q:"Qual a probabilidade de tirar um número par em um dado de 6 faces?", choices:["1/2","1/3","1/4","1/6"], a:0, level:3},
+    {q:"Se um capital de R$1.000,00 é aplicado a juros simples de 5% ao ano, qual o montante após 2 anos?", choices:["R$1.050,00","R$1.100,00","R$1.150,00","R$1.200,00"], a:1, level:3},
+    {q:"O que é um número primo?", choices:["Um número divisível por 2","Um número divisível por 1 e por ele mesmo","Qualquer número ímpar","Um número negativo"], a:1, level:3},
+    {q:"Quantos graus tem a soma dos ângulos internos de um triângulo?", choices:["90°","120°","180°","360°"], a:2, level:3},
+    {q:"Qual o resultado de 5! (fatorial de 5)?", choices:["15","25","100","120"], a:3, level:3},
+    {q:"Qual o valor de $2^4$?", choices:["6","8","16","32"], a:2, level:2},
+    {q:"Se f(x) = 2x + 1, qual o valor de f(3)?", choices:["5","7","9","11"], a:1, level:2},
+    {q:"Qual o valor de 'x' se $3^{x} = 27$?", choices:["2","3","4","5"], a:1, level:3},
+    {q:"Qual o cosseno de um ângulo de 60°?", choices:["1/2","√2/2","√3/2","1"], a:0, level:3},
+    {q:"Se 10 operários levam 5 dias para construir um muro, quantos dias 25 operários levariam?", choices:["1 dia","2 dias","3 dias","4 dias"], a:1, level:3},
+    {q:"Qual a área de um círculo com raio de 4cm? (Use π = 3,14)", choices:["12,56cm²","25,12cm²","50,24cm²","100,48cm²"], a:2, level:3},
+    {q:"Qual a derivada de $f(x) = x^2$?", choices:["x","2x","x²","2x+1"], a:1, level:4},
+    {q:"Calcule a integral de $2x$ no intervalo [0, 2].", choices:["2","4","6","8"], a:1, level:4},
+    {q:"Um conjunto A tem 3 elementos. Quantos subconjuntos diferentes A pode ter?", choices:["3","6","8","9"], a:2, level:4},
+    {q:"Qual o valor do limite de $(x^2 - 1) / (x - 1)$ quando x se aproxima de 1?", choices:["0","1","2","3"], a:2, level:4},
+    {q:"Uma equação diferencial é uma equação que relaciona uma função a suas:", choices:["variáveis independentes","derivadas","constantes","integrais"], a:1, level:4},
+    {q:"Qual o valor do logaritmo de 1000 na base 10?", choices:["2","3","10","100"], a:1, level:3},
+    {q:"Se um cone tem raio 3cm e altura 4cm, qual o seu volume?", choices:["12π cm³","24π cm³","36π cm³","48π cm³"], a:0, level:4},
+    {q:"O que é o teorema de Pitágoras?", choices:["a²+b²=c²","a+b=c","a²-b²=c²","2a+2b=c"], a:0, level:2},
+    {q:"Qual o resultado de 2³ + 3²?", choices:["15","17","18","20"], a:1, level:2},
+    {q:"Qual a média aritmética dos números 10, 15, 20?", choices:["10","15","20","45"], a:1, level:2},
+    {q:"Se $x = 4$ e $y = 2$, qual o valor de $3x - 2y$?", choices:["4","6","8","10"], a:2, level:2},
+    {q:"Qual o resultado de $5^{-2}$?", choices:["-10","1/10","1/25","-25"], a:2, level:3},
+    {q:"Em um triângulo equilátero, todos os ângulos internos medem:", choices:["60°","90°","120°","180°"], a:0, level:2},
+    {q:"Qual o resultado de $\sqrt{64} \div \sqrt{4}$?", choices:["2","4","8","16"], a:1, level:2},
+    {q:"Um produto custa R$120. Se for vendido com 25% de lucro, qual o valor de venda?", choices:["R$140","R$145","R$150","R$160"], a:2, level:3}
+];
+
+// Pontuação por nível
+const SCORE_MAP = {1:10,2:20,3:30,4:50};
+
+// Estado do jogo
+let shuffled = [];
+let current = 0;
+let score = 0;
+let correct = 0, wrong = 0;
+let selectedDifficulty = 'all';
+let timerEnabled = false;
+let timerInterval = null;
+let timeLeft = 15;
+
+// Elements
+const startBtn = document.getElementById('startBtn');
+const nextBtn = document.getElementById('nextBtn');
+const resetBtn = document.getElementById('resetBtn');
+const difficultySelect = document.getElementById('difficultySelect');
+const questionText = document.getElementById('questionText');
+const answersDiv = document.getElementById('answers');
+const currentIdx = document.getElementById('currentIdx');
+const scoreEl = document.getElementById('score');
+const scoreLarge = document.getElementById('scoreLarge');
+const recordAllEl = document.getElementById('recordAll');
+const recordByLevelEl = document.getElementById('recordByLevel');
+const correctCount = document.getElementById('correctCount');
+const wrongCount = document.getElementById('wrongCount');
+const timerToggle = document.getElementById('timerToggle');
+const timerEl = document.getElementById('timer');
+
+// LocalStorage keys
+const LS_RECORD_ALL = 'quiz_record_all';
+const LS_RECORD_LEVEL = 'quiz_record_by_level';
+
+// Funções
+function loadRecords(){
+    const all = parseInt(localStorage.getItem(LS_RECORD_ALL) || '0',10);
+    const byLevel = JSON.parse(localStorage.getItem(LS_RECORD_LEVEL) || '{}');
+    recordAllEl.textContent = all;
+    recordByLevelEl.textContent = Object.entries(byLevel).map(e=>`L${e[0]}:${e[1]}`).join(' ');
+}
+
+function saveRecordIfNeeded(){
+    const all = parseInt(localStorage.getItem(LS_RECORD_ALL) || '0',10);
+    if(score>all) localStorage.setItem(LS_RECORD_ALL, String(score));
+    const byLevel = JSON.parse(localStorage.getItem(LS_RECORD_LEVEL) || '{}');
+    const level = selectedDifficulty==='all'? 'all' : selectedDifficulty;
+    const prev = parseInt(byLevel[level]||'0',10);
+    if(score>prev){ byLevel[level]=score; localStorage.setItem(LS_RECORD_LEVEL, JSON.stringify(byLevel)); }
+    loadRecords();
+}
+
+function shuffleArray(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+}
+
+function prepareQuestions(){
+    const lvl = selectedDifficulty;
+    let pool = QUESTIONS.slice();
+    if(lvl !== 'all') pool = pool.filter(p=>p.level === parseInt(lvl,10));
+    let tempPool = shuffleArray(pool);
+    while(tempPool.length < 50) {
+        tempPool = tempPool.concat(shuffleArray(pool));
+    }
+    shuffled = tempPool.slice(0, 50);
+}
+
+function startGame(){
+    selectedDifficulty = difficultySelect.value;
+    timerEnabled = timerToggle.checked;
+    current = 0; score = 0; correct = 0; wrong = 0;
+    prepareQuestions();
+    renderQuestion();
+    updateMeta();
+    startBtn.disabled = true;
+}
+
+function endGame(){
+    saveRecordIfNeeded();
+    startBtn.disabled = false;
+    nextBtn.disabled = true;
+    questionText.textContent = `Fim do jogo! Você fez ${score} pontos. ${correct} corretas, ${wrong} erradas.`;
+    answersDiv.innerHTML = '';
+    stopTimer();
+}
+
+function updateMeta(){
+    currentIdx.textContent = current+1;
+    scoreEl.textContent = score;
+    scoreLarge.textContent = score;
+    correctCount.textContent = correct;
+    wrongCount.textContent = wrong;
+}
+
+function renderQuestion(){
+    stopTimer();
+    const item = shuffled[current];
+    questionText.textContent = item.q;
+    answersDiv.innerHTML = '';
+    
+    // Armazena as escolhas e o índice correto
+    const choices = item.choices;
+    const correctChoice = choices[item.a];
+
+    // Embaralha as escolhas
+    const shuffledChoices = shuffleArray(choices);
+    const newCorrectIndex = shuffledChoices.indexOf(correctChoice);
+
+    // Remove a classe 'disabled' para que as respostas possam ser clicadas
+    answersDiv.classList.remove('disabled');
+
+    shuffledChoices.forEach((c, idx) => {
+        const btn = document.createElement('div');
+        btn.className = 'answer';
+        btn.textContent = c;
+        btn.dataset.idx = idx;
+        btn.addEventListener('click', () => selectAnswer(idx, newCorrectIndex, btn));
+        answersDiv.appendChild(btn);
+    });
+    nextBtn.disabled = true;
+    updateMeta();
+    if(timerEnabled){
+        timeLeft = 15; renderTimer(); startTimer();
+    } else { timerEl.textContent = '' }
+}
+
+function selectAnswer(idx, correctIdx, el){
+    const allBtns = Array.from(answersDiv.children);
+
+    // Adiciona a classe 'disabled' para impedir mais cliques
+    answersDiv.classList.add('disabled');
+
+    if(idx === correctIdx){
+        el.classList.add('correct');
+        const item = shuffled[current];
+        score += SCORE_MAP[item.level] || 10;
+        correct++;
+    } else {
+        el.classList.add('wrong');
+        allBtns.find(b => parseInt(b.dataset.idx,10) === correctIdx).classList.add('correct');
+        wrong++;
+    }
+    nextBtn.disabled = false;
+    updateMeta();
+    stopTimer();
+}
+
+function nextQuestion(){
+    current++;
+    if(current>=shuffled.length || current>=50){
+        endGame();
+        return;
+    }
+    renderQuestion();
+}
+
+function resetGame(){
+    stopTimer();
+    startBtn.disabled = false;
+    nextBtn.disabled = true;
+    current = 0; score = 0; correct = 0; wrong = 0;
+    questionText.textContent = 'Clique em "Iniciar Jogo" para começar.';
+    answersDiv.innerHTML = '';
+    updateMeta();
+}
+
+// Timer
+function renderTimer(){ timerEl.textContent = `00:${String(timeLeft).padStart(2,'0')}`; }
+
+function startTimer(){ 
+    if(timerInterval) clearInterval(timerInterval); 
+    timerInterval = setInterval(()=>{
+        timeLeft--; 
+        renderTimer(); 
+        if(timeLeft<=0){ 
+            clearInterval(timerInterval); 
+            autoFail(); 
+        }
+    },1000); 
+}
+
+function stopTimer(){ 
+    if(timerInterval){ 
+        clearInterval(timerInterval); 
+        timerInterval=null; 
+    } 
+}
+
+function autoFail(){
+    const item = shuffled[current];
+    const allBtns = Array.from(answersDiv.children);
+    answersDiv.classList.add('disabled');
+    allBtns.forEach(b => { 
+        if(parseInt(b.dataset.idx,10) === item.a) b.classList.add('correct'); 
+    });
+    wrong++; 
+    nextBtn.disabled = false; 
+    updateMeta();
+}
+
+// Eventos
+startBtn.addEventListener('click', ()=> startGame());
+nextBtn.addEventListener('click', ()=> nextQuestion());
+resetBtn.addEventListener('click', ()=> resetGame());
+difficultySelect.addEventListener('change', ()=>{});
+timerToggle.addEventListener('change', ()=>{});
+
+// Init
+loadRecords(); 
+updateMeta();
+
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
+const fontSize = 18;
+const columns = Math.floor(width / fontSize);
+const drops = [];
+
+// Inicializa a posição de cada coluna
+for (let i = 0; i < columns; i++) {
+    drops[i] = Math.random() * height;
+}
+
+function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = "#0F0";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i]);
+        if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
+        drops[i] += fontSize;
+    }
+}
+
+// Atualiza a tela
+setInterval(drawMatrix, 50);
+
+// Ajusta o canvas ao redimensionar a janela
+window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+});
+</script>
+</body>
+</html>

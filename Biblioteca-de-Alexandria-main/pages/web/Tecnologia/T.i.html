@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Quiz 50 Perguntas — Desenvolvedor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <canvas id="matrixCanvas"></canvas>
+    <div class="app">
+
+    <style>
+        #matrixCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: black;
+        }
+
+        .app {
+            position: relative;
+            z-index: 1;
+        }
+
+        :root {
+            --bg: #0f1724;
+            --card: #0b1220;
+            --accent: #06b6d4;
+            --muted: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: Inter, system-ui, Arial, sans-serif;
+            background: url('img/matriz.png') no-repeat center center fixed, linear-gradient(180deg, #041025 0%, #071627 100%);
+            background-size: cover;
+            color: #e6eef6;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px
+        }
+
+        .app {
+            width: 100%;
+            max-width: 980px
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0
+        }
+
+        .controls {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        select,
+        button {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: inherit;
+            padding: 8px 12px;
+            border-radius: 8px
+        }
+
+        .card {
+            background: var(--card);
+            padding: 18px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(2, 6, 23, 0.6);
+        }
+
+        .meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 12px
+        }
+
+        .meta .chip {
+            background: var(--glass);
+            padding: 8px 10px;
+            border-radius: 10px;
+            font-size: 14px;
+            color: var(--muted)
+        }
+
+        .question-area {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 16px
+        }
+
+        .qbox {
+            padding: 12px;
+            border-radius: 8px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
+        }
+
+        .qtext {
+            font-size: 18px;
+            margin-bottom: 12px
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+        
+        .answers.disabled > .answer {
+            pointer-events: none;
+        }
+
+        .answer {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            cursor: pointer
+        }
+
+        .answer:hover {
+            transform: translateY(-2px)
+        }
+
+        .answer.correct {
+            outline: 2px solid rgba(34, 197, 94, 0.16);
+            background: linear-gradient(90deg, rgba(34, 197, 94, 0.06), transparent)
+        }
+
+        .answer.wrong {
+            outline: 2px solid rgba(239, 68, 68, 0.12);
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.04), transparent)
+        }
+
+        .side {
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .score {
+            font-size: 24px;
+            font-weight: 700
+        }
+
+        .small {
+            font-size: 13px;
+            color: var(--muted)
+        }
+
+        .footer {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 12px
+        }
+
+        @media (max-width:900px) {
+            .question-area {
+                grid-template-columns: 1fr;
+            }
+
+            .side {
+                order: 2
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header>
+            <h1>50 Perguntas — Teste seus conhecimentos Sobre Dev</h1>
+            <div class="controls">
+                <label class="small">Dificuldade:</label>
+                <select id="difficultySelect">
+                    <option value="all">Todas (aleatório)</option>
+                    <option value="1">1 - Fácil</option>
+                    <option value="2">2 - Médio</option>
+                    <option value="3">3 - Difícil</option>
+                    <option value="4">4 - Expert</option>
+                </select>
+                <button id="startBtn">Iniciar Jogo</button>
+            </div>
+        </header>
+
+        <div class="card">
+            <div class="meta">
+                <div class="chip">Pergunta <span id="currentIdx">0</span>/50</div>
+                <div class="chip">Pontuação: <strong id="score">0</strong></div>
+                <div class="chip">Recorde (All): <strong id="recordAll">0</strong></div>
+                <div class="chip small">Recorde por nível: <span id="recordByLevel">-</span></div>
+            </div>
+
+            <div class="question-area">
+                <div class="qbox">
+                    <div class="qtext" id="questionText">Clique em "Iniciar Jogo" para começar.</div>
+                    <div class="answers" id="answers"></div>
+                    <div class="footer">
+                        <button id="nextBtn" disabled>Próxima</button>
+                        <button id="resetBtn">Reiniciar</button>
+                    </div>
+                </div>
+
+                <aside class="side">
+                    <div class="card" style="padding:12px">
+                        <div class="score"><span id="scoreLarge">0</span></div>
+                        <div class="small">Pontos atuais</div>
+                    </div>
+
+                    <div class="card" style="padding:12px">
+                        <div class="small">Tempo por pergunta (opcional)</div>
+                        <div style="display:flex;gap:8px;margin-top:8px">
+                            <input id="timerToggle" type="checkbox" /> <label for="timerToggle">Ativar tempo (15s)</label>
+                        </div>
+                        <div id="timer" class="small" style="margin-top:8px">00:15</div>
+                    </div>
+
+                    <div class="card" style="padding:12px">
+                        <div class="small">Resumo</div>
+                        <div style="margin-top:8px"><span id="correctCount">0</span> corretas · <span id="wrongCount">0</span> erradas</div>
+                    </div>
+
+                </aside>
+            </div>
+
+        </div>
+    </div>
+    <img src="baner/p.png.png" alt="Logo GuedesSEC" style="height:100px; margin-right:16px;">
+    <div class="footer-text">
+        <p>Dev. ArkanRoot-JM &copy; 14/09/2025</p>
+    </div>
+<script>
+
+// Banco de 50 perguntas com níveis (1=fácil, 4=expert)
+const QUESTIONS = [
+    {q:"O que significa CPU?", choices:["Central Processing Unit","Computer Personal Unit","Control Program Unit","Central Programming Unit"], a:0, level:1},
+    {q:"O que é RAM?", choices:["Random Access Memory","Readily Available Memory","Rapid Access Memory","Remote Access Module"], a:0, level:1},
+    {q:"O que faz o sistema operacional?", choices:["Gerencia hardware e software","Edita vídeos","Cria gráficos","Monitora internet"], a:0, level:1},
+    {q:"O que é SSD?", choices:["Solid State Drive","Super Storage Device","System Storage Disk","Standard Solid Disk"], a:0, level:1},
+    {q:"O que é IP?", choices:["Internet Protocol","Internal Process","Internet Port","Input Procedure"], a:0, level:1},
+    {q:"O que significa HTML?", choices:["HyperText Markup Language","HighText Machine Language","Hyper Transfer Markup Logic","Home Tool Markup Language"], a:0, level:1},
+    {q:"O que significa CSS?", choices:["Cascading Style Sheets","Computer Style System","Creative Style Syntax","Central Style Script"], a:0, level:1},
+    {q:"O que é JavaScript?", choices:["Linguagem de programação para web","Banco de dados","Sistema operacional","Software antivírus"], a:0, level:1},
+    {q:"O que é uma variável em programação?", choices:["Espaço para armazenar dados","Função matemática","Hardware do computador","Sistema de arquivos"], a:0, level:1},
+    {q:"O que é Git?", choices:["Sistema de controle de versões","Editor de texto","Linguagem de programação","Banco de dados"], a:0, level:1},
+    {q:"O que é GitHub?", choices:["Plataforma para hospedagem de código","Editor de imagens","Sistema operacional","Linguagem de programação"], a:0, level:1},
+    {q:"O que significa API?", choices:["Application Programming Interface","Automatic Processing Instruction","Advanced Programming Integration","Active Program Interface"], a:0, level:2},
+    {q:"O que é um servidor?", choices:["Computador que fornece serviços na rede","Computador pessoal","Software antivírus","Aplicativo de edição"], a:0, level:2},
+    {q:"O que é cloud computing?", choices:["Computação em nuvem","Computador portátil","Armazenamento local","Software de edição de vídeo"], a:0, level:2},
+    {q:"O que significa SQL?", choices:["Structured Query Language","Simple Question Logic","System Query Link","Structured Quality List"], a:0, level:2},
+    {q:"O que é um firewall?", choices:["Barreira de proteção de rede","Programa de edição","Sistema de arquivos","Banco de dados"], a:0, level:2},
+    {q:"O que significa HTTPS?", choices:["HyperText Transfer Protocol Secure","High Transfer Text Protocol System","Hyper Technical Protocol Security","Home Text Transfer Protocol"], a:0, level:2},
+    {q:"O que é uma função em programação?", choices:["Bloco de código que executa uma tarefa","Banco de dados","Sistema operacional","Computador físico"], a:0, level:2},
+    {q:"O que é um loop?", choices:["Estrutura de repetição","Variável temporária","Hardware","Sistema de arquivos"], a:0, level:2},
+    {q:"O que é uma classe em programação?", choices:["Molde para criar objetos","Servidor web","Banco de dados","Sistema operacional"], a:0, level:2},
+    {q:"O que é open source?", choices:["Código aberto","Sistema fechado","Software pago","Hardware"], a:0, level:2},
+    {q:"O que é virtualização?", choices:["Executar múltiplos sistemas em um mesmo hardware","Banco de dados","Rede física","Editor de imagens"], a:0, level:3},
+    {q:"O que é Docker?", choices:["Plataforma de containers","Sistema operacional","Banco de dados","Editor de vídeos"], a:0, level:3},
+    {q:"O que é Kubernetes?", choices:["Orquestração de containers","Linguagem de programação","Editor de imagens","Sistema de backup"], a:0, level:3},
+    {q:"O que é DevOps?", choices:["Integração de desenvolvimento e operações","Editor de código","Banco de dados","Firewall"], a:0, level:3},
+    {q:"O que é machine learning?", choices:["Aprendizado de máquina","Sistema de arquivos","Editor de vídeos","Banco de dados"], a:0, level:3},
+    {q:"O que é inteligência artificial?", choices:["Simular inteligência humana por máquinas","Computador pessoal","Sistema operacional","Editor de textos"], a:0, level:3},
+    {q:"O que é blockchain?", choices:["Registro distribuído de transações","Servidor web","Sistema de arquivos","Banco de dados centralizado"], a:0, level:3},
+    {q:"O que significa IoT?", choices:["Internet of Things","Internet on Time","Input Output Technology","Internal Operating Task"], a:0, level:3},
+    {q:"O que é um protocolo de rede?", choices:["Conjunto de regras para comunicação","Banco de dados","Editor de imagens","Sistema de arquivos"], a:0, level:2},
+    {q:"O que é DNS?", choices:["Domain Name System","Data Network Server","Direct Name Service","Digital Number System"], a:0, level:2},
+    {q:"O que é um endereço IP dinâmico?", choices:["IP que muda a cada conexão","IP fixo","Endereço de e-mail","Servidor web"], a:0, level:2},
+    {q:"O que é um IP estático?", choices:["IP fixo para um dispositivo","IP temporário","Servidor web","Endereço MAC"], a:0, level:2},
+    {q:"O que é HTTP?", choices:["HyperText Transfer Protocol","High Transfer Text Process","Hyper Technical Tool Protocol","Home Transfer Text Protocol"], a:0, level:1},
+    {q:"O que é backup?", choices:["Cópia de segurança de dados","Editor de vídeos","Firewall","Banco de dados"], a:0, level:1},
+    {q:"O que significa LAN?", choices:["Local Area Network","Large Access Network","Light Area Node","Long Access Network"], a:0, level:1},
+    {q:"O que significa WAN?", choices:["Wide Area Network","Wireless Access Node","Web Area Network","Wide Access Network"], a:0, level:1},
+    {q:"O que é um bug?", choices:["Erro em software","Atualização de sistema","Editor de código","Hardware danificado"], a:0, level:1},
+    {q:"O que é um patch?", choices:["Correção de software","Novo hardware","Banco de dados","Editor de imagens"], a:0, level:1},
+    {q:"O que é phishing?", choices:["Golpe por e-mail ou mensagem","Atualização de software","Firewall","Editor de texto"], a:0, level:2},
+    {q:"O que é malware?", choices:["Software malicioso","Editor de imagens","Servidor web","Banco de dados"], a:0, level:2},
+    {q:"O que é ransomware?", choices:["Software que bloqueia dados pedindo resgate","Editor de textos","Sistema operacional","Banco de dados"], a:0, level:2},
+    {q:"O que significa GUI?", choices:["Graphical User Interface","General User Instruction","Global User Interaction","Graph Universal Interface"], a:0, level:2},
+    {q:"O que é CLI?", choices:["Command Line Interface","Computer Logic Input","Centralized Linux Interface","Command Link Integration"], a:0, level:2},
+    {q:"O que é um servidor web?", choices:["Servidor que entrega páginas web","Banco de dados","Editor de imagens","Firewall"], a:0, level:1},
+    {q:"O que é HTTPS?", choices:["Protocolo seguro para web","Editor de textos","Sistema operacional","Banco de dados"], a:0, level:1},
+    {q:"O que é firewall de aplicação?", choices:["Protege aplicações web","Editor de imagens","Banco de dados","Servidor web"], a:0, level:3},
+    {q:"O que é um container?", choices:["Ambiente isolado para aplicações","Banco de dados","Editor de vídeos","Firewall"], a:0, level:3},
+    {q:"O que é CI/CD?", choices:["Integração e entrega contínua","Editor de imagens","Banco de dados","Sistema operacional"], a:0, level:3},
+    {q:"O que é HTTPS Strict Transport Security (HSTS)?", choices:["Mecanismo de segurança para HTTPS","Editor de vídeos","Servidor web","Banco de dados"], a:0, level:4},
+    {q:"O que é autenticação multifator?", choices:["Uso de múltiplos métodos para autenticar usuário","Banco de dados","Editor de imagens","Sistema operacional"], a:0, level:3},
+    {q:"O que é criptografia simétrica?", choices:["Mesma chave para criptografar e descriptografar","Chaves diferentes","Editor de imagens","Sistema operacional"], a:0, level:4},
+    {q:"O que é criptografia assimétrica?", choices:["Chave pública e privada","Mesma chave","Banco de dados","Editor de vídeos"], a:0, level:4},
+    {q:"O que é hashing?", choices:["Transformar dados em resumo fixo","Criptografia simétrica","Servidor web","Banco de dados"], a:0, level:3},
+    {q:"O que é rede peer-to-peer?", choices:["Rede onde todos são iguais e se conectam diretamente","Servidor centralizado","Banco de dados","Firewall"], a:0, level:3},
+    {q:"O que é uma VM?", choices:["Máquina virtual","Servidor web","Editor de vídeos","Banco de dados"], a:0, level:2},
+    {q:"O que é um token de segurança?", choices:["Código usado para autenticação","Editor de textos","Banco de dados","Sistema operacional"], a:0, level:3},
+]
+// Pontuação por nível
+
+const SCORE_MAP = {1: 10, 2: 20, 3: 30, 4: 50};
+
+// Estado do jogo
+let shuffled = [];
+let current = 0;
+let score = 0;
+let correct = 0, wrong = 0;
+let selectedDifficulty = 'all';
+let timerEnabled = false;
+let timerInterval = null;
+let timeLeft = 15;
+
+// Elements
+const startBtn = document.getElementById('startBtn');
+const nextBtn = document.getElementById('nextBtn');
+const resetBtn = document.getElementById('resetBtn');
+const difficultySelect = document.getElementById('difficultySelect');
+const questionText = document.getElementById('questionText');
+const answersDiv = document.getElementById('answers');
+const currentIdx = document.getElementById('currentIdx');
+const scoreEl = document.getElementById('score');
+const scoreLarge = document.getElementById('scoreLarge');
+const recordAllEl = document.getElementById('recordAll');
+const recordByLevelEl = document.getElementById('recordByLevel');
+const correctCount = document.getElementById('correctCount');
+const wrongCount = document.getElementById('wrongCount');
+const timerToggle = document.getElementById('timerToggle');
+const timerEl = document.getElementById('timer');
+
+// LocalStorage keys
+const LS_RECORD_ALL = 'quiz_record_all';
+const LS_RECORD_LEVEL = 'quiz_record_by_level';
+
+// Funções
+function loadRecords() {
+    const all = parseInt(localStorage.getItem(LS_RECORD_ALL) || '0', 10);
+    const byLevel = JSON.parse(localStorage.getItem(LS_RECORD_LEVEL) || '{}');
+    recordAllEl.textContent = all;
+    recordByLevelEl.textContent = Object.entries(byLevel).map(e => `L${e[0]}:${e[1]}`).join(' ');
+}
+
+function saveRecordIfNeeded() {
+    const all = parseInt(localStorage.getItem(LS_RECORD_ALL) || '0', 10);
+    if (score > all) localStorage.setItem(LS_RECORD_ALL, String(score));
+    const byLevel = JSON.parse(localStorage.getItem(LS_RECORD_LEVEL) || '{}');
+    const level = selectedDifficulty === 'all' ? 'all' : selectedDifficulty;
+    const prev = parseInt(byLevel[level] || '0', 10);
+    if (score > prev) {
+        byLevel[level] = score;
+        localStorage.setItem(LS_RECORD_LEVEL, JSON.stringify(byLevel));
+    }
+    loadRecords();
+}
+
+function shuffleArray(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+function prepareQuestions() {
+    const lvl = selectedDifficulty;
+    let pool = QUESTIONS.slice();
+    if (lvl !== 'all') {
+        pool = pool.filter(p => p.level === parseInt(lvl, 10));
+    }
+    
+    let tempPool = shuffleArray(pool);
+    while (tempPool.length < 50) {
+        tempPool = tempPool.concat(shuffleArray(pool));
+    }
+    shuffled = tempPool.slice(0, 50);
+}
+
+function startGame() {
+    selectedDifficulty = difficultySelect.value;
+    timerEnabled = timerToggle.checked;
+    current = 0;
+    score = 0;
+    correct = 0;
+    wrong = 0;
+    prepareQuestions();
+    renderQuestion();
+    updateMeta();
+    startBtn.disabled = true;
+}
+
+function endGame() {
+    saveRecordIfNeeded();
+    startBtn.disabled = false;
+    nextBtn.disabled = true;
+    questionText.textContent = `Fim do jogo! Você fez ${score} pontos. ${correct} corretas, ${wrong} erradas.`;
+    answersDiv.innerHTML = '';
+    stopTimer();
+}
+
+function updateMeta() {
+    currentIdx.textContent = current + 1;
+    scoreEl.textContent = score;
+    scoreLarge.textContent = score;
+    correctCount.textContent = correct;
+    wrongCount.textContent = wrong;
+}
+
+function renderQuestion() {
+    stopTimer();
+    const item = shuffled[current];
+    questionText.textContent = item.q;
+    answersDiv.innerHTML = '';
+    
+    // Armazena as escolhas e o índice correto
+    const choices = item.choices;
+    const correctChoice = choices[item.a];
+
+    // Embaralha as escolhas
+    const shuffledChoices = shuffleArray(choices);
+    const newCorrectIndex = shuffledChoices.indexOf(correctChoice);
+
+    // Remove a classe 'disabled' para que as respostas possam ser clicadas
+    answersDiv.classList.remove('disabled');
+
+    shuffledChoices.forEach((c, idx) => {
+        const btn = document.createElement('div');
+        btn.className = 'answer';
+        btn.textContent = c;
+        btn.dataset.idx = idx;
+        btn.addEventListener('click', () => selectAnswer(idx, newCorrectIndex, btn));
+        answersDiv.appendChild(btn);
+    });
+    nextBtn.disabled = true;
+    updateMeta();
+    if (timerEnabled) {
+        timeLeft = 15;
+        renderTimer();
+        startTimer();
+    } else {
+        timerEl.textContent = ''
+    }
+}
+
+function selectAnswer(idx, correctIdx, el) {
+    const allBtns = Array.from(answersDiv.children);
+
+    // Adiciona a classe 'disabled' para impedir mais cliques
+    answersDiv.classList.add('disabled');
+
+    if (idx === correctIdx) {
+        el.classList.add('correct');
+        const item = shuffled[current];
+        score += SCORE_MAP[item.level] || 10;
+        correct++;
+    } else {
+        el.classList.add('wrong');
+        allBtns.find(b => parseInt(b.dataset.idx, 10) === correctIdx).classList.add('correct');
+        wrong++;
+    }
+    nextBtn.disabled = false;
+    updateMeta();
+    stopTimer();
+}
+
+function nextQuestion() {
+    current++;
+    if (current >= shuffled.length || current >= 50) {
+        endGame();
+        return;
+    }
+    renderQuestion();
+}
+
+function resetGame() {
+    stopTimer();
+    startBtn.disabled = false;
+    nextBtn.disabled = true;
+    current = 0;
+    score = 0;
+    correct = 0;
+    wrong = 0;
+    questionText.textContent = 'Clique em "Iniciar Jogo" para começar.';
+    answersDiv.innerHTML = '';
+    updateMeta();
+}
+
+// Timer
+function renderTimer() {
+    timerEl.textContent = `00:${String(timeLeft).padStart(2, '0')}`;
+}
+
+function startTimer() {
+    if (timerInterval) clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        renderTimer();
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            autoFail();
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+}
+
+function autoFail() {
+    const item = shuffled[current];
+    const allBtns = Array.from(answersDiv.children);
+    answersDiv.classList.add('disabled');
+    allBtns.forEach(b => {
+        if (parseInt(b.dataset.idx, 10) === item.a) b.classList.add('correct');
+    });
+    wrong++;
+    nextBtn.disabled = false;
+    updateMeta();
+}
+
+// Eventos
+startBtn.addEventListener('click', () => startGame());
+nextBtn.addEventListener('click', () => nextQuestion());
+resetBtn.addEventListener('click', () => resetGame());
+difficultySelect.addEventListener('change', () => {});
+timerToggle.addEventListener('change', () => {});
+
+// Init
+loadRecords();
+updateMeta();
+
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+
+let width = canvas.width = window.innerWidth;
+let height = canvas.height = window.innerHeight;
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()*&^%";
+const fontSize = 18;
+const columns = Math.floor(width / fontSize);
+const drops = [];
+
+// Inicializa a posição de cada coluna
+for (let i = 0; i < columns; i++) {
+    drops[i] = Math.random() * height;
+}
+
+function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, width, height);
+    ctx.fillStyle = "#0F0";
+    ctx.font = fontSize + "px monospace";
+
+    for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        ctx.fillText(text, i * fontSize, drops[i]);
+        if (drops[i] * fontSize > height && Math.random() > 0.975) drops[i] = 0;
+        drops[i] += fontSize;
+    }
+}
+
+// Atualiza a tela
+setInterval(drawMatrix, 50);
+
+// Ajusta o canvas ao redimensionar a janela
+window.addEventListener('resize', () => {
+    width = canvas.width = window.innerWidth;
+    height = canvas.height = window.innerHeight;
+});
+</script>
+</body>
+</html>

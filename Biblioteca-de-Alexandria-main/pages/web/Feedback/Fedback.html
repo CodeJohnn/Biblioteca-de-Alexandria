@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GuedesSEC | Painel Admin</title>
+    <style>
+        :root {
+            --cor-principal: #e60023;
+            --cor-fundo: #0a0a0a;
+            --cor-secundaria: #1f1f1f;
+            --cor-texto: #ffffff;
+            --cor-destaque: #ffcc00;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            line-height: 1.6;
+        }
+
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--cor-principal);
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: var(--cor-principal);
+            font-size: 2.5em;
+            text-shadow: 0 0 10px rgba(230, 0, 35, 0.5);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: var(--cor-destaque);
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--cor-principal);
+            padding-left: 10px;
+        }
+
+        /* --- Estilos da Tabela de Feedback --- */
+        .table-wrapper {
+            background: var(--cor-secundaria);
+            border-radius: 8px;
+            overflow-x: auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px; /* Garante que a tabela não fique muito estreita */
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        th {
+            background-color: var(--cor-principal);
+            color: var(--cor-texto);
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.1em;
+        }
+
+        tr:nth-child(even) {
+            background-color: #1a1a1a;
+        }
+
+        td strong {
+            color: var(--cor-destaque);
+        }
+
+        .delete-btn {
+            background: #cc0000;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #ff3333;
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header>
+            <h1>Painel de Administração GuedesSEC</h1>
+            <p>Gerenciamento de Conteúdo e Feedback</p>
+            <a href="index.html" style="color: var(--cor-destaque); text-decoration: none;">&larr; Voltar para o Início</a>
+        </header>
+
+        <section id="feedback-section">
+            <h2 class="section-title">⭐ Feedback dos Jogos</h2>
+            <div class="table-wrapper">
+                <table id="feedback-table">
+                    <thead>
+                        <tr>
+                            <th>Jogo</th>
+                            <th>Nome</th>
+                            <th>Avaliação</th>
+                            <th>Comentário</th>
+                            <th>Data</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+                <div id="no-feedback" class="no-data" style="display:none;">Nenhum feedback encontrado.</div>
+            </div>
+        </section>
+        
+        <section id="games-list">
+            <h2 class="section-title">🎮 Jogos Cadastrados</h2>
+            <p style="color: #ccc;">A listagem e edição de jogos requer o array `jogos` (não incluído aqui). Os dados são puxados do `localStorage` com base no prefixo `feedback_`.</p>
+            </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableBody = document.getElementById('feedback-table').querySelector('tbody');
+            const noFeedbackDiv = document.getElementById('no-feedback');
+
+            // Prefixo usado na sua função criarPaginaJogo para o localStorage
+            const FEEDBACK_PREFIX = 'feedback_';
+
+            function loadAndRenderFeedback() {
+                const allFeedback = [];
+                // 1. Iterar sobre todas as chaves no localStorage
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    
+                    // 2. Filtrar apenas as chaves que correspondem ao prefixo do feedback
+                    if (key.startsWith(FEEDBACK_PREFIX)) {
+                        const gameName = key.substring(FEEDBACK_PREFIX.length);
+                        try {
+                            const comments = JSON.parse(localStorage.getItem(key));
+                            
+                            // 3. Adicionar cada comentário individualmente ao array
+                            if (Array.isArray(comments)) {
+                                comments.forEach((comment, index) => {
+                                    allFeedback.push({
+                                        key, // Chave completa para fácil remoção
+                                        gameName,
+                                        commentIndex: index,
+                                        ...comment
+                                    });
+                                });
+                            }
+                        } catch (e) {
+                            console.error(`Erro ao parsear o feedback para ${gameName}:`, e);
+                        }
+                    }
+                }
+
+                // 4. Renderizar a tabela
+                tableBody.innerHTML = '';
+                if (allFeedback.length === 0) {
+                    noFeedbackDiv.style.display = 'block';
+                    tableBody.style.display = 'none';
+                    return;
+                }
+                
+                noFeedbackDiv.style.display = 'none';
+                tableBody.style.display = 'table-row-group';
+
+
+                // Ordenar por data (opcional, mas útil)
+                // allFeedback.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+                allFeedback.forEach(item => {
+                    const row = tableBody.insertRow();
+                    const stars = '★'.repeat(item.estrelas);
+                    const shortComment = item.comentario.length > 70 ? item.comentario.substring(0, 70) + '...' : item.comentario;
+
+                    row.innerHTML = `
+                        <td><strong>${item.gameName}</strong></td>
+                        <td>${item.nome}</td>
+                        <td style="color: var(--cor-destaque);">${stars}</td>
+                        <td>${shortComment}</td>
+                        <td>${item.data}</td>
+                        <td>
+                            <button class="delete-btn" data-key="${item.key}" data-index="${item.commentIndex}">
+                                Excluir
+                            </button>
+                        </td>
+                    `;
+                });
+                
+                attachDeleteListeners();
+            }
+            
+            function attachDeleteListeners() {
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const key = this.getAttribute('data-key');
+                        const index = parseInt(this.getAttribute('data-index'));
+                        
+                        if (confirm(`Tem certeza que deseja EXCLUIR este comentário?`)) {
+                            deleteFeedback(key, index);
+                        }
+                    });
+                });
+            }
+
+            function deleteFeedback(key, indexToDelete) {
+                try {
+                    const commentsString = localStorage.getItem(key);
+                    if (!commentsString) return;
+                    
+                    const comments = JSON.parse(commentsString);
+                    
+                    // Remove o comentário pelo índice
+                    comments.splice(indexToDelete, 1);
+                    
+                    if (comments.length > 0) {
+                        // Salva a lista de comentários atualizada
+                        localStorage.setItem(key, JSON.stringify(comments));
+                    } else {
+                        // Se não houver mais comentários para o jogo, remove a chave
+                        localStorage.removeItem(key);
+                    }
+                    
+                    loadAndRenderFeedback(); // Recarrega a lista
+                    alert("Comentário excluído com sucesso!");
+
+                } catch (e) {
+                    console.error("Erro ao excluir feedback:", e);
+                    alert("Erro ao excluir comentário.");
+                }
+            }
+
+            // Inicializa o painel
+            loadAndRenderFeedback();
+        });
+    </script>
+</body>
+</html>

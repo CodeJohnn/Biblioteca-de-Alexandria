@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidade de Links | GuedesSEC - Dark</title>
+    <style>
+        /* --- Paleta Dark Mode --- */
+        :root {
+            --cor-principal: #ffffff;      /* Texto principal e ícones */
+            --cor-secundaria: #007bff;     /* Azul de destaque (links, botões) */
+            --cor-fundo: #121212;          /* Fundo principal bem escuro */
+            --cor-card: #1e1e1e;           /* Fundo dos cards e painéis */
+            --cor-detalhe: #333333;        /* Bordas e linhas de divisão */
+            --cor-upvote: #28a745;         /* Verde para votos/sucesso */
+            --cor-texto-claro: #bbbbbb;    /* Texto secundário */
+        }
+
+        /* --- Paleta Light Mode --- */
+        [data-theme="light"] {
+            --cor-principal: #333333;
+            --cor-secundaria: #0056b3;
+            --cor-fundo: #f5f5f5;
+            --cor-card: #ffffff;
+            --cor-detalhe: #dddddd;
+            --cor-upvote: #28a745;
+            --cor-texto-claro: #666666;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto-claro);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        /* Novo estilo para o banner */
+        .header-banner {
+            width: 100%; /* Ocupa a largura máxima do container */
+            max-width: 600px; /* Limita o tamanho do banner se for muito grande */
+            height: auto;
+            margin-bottom: 20px; /* Espaço entre o banner e o título */
+            display: block; /* Garante que a imagem se comporta como bloco */
+            margin-left: auto; /* Centraliza a imagem */
+            margin-right: auto; /* Centraliza a imagem */
+        }
+
+        header h1 {
+            font-size: 3em;
+            color: var(--cor-principal);
+            border-bottom: 3px solid var(--cor-secundaria);
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        /* Botão de alternar tema */
+        .theme-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: 2px solid var(--cor-detalhe);
+            color: var(--cor-principal);
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background-color: var(--cor-detalhe);
+        }
+
+        /* --- Formulário de Envio --- */
+        .form-card {
+            background-color: var(--cor-card);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid var(--cor-detalhe);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--cor-principal);
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        input[type="text"], input[type="url"], select, input[type="search"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 2px solid var(--cor-detalhe);
+            border-radius: 6px;
+            background-color: #2a2a2a;
+            color: var(--cor-principal);
+            box-sizing: border-box;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        [data-theme="light"] input[type="text"], 
+        [data-theme="light"] input[type="url"], 
+        [data-theme="light"] select,
+        [data-theme="light"] input[type="search"] {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        input:focus, select:focus {
+            border-color: var(--cor-secundaria);
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        button[type="submit"] {
+            background-color: var(--cor-secundaria);
+            color: var(--cor-principal);
+            border: none;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #0056b3; 
+        }
+
+        /* --- Controles: Filtros e Ordenação --- */
+        .controls {
+            display: flex;
+            flex-wrap: wrap; 
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: var(--cor-card);
+            padding: 15px;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        /* Barra de busca */
+        .search-container {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .search-container input {
+            margin-bottom: 0;
+        }
+        
+        /* Estilos dos botões de filtro de categoria */
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-filter button {
+            background-color: #2a2a2a;
+            color: var(--cor-texto-claro);
+            border: 1px solid var(--cor-detalhe);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        [data-theme="light"] .category-filter button {
+            background-color: #f0f0f0;
+            color: #666;
+        }
+
+        .category-filter button:hover {
+            background-color: #3a3a3a;
+        }
+
+        [data-theme="light"] .category-filter button:hover {
+            background-color: #e0e0e0;
+        }
+
+        .category-filter button.active {
+            background-color: var(--cor-secundaria);
+            border-color: var(--cor-secundaria);
+            color: var(--cor-principal);
+            font-weight: bold;
+        }
+
+        /* --- Lista de Links e Itens --- */
+        .links-list-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .link-item {
+            background-color: var(--cor-card);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--cor-detalhe);
+            transition: all 0.3s;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .link-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Coluna de Votos */
+        .vote-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 15px;
+            padding-right: 10px;
+            border-right: 1px solid var(--cor-detalhe);
+        }
+
+        .vote-btn {
+            background: none;
+            border: none;
+            color: var(--cor-texto-claro);
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.3s;
+        }
+
+        .vote-btn:hover {
+            color: var(--cor-upvote);
+            transform: scale(1.2);
+        }
+
+        .vote-count {
+            color: var(--cor-upvote);
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        /* Coluna de Informações do Link */
+        .link-info {
+            flex-grow: 1;
+        }
+
+        .link-info h3 {
+            margin: 0 0 5px 0;
+            color: var(--cor-principal);
+            font-size: 1.4em;
+            transition: color 0.3s;
+        }
+
+        .link-info .link-url {
+            color: var(--cor-secundaria);
+            word-break: break-all;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9em;
+            display: block;
+            margin-bottom: 8px;
+            transition: color 0.3s;
+        }
+
+        .link-info .link-url:hover {
+            color: var(--cor-upvote);
+            text-decoration: underline;
+        }
+        
+        /* Tag de Categoria */
+        .category-tag {
+            display: inline-block;
+            background-color: var(--cor-secundaria);
+            color: var(--cor-principal);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .link-meta {
+            font-size: 0.8em;
+            color: var(--cor-texto-claro);
+            margin-top: 5px;
+        }
+
+        .link-meta span {
+            color: var(--cor-secundaria);
+            font-weight: bold;
+        }
+
+        .no-links {
+            text-align: center;
+            color: #777;
+            padding: 30px;
+            font-style: italic;
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            header h1 {
+                font-size: 2.2em;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .category-filter {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .sort-control {
+                width: 100%;
+            }
+
+            .link-item {
+                flex-direction: column;
+            }
+
+            .vote-column {
+                flex-direction: row;
+                justify-content: center;
+                border-right: none;
+                border-bottom: 1px solid var(--cor-detalhe);
+                margin-right: 0;
+                margin-bottom: 10px;
+                padding-right: 0;
+                padding-bottom: 10px;
+            }
+
+            .vote-btn {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <button class="theme-toggle" id="theme-toggle">🌙</button>
+            <img src="assets/1.png" alt="Logo GuedesSEC" style="height:300px;" class="header-banner"> <h1>Comunidade</h1>
+            <p>Compartilhe, vote e descubra os melhores recursos!</p>
+        </header>
+
+        <section class="form-card">
+            <h2>🔗 Enviar Novo Link</h2>
+            <form id="link-form">
+                <div>
+                    <label for="titulo">Título/Descrição:</label>
+                    <input type="text" id="titulo" placeholder="Ex: Tutorial JS Avançado" required>
+                </div>
+                <div>
+                    <label for="url">URL do Link:</label>
+                    <input type="url" id="url" placeholder="https://exemplo.com.br" required>
+                </div>
+                <div>
+                    <label for="categoria">Categoria:</label>
+                    <select id="categoria" required>
+                        <option value="" disabled selected>Selecione uma categoria</option>
+                        <option value="Sites">Sites 🌐</option>
+                        <option value="Livros">Livros 📚</option>
+                        <option value="ISOs">ISOs 💾</option>
+                        <option value="Torrents">Torrents ⬇️</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="nome">Seu Nome (Opcional):</label>
+                    <input type="text" id="nome" placeholder="Nome de usuário">
+                </div>
+                <button type="submit">Publicar Link</button>
+            </form>
+        </section>
+
+        <section class="links-section">
+            <div class="controls">
+                <div class="search-container">
+                    <input type="search" id="search-input" placeholder="🔍 Buscar links...">
+                </div>
+                <div class="category-filter">
+                    <button id="filter-all" class="active" onclick="filterByCategory('Todas')">Todas</button>
+                    <button onclick="filterByCategory('Sites')">Sites</button>
+                    <button onclick="filterByCategory('Livros')">Livros</button>
+                    <button onclick="filterByCategory('ISOs')">ISOs</button>
+                    <button onclick="filterByCategory('Torrents')">Torrents</button>
+                </div>
+                <div class="sort-control">
+                    <label for="sort-by">Ordenar por:</label>
+                    <select id="sort-by" onchange="renderLinks()">
+                        <option value="timestamp">Mais Recente</option>
+                        <option value="votos">Mais Votado</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="links-list" class="links-list-wrapper">
+                </div>
+        </section>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('link-form');
+            const linksListContainer = document.getElementById('links-list');
+            const sortBySelect = document.getElementById('sort-by');
+            const filterButtons = document.querySelectorAll('.category-filter button');
+            const searchInput = document.getElementById('search-input');
+            const themeToggle = document.getElementById('theme-toggle');
+            const STORAGE_KEY = 'comunidadeLinksV3'; 
+            let currentCategoryFilter = 'Todas'; 
+            let currentSearchQuery = '';
+            let adminMode = false; // 👈 modo secreto de exclusão
+
+            // --- Gerenciamento de Tema ---
+            const savedTheme = localStorage.getItem('guedessec-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeToggle(savedTheme);
+
+            let links = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+            function saveLinks() {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(links));
+            }
+
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                localStorage.setItem('guedessec-theme', newTheme);
+                updateThemeToggle(newTheme);
+            });
+
+            function updateThemeToggle(theme) {
+                themeToggle.textContent = theme === 'dark' ? '🌙' : '☀️';
+            }
+
+            // 🔍 Busca
+            searchInput.addEventListener('input', function() {
+                currentSearchQuery = this.value.toLowerCase().trim();
+                renderLinks();
+            });
+
+            // --- Funções Globais ---
+
+            // Voto
+            window.handleVote = function(id) {
+                const originalIndex = links.findIndex(link => link.id === id);
+                if (originalIndex !== -1) {
+                    // Previne que o voto seja NaN se 'votos' não existir
+                    links[originalIndex].votos = (links[originalIndex].votos || 0) + 1; 
+                    saveLinks();
+                    renderLinks(); 
+                }
+            }
+
+            // Filtro
+            window.filterByCategory = function(category) {
+                currentCategoryFilter = category;
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                const activeButton = document.querySelector(`.category-filter button[onclick*="'${category}'"]`);
+                (activeButton || document.getElementById('filter-all')).classList.add('active');
+                renderLinks(); 
+            }
+
+            // 🧨 Excluir link
+            window.deleteLink = function(id) {
+                if (confirm("Deseja mesmo excluir este link?")) {
+                    links = links.filter(link => link.id !== id);
+                    saveLinks();
+                    renderLinks();
+                }
+            }
+            
+            // 👀 Atalho secreto de Exclusão — Shift + E
+            document.addEventListener('keydown', function(e) {
+                if (e.shiftKey && e.key.toLowerCase() === 'e') {
+                    // Usando a senha '240819' que estava no seu último bloco
+                    const senha = prompt("🔒 Digite a senha de administrador:");
+                    const senhaCorreta = "240819"; 
+
+                    if (senha === senhaCorreta) {
+                        adminMode = !adminMode; // Alterna o modo
+                        alert(adminMode ? "🧰 Modo de exclusão ativado!" : "✅ Modo de exclusão desativado.");
+                        renderLinks(); // Renderiza para mostrar/esconder botões
+                    } else if (senha !== null) {
+                         alert("❌ Senha incorreta!");
+                    }
+                }
+            });
+
+
+            // Renderização da Lista
+            window.renderLinks = function() {
+                linksListContainer.innerHTML = '';
+                const sortBy = sortBySelect.value;
+                let linksToRender = [...links]; 
+
+                // 1. Filtro de Categoria
+                if (currentCategoryFilter !== 'Todas') {
+                    linksToRender = linksToRender.filter(link => link.categoria === currentCategoryFilter);
+                }
+
+                // 2. Filtro de Busca
+                if (currentSearchQuery) {
+                    linksToRender = linksToRender.filter(link => 
+                        link.titulo.toLowerCase().includes(currentSearchQuery) || 
+                        (link.nome && link.nome.toLowerCase().includes(currentSearchQuery))
+                    );
+                }
+
+                // 3. Ordenação
+                if (sortBy === 'votos') {
+                    linksToRender.sort((a, b) => (b.votos || 0) - (a.votos || 0)); 
+                } else {
+                    linksToRender.sort((a, b) => b.timestamp - a.timestamp);
+                }
+
+                if (linksToRender.length === 0) {
+                    linksListContainer.innerHTML = '<p class="no-links">Nenhum link encontrado nesta categoria ou filtro.</p>';
+                    return;
+                }
+
+                linksToRender.forEach(link => {
+                    const linkItem = document.createElement('div');
+                    linkItem.className = 'link-item';
+
+                    const nomeAutor = link.nome ? `por <span style="color:var(--cor-secundaria);">${link.nome}</span>` : 'Anônimo';
+                    const numVotos = link.votos || 0;
+
+                    linkItem.innerHTML = `
+                        <div class="vote-column">
+                            <button class="vote-btn" onclick="handleVote('${link.id}')">▲</button>
+                            <span class="vote-count">${numVotos}</span>
+                            <span style="font-size:0.7em; color:#888;">votos</span>
+                        </div>
+                        <div class="link-info">
+                            <span class="category-tag">${link.categoria}</span>
+                            <h3>${link.titulo}</h3>
+                            <a href="${link.url}" target="_blank" class="link-url">${link.url}</a>
+                            <p class="link-meta">Publicado ${nomeAutor} em <span>${link.data}</span></p>
+                        </div>
+                    `;
+
+                    // 👁️ Mostrar botão de exclusão só no modo admin
+                    if (adminMode) {
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = '❌ Excluir';
+                        deleteBtn.style.background = 'red';
+                        deleteBtn.style.color = 'white';
+                        deleteBtn.style.border = 'none';
+                        deleteBtn.style.padding = '6px 10px';
+                        deleteBtn.style.borderRadius = '6px';
+                        deleteBtn.style.cursor = 'pointer';
+                        deleteBtn.style.marginLeft = '10px';
+                        deleteBtn.style.alignSelf = 'flex-start'; // Garante alinhamento
+                        deleteBtn.onclick = () => deleteLink(link.id);
+                        linkItem.querySelector('.link-info').appendChild(deleteBtn);
+                    }
+
+                    linksListContainer.appendChild(linkItem);
+                });
+            }
+
+            // --- Envio de Formulário ---
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const titulo = document.getElementById('titulo').value.trim();
+                const url = document.getElementById('url').value.trim();
+                const categoria = document.getElementById('categoria').value;
+                const nome = document.getElementById('nome').value.trim();
+
+                if (titulo === '' || url === '' || categoria === '') {
+                    alert('Por favor, preencha o Título, a URL e selecione a Categoria.');
+                    return;
+                }
+                
+                // Adiciona 'http://' se o protocolo estiver faltando
+                let formattedUrl = url;
+                if (!/^https?:\/\//i.test(formattedUrl)) {
+                    formattedUrl = 'http://' + formattedUrl;
+                }
+
+                const novoLink = {
+                    id: Date.now().toString(),
+                    titulo: titulo,
+                    url: formattedUrl,
+                    nome: nome,
+                    categoria: categoria,
+                    votos: 0,
+                    data: new Date().toLocaleDateString('pt-BR'),
+                    timestamp: Date.now()
+                };
+
+                links.push(novoLink);
+                saveLinks();
+                form.reset();
+                renderLinks();
+            });
+
+            // Renderizar na inicialização
+            renderLinks();
+        });
+    </script>
+</body>
+</html>

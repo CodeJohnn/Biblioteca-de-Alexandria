@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Login Admin | Biblioteca de Alexandria</title>
+  <link rel="stylesheet" href="admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="login.js" defer></script>
+</head>
+<body class="auth-page">
+  <main class="auth-card">
+    <a class="brand" href="../index.html"><span class="brand-mark">A</span><span>Biblioteca <b>de Alexandria</b></span></a>
+    <p class="eyebrow">ACESSO RESTRITO</p>
+    <h1>Painel administrativo</h1>
+    <p class="muted">Entre com a conta de administrador autorizada.</p>
+
+    <form id="login-form">
+      <label for="email">E-mail</label>
+      <input id="email" name="email" type="email" autocomplete="username" required placeholder="admin@exemplo.com">
+
+      <label for="password">Senha</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Sua senha">
+
+      <button class="button primary full" type="submit" id="login-button">Entrar no painel</button>
+      <p id="login-message" class="message" role="status" aria-live="polite"></p>
+    </form>
+    <a class="back-link" href="../index.html">← Voltar para a biblioteca</a>
+  </main>
+</body>
+</html>
