@@ -2,12 +2,18 @@
 <html lang="pt-br">
 
 <head>
+    <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="Assets/banner/1.png" />
     <title>GuedesSEC</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <script src="site-content.js" defer></script>
+    <script src="/admin/content.js" defer></script>
     <script src="main.js" defer></script>
+    <script src="Assets/pages/buscador.js" defer></script>
+    <link rel="stylesheet" href="Assets/pages/buscador.css" />
+    <link rel="stylesheet" href="/Css/torrent/torrent.css" />
+    <link rel="stylesheet" href="backend/devtools.css" />
+    <script src="backend/devtools.js" defer></script>
     <!-- MONITORAR QUEM ACESSA MEU SITE -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-S2QJ2BQSRZ"></script>
     <script>
@@ -103,9 +109,11 @@
                                 rel="noopener noreferrer" aria-label="Instagram">
                                 <i class="fa-brands fa-instagram"></i>
                             </a>
-                            <a href="https://w.app/zxpm5j" class="social-link whatsapp" target="_blank"
-                                rel="noopener noreferrer" aria-label="WhatsApp">
-                                <i class="fa-brands fa-whatsapp"></i>
+                            <a href="admin/painel.html" class="social-link user-area" aria-label="Área do usuário"
+                                title="Área do usuário">
+                                <i class="fa-solid fa-user"></i>
+                            </a>
+
                             </a>
                         </div>
                     </li>
@@ -114,89 +122,87 @@
         </div>
     </header>
 
+
+
     <main class="container main-content">
         <section class="welcome-section">
-            <h1 class="typing-effect" style="text-align: center">
-                Bem vindo à Biblioteca de Alexandria
+
+            <h1 class="typing-effect">
+                Bem-vindo à Biblioteca de Alexandria
             </h1>
 
-            <p class="fade-in-msg" style="animation-delay: 2.3s; text-align: center">
-                Este é o seu centro de armazenamento pessoal para ISOs,
-                livros, códigos e links para jogos.
+            <p class="typing-effect">
+                Este é um centro de armazenamento em nuvem para
+                ISOs, livros, códigos e links para jogos.
             </p>
 
-            <p class="fade-in-msg" style="animation-delay: 3.1s; text-align: center">
-                Organize e acesse esses recursos de forma segura e
-                eficiente.
+            <p class="typing-effect">
+                Acesse esses recursos de forma segura e eficiente.
             </p>
+
+            <!-- Barra de pesquisa -->
+            <div class="search-container">
+                <form class="search-box" id="searchForm">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input type="search" id="searchInput" placeholder="Pesquisar livros, ISOs, códigos..."
+                        aria-label="Pesquisar recursos">
+
+                    <button type="submit">Pesquisar</button>
+                </form>
+
         </section>
+    </main>
 
-        <div style="
-                    width: 100%;
-                    display: flex;
-                    justify-content: center;
-                    align-items: stretch;
-                    gap: 32px;
-                    margin: 24px 0;
-                ">
-            <!-- ACADEMY -->
-            <a href="" style="
+    <div style="
+         width: 100%;
+         display: flex;
+         justify-content: center;
+         align-items: stretch;
+         gap: 32px;
+         margin: 24px 0;">
+
+        <a href="#" onclick="openModal('modalNovidades');voltarDevTools();return false;
+                    "style="
                         width: 320px;
                         border: 1px solid #00ff00;
                         border-radius: 22px;
-                        overflow: hidden;
                         background: rgba(0, 0, 0, 0.85);
-                        box-shadow: 0 0 18px rgba(0, 255, 0, 0.25);
                         text-decoration: none;
                         color: #fff;
                         transition: 0.4s;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
-                        padding: 18px;
-                    ">
-                <img src="Assets/gif/giphy.gif" style="
-                            width: 100%;
+                        padding: 18px; ">
+
+            <img src="Assets/gif/giphy 2.gif" 
+                     style="width: 100%;
                             height: 160px;
                             object-fit: cover;
                             border-radius: 14px;
-                            box-shadow: 0 0 15px rgba(0, 255, 0, 0.25);
-                        " />
-
-                <h3 style="
-                            margin-top: 18px;
-                            font-size: 32px;
-                            color: #4f4242;
-                            font-family: &quot;JetBrains Mono&quot;, monospace;
-                            text-shadow: 0 0 10px #323532;
-                        ">
-                    Em Breve
+                            box-shadow: 0 0 15px rgba(0, 255, 0, 0.25);"/>
+                <h3 style="margin-top: 18px;
+                           font-size: 32px;
+                           color: #fff;
+                           font-family: &quot;JetBrains Mono&quot;, monospace;
+                           text-shadow: 0 0 10px #00ff00;">
+                           DevTools
                 </h3>
 
-                <p style="
-                            margin-top: 8px;
-                            color: #d7d7d7;
-                            text-align: center;
-                            font-size: 16px;
-                        ">
-                    Nada por aqui
-                </p>
+            <div style="margin-top: 18px;
+                        background: #00c933;
+                        color: #fff;
+                        font-weight: bold;
+                        padding: 12px 28px;
+                        border-radius: 12px;
+                        box-shadow: 0 0 15px rgba(0, 255, 0, 0.35);">
+                Acessar
+            </div>
+        </a>
 
-                <div style="
-                            margin-top: 18px;
-                            background: #464646;
-                            color: #fff;
-                            font-weight: bold;
-                            padding: 12px 28px;
-                            border-radius: 12px;
-                            box-shadow: 0 0 15px rgba(0, 255, 0, 0.35);
-                        ">
-                    Acesso Bloqueado
-                </div>
-            </a>
-
-            <!-- CARROSSEL -->
-            <div id="anuncio-rotativo" style="
+        <!-- CARROSSEL -->
+        <div id="anuncio-rotativo" style="
                         flex: 1;
                         max-width: 400px;
                         display: flex;
@@ -204,7 +210,7 @@
                         align-items: center;
                         justify-content: center;
                     ">
-                <button id="anuncio-prev" style="
+            <button id="anuncio-prev" style="
                             background: none;
                             border: none;
                             font-size: 2em;
@@ -212,10 +218,10 @@
                             cursor: pointer;
                             margin: 0 12px;
                         ">
-                    &#8592;
-                </button>
+                &#8592;
+            </button>
 
-                <div id="anuncio-slide" style="
+            <div id="anuncio-slide" style="
                             flex: 0 0 320px;
                             height: 220px;
                             display: flex;
@@ -228,7 +234,7 @@
                             margin: 0 8px;
                         "></div>
 
-                <button id="anuncio-next" style="
+            <button id="anuncio-next" style="
                             background: none;
                             border: none;
                             font-size: 2em;
@@ -236,13 +242,12 @@
                             cursor: pointer;
                             margin: 0 12px;
                         ">
-                    &#8594;
-                </button>
-            </div>
+                &#8594;
+            </button>
+        </div>
 
-            <!-- CURSOS -->
-            <a href="#" onclick="
-                        openModal('modalNovidades');
+        <!-- CURSOS -->
+        <a href="#" onclick="openModal('modalNovidades');
                         voltarCursos();
                         return false;
                     " style="
@@ -260,7 +265,7 @@
                         align-items: center;
                         padding: 18px;
                     ">
-                <img src="Assets/gif/giphy 2.gif" style="
+            <img src="Assets/gif/giphy 2.gif" style="
                             width: 100%;
                             height: 160px;
                             object-fit: cover;
@@ -268,26 +273,16 @@
                             box-shadow: 0 0 15px rgba(0, 255, 0, 0.25);
                         " />
 
-                <h3 style="
+            <h3 style="
                             margin-top: 18px;
                             font-size: 32px;
                             color: #fff;
                             font-family: &quot;JetBrains Mono&quot;, monospace;
                             text-shadow: 0 0 10px #00ff00;
                         ">
-                    Cursos
-                </h3>
-
-                <p style="
-                            margin-top: 8px;
-                            color: #d7d7d7;
-                            text-align: center;
-                            font-size: 16px;
-                        ">
-                    Melhore seus conhecimentos.
-                </p>
-
-                <div style="
+                SkillUp
+            </h3>
+            <div style="
                             margin-top: 18px;
                             background: #00c933;
                             color: #fff;
@@ -296,97 +291,114 @@
                             border-radius: 12px;
                             box-shadow: 0 0 15px rgba(0, 255, 0, 0.35);
                         ">
-                    Acessar
-                </div>
-            </a>
+                Acessar
+            </div>
+        </a>
+    </div>
+
+    <section class="categories">
+        <div class="category-card electric-border">
+            <div class="category-icon"><img src="Assets/icon/Categorias/isos.png" alt="ISOs" style="height: 50px" />
+            </div>
+            <h3>Isos</h3>
+            <p>Explore uma coleção completa de sistemas operacionais prontos para uso. Ideal para testes, formatações ou
+                instalações rápidas.</p>
+            <button onclick="openModal('modalIsos')" class="btn"
+                style="background:#fff;color:#000;font-weight:bold;">Acessar Isos</button>
         </div>
-
-        <section class="categories">
-            <div class="category-card electric-border">
-                <div class="category-icon"><img src="Assets/icon/Categorias/isos.png" alt="ISOs" style="height: 50px" /></div>
-                <h3>Isos</h3>
-                <p>Explore uma coleção completa de sistemas operacionais prontos para uso. Ideal para testes, formatações ou instalações rápidas.</p>
-                <button onclick="openModal('modalIsos')" class="btn" style="background:#fff;color:#000;font-weight:bold;">Acessar Isos</button>
+        <div class="category-card electric-border">
+            <div class="category-icon"><img src="Assets/icon/Categorias/livros.png" alt="Livros" style="height: 50px" />
             </div>
-            <div class="category-card electric-border">
-                <div class="category-icon"><img src="Assets/icon/Categorias/livros.png" alt="Livros" style="height: 50px" /></div>
-                <h3>Livros</h3>
-                <p>Descubra obras incríveis: conhecimento, aprendizado e entretenimento em um só lugar.</p>
-                <button onclick="openModal('modalLivros')" class="btn" style="background:#fff;color:#000;font-weight:bold;">Acessar Livros</button>
+            <h3>Livros</h3>
+            <p>Descubra obras incríveis: conhecimento, aprendizado e entretenimento em um só lugar.</p>
+            <button onclick="openModal('modalLivros')" class="btn"
+                style="background:#fff;color:#000;font-weight:bold;">Acessar Livros</button>
+        </div>
+        <div class="category-card electric-border">
+            <div class="category-icon"><img src="Assets/icon/Categorias/jogos.png" alt="Jogos" style="height: 50px" />
             </div>
-            <div class="category-card electric-border">
-                <div class="category-icon"><img src="Assets/icon/Categorias/jogos.png" alt="Jogos" style="height: 50px" /></div>
-                <h3>Torrent</h3>
-                <p>Jogos para PC prontos para download via torrent. Diversão garantida a um clique de distância.</p>
-                <button onclick="openModal('modalJogos')" class="btn" style="background:#fff;color:#000;font-weight:bold;">Acessar links Torrents</button>
+            <h3>Torrent</h3>
+            <p>Jogos para PC prontos para download via torrent. Diversão garantida a um clique de distância.</p>
+            <button onclick="openModal('modalJogos')" class="btn"
+                style="background:#fff;color:#000;font-weight:bold;">Acessar links Torrents</button>
+        </div>
+        <div class="category-card electric-border">
+            <div class="category-icon"><img src="Assets/icon/Categorias/sites.png" alt="Sites" style="height: 50px" />
             </div>
-            <div class="category-card electric-border">
-                <div class="category-icon"><img src="Assets/icon/Categorias/sites.png" alt="Sites" style="height: 50px" /></div>
-                <h3>Sites</h3>
-                <p>Inteligência Artificial, filmes, séries e páginas de estudos.</p>
-                <button onclick="openModal('modalSites')" class="btn" style="background:#fff;color:#000;font-weight:bold;">Acessar websites</button>
+            <h3>Sites</h3>
+            <p>Inteligência Artificial, filmes, séries e páginas de estudos.</p>
+            <button onclick="openModal('modalSites')" class="btn"
+                style="background:#fff;color:#000;font-weight:bold;">Acessar websites</button>
+        </div>
+        <div class="category-card electric-border">
+            <div class="category-icon"><i class="fa-solid fa-code" style="font-size: 42px; color: #00ff41;"></i>
             </div>
-        </section>
+            <h3>DevTools</h3>
+            <p>Biblioteca pública de códigos e trechos úteis com opção para copiar.</p>
+            <button onclick="openModal('modalDevTools')" class="btn"
+                style="background:#fff;color:#000;font-weight:bold;">Acessar códigos</button>
+        </div>
+    </section>
 
-        <style>
-            /* Deixa todas as imagens quadradas e do mesmo tamanho */
-            .test-img-wrap {
-                width: 180px;
-                height: 180px;
-                overflow: hidden;
-                border-radius: 12px;
-                /* canto levemente arredondado */
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                transition:
-                    transform 0.3s ease,
-                    box-shadow 0.3s ease;
-            }
+    <style>
+        /* Deixa todas as imagens quadradas e do mesmo tamanho */
+        .test-img-wrap {
+            width: 180px;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 12px;
+            /* canto levemente arredondado */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease;
+        }
 
-            .test-img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                /* garante proporção sem distorcer */
-                cursor: pointer;
-                /* mostra que pode clicar */
-                border-radius: 12px;
-            }
+        .test-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* garante proporção sem distorcer */
+            cursor: pointer;
+            /* mostra que pode clicar */
+            border-radius: 12px;
+        }
 
-            .test-img-wrap:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 15px #00ff00;
-                /* brilho verde estilo Matrix */
-            }
+        .test-img-wrap:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #000000;
+            /* brilho verde estilo Matrix */
+        }
 
-            /* NOVO: Estilo para a imagem ser o único elemento na test-card */
-            .test-card {
-                display: flex;
-                /* Garante que a imagem fique centralizada se a card tiver mais espaço */
-                justify-content: center;
-                align-items: center;
-                /* Ajuste se precisar de mais estilos para a card em si */
-            }
-        </style>
+        /* NOVO: Estilo para a imagem ser o único elemento na test-card */
+        .test-card {
+            display: flex;
+            /* Garante que a imagem fique centralizada se a card tiver mais espaço */
+            justify-content: center;
+            align-items: center;
+            /* Ajuste se precisar de mais estilos para a card em si */
+        }
+    </style>
 
-        <div class="test-cards-container">
-            <div class="test-card" data-href="pages/web/Tecnologia/T.i.html">
-                <div class="test-img-wrap">
-                    <img src="Assets/icon/Categorias/Testes/1.png" alt="Soldado 1" class="test-img" />
-                </div>
-            </div>
-            <div class="test-card" data-href="pages/web/Matematica/matematica.html">
-                <div class="test-img-wrap">
-                    <img src="Assets/icon/Categorias/Testes/2.png" alt="Soldado 2" class="test-img" />
-                </div>
-            </div>
-            <div class="test-card" data-href="pages/web/Fiscal Treinamento/Fiscal.html">
-                <div class="test-img-wrap">
-                    <img src="Assets/icon/Categorias/Testes/3.png" alt="Soldado 3" class="test-img" />
-                </div>
+    <div class="test-cards-container">
+        <div class="test-card" data-href="pages/web/Tecnologia/T.i.html">
+            <div class="test-img-wrap">
+                <img src="Assets/icon/Categorias/icon/1.png" alt="icon 1" class="test-img" />
             </div>
         </div>
+        <div class="test-card" data-href="pages/web/Matematica/matematica.html">
+            <div class="test-img-wrap">
+                <img src="Assets/icon/Categorias/icon/1.png" alt="icon 2" class="test-img" />
+            </div>
+        </div>
+        <div class="test-card" data-href="pages/web/Fiscal Treinamento/Fiscal.html">
+            <div class="test-img-wrap">
+                <img src="Assets/icon/Categorias/icon/1.png" alt="icon 3" class="test-img" />
+            </div>
+        </div>
+    </div>
     </main>
 
     <div id="modalIsos" class="modal-overlay">
@@ -515,6 +527,19 @@
                 </li>
             </ul>
             <ul class="modal-list" id="Sites-arquivos" style="display: none"></ul>
+        </div>
+    </div>
+
+    <div id="modalDevTools" class="modal-overlay">
+        <div class="modal-card devtools-modal-card">
+            <button class="modal-close" type="button" onclick="closeModal('modalDevTools')" aria-label="Fechar">
+                &times;
+            </button>
+            <h2>DevTools · Códigos da comunidade</h2>
+            <p>Veja e copie os códigos publicados pela comunidade.</p>
+            <ul id="devtoolsList" class="modal-list devtools-list">
+                <li class="devtools-empty">Carregando códigos...</li>
+            </ul>
         </div>
     </div>
 
