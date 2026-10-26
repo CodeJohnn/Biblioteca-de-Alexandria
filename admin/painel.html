@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Painel · Biblioteca de Alexandria</title>
+    <link rel="stylesheet" href="../backend/upload.css">
+    <link rel="stylesheet" href="../backend/devtools.css">
+    <style>
+        :root {
+            --bg: #050805;
+            --card: #101310;
+            --card-2: #161a16;
+            --borda: #1f6f1f;
+            --verde: #00ff00;
+            --verde-escuro: #008000;
+            --texto: #e6ffe6;
+            --mudo: #8aa08a;
+            --erro: #ff4444;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--texto);
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.45;
+        }
+        header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--borda);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between;
+        }
+        header h1 { margin: 0; font-size: 20px; color: var(--verde); letter-spacing: 1px; }
+        header a { color: var(--verde); text-decoration: none; font-size: 14px; }
+        header a:hover { text-decoration: underline; }
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: grid;
+            gap: 20px;
+            grid-template-columns: minmax(0, 1fr);
+        }
+        @media (min-width: 960px) {
+            main { grid-template-columns: 380px minmax(0, 1fr); align-items: start; }
+            .col-form { position: sticky; top: 16px; }
+        }
+        .painel {
+            background: var(--card);
+            border: 1px solid var(--borda);
+            border-radius: 12px;
+            padding: 18px;
+        }
+        .painel h2 { margin: 0 0 14px; font-size: 16px; color: var(--verde); }
+        label { display: block; font-size: 13px; color: var(--mudo); margin: 12px 0 4px; }
+        input[type="text"], input[type="search"], select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: #0a0d0a;
+            color: var(--texto);
+            border: 1px solid var(--borda);
+            border-radius: 8px;
+            font: inherit;
+        }
+        textarea { resize: vertical; min-height: 64px; }
+        input:focus, select:focus, textarea:focus {
+            outline: 2px solid var(--verde);
+            outline-offset: 1px;
+        }
+        .linha { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button, .btn {
+            background: var(--verde-escuro);
+            color: #fff;
+            border: 0;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover, .btn:hover { background: #00aa00; }
+        button.sec { background: #243024; color: var(--texto); }
+        button.sec:hover { background: #2f402f; }
+        button.perigo { background: #7a1c1c; }
+        button.perigo:hover { background: #a82525; }
+        button.mini { padding: 6px 10px; font-size: 13px; }
+        .acoes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+        .preview {
+            margin-top: 8px;
+            width: 100%;
+            height: 120px;
+            border: 1px dashed var(--borda);
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            color: var(--mudo);
+            font-size: 13px;
+        }
+        .preview img { width: 100%; height: 100%; object-fit: cover; }
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+        .chip {
+            background: var(--card-2);
+            border: 1px solid var(--borda);
+            border-radius: 999px;
+            padding: 4px 12px;
+            font-size: 13px;
+        }
+        .chip b { color: var(--verde); }
+        .filtros { display: grid; gap: 10px; grid-template-columns: 1fr; }
+        @media (min-width: 640px) { .filtros { grid-template-columns: 1fr 1fr 1.4fr; } }
+        .filtros label { margin-top: 0; }
+        .contagem { color: var(--mudo); font-size: 13px; margin: 12px 0 8px; }
+        ul.lista { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+        .item {
+            display: grid;
+            grid-template-columns: 56px minmax(0, 1fr) auto;
+            gap: 12px;
+            align-items: center;
+            background: var(--card-2);
+            border: 1px solid #1a2a1a;
+            border-left: 3px solid var(--verde);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        .item .thumb {
+            width: 56px; height: 56px;
+            border-radius: 8px;
+            background: #0a0d0a;
+            overflow: hidden;
+            display: grid; place-items: center;
+            color: var(--mudo); font-size: 11px;
+        }
+        .item .thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .item .nome { font-weight: 600; overflow-wrap: anywhere; }
+        .item .meta { font-size: 12px; color: var(--mudo); }
+        .item .desc { font-size: 13px; color: #b7c9b7; overflow-wrap: anywhere; }
+        .item .url {
+            font-size: 12px;
+            color: var(--verde);
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-decoration: none;
+        }
+        .item .botoes { display: flex; flex-direction: column; gap: 6px; }
+        .vazio { text-align: center; color: var(--mudo); padding: 28px 8px; }
+        .aviso {
+            background: #2a0f0f;
+            border: 1px solid var(--erro);
+            color: #ffb4b4;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin: 20px;
+        }
+        .nota { font-size: 12px; color: var(--mudo); margin-top: 10px; }
+        .ferramentas { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .ferramentas select { width: auto; }
+        .toast {
+            position: fixed;
+            left: 50%; bottom: 24px;
+            transform: translate(-50%, 20px);
+            background: #0c2a0c;
+            border: 1px solid var(--verde);
+            color: var(--texto);
+            padding: 10px 16px;
+            border-radius: 8px;
+            opacity: 0;
+            pointer-events: none;
+            transition: .2s;
+            max-width: 90vw;
+            z-index: 10;
+        }
+        .toast.show { opacity: 1; transform: translate(-50%, 0); }
+        .toast.erro { background: #2a0f0f; border-color: var(--erro); }
+        [hidden] { display: none !important; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PAINEL DE CONTROLE · BIBLIOTECA DE ALEXANDRIA</h1>
+        <a href="../index.html">← Voltar ao site</a>
+    </header>
+
+    <div id="erroApi" class="aviso" hidden>
+        Não encontrei o <code>AlexandriaContent</code>. Confira se o arquivo do seu content.js está carregado
+        <b>antes</b> do <code>admin.js</code> (veja as tags &lt;script&gt; no final deste HTML).
+    </div>
+
+    <main>
+        <!-- FORMULÁRIO -->
+        <section class="col-form">
+            <form class="painel" id="formItem" autocomplete="off">
+                <h2 id="tituloForm">Adicionar item</h2>
+
+                <div class="linha">
+                    <div>
+                        <label for="secao">Seção</label>
+                        <select id="secao"></select>
+                    </div>
+                    <div>
+                        <label for="subcategoria">Categoria</label>
+                        <select id="subcategoria"></select>
+                    </div>
+                </div>
+
+                <label for="nome">Nome *</label>
+                <input type="text" id="nome" maxlength="200" placeholder="Ex.: Ubuntu 24.04" required>
+
+                <label for="descricao">Descrição (opcional)</label>
+                <textarea id="descricao" maxlength="300" placeholder="Ex.: ISO oficial, 64 bits"></textarea>
+
+                <label for="link">Link *</label>
+                <input type="text" id="link" placeholder="https://..." required>
+
+                <label for="imagem">Imagem (URL ou caminho do site, opcional)</label>
+                <input type="text" id="imagem" placeholder="Assets/icon/... ou https://...">
+                <div class="preview" id="preview">sem imagem</div>
+
+                <div class="acoes">
+                    <button type="submit" id="btnSalvar">Adicionar</button>
+                    <button type="button" class="sec" id="btnCancelar" hidden>Cancelar edição</button>
+                </div>
+                <p class="nota">
+                    O painel guarda <b>links e imagens</b> (nome, descrição, link, imagem). Os arquivos em si continuam
+                    no seu Drive/Mediafire/etc.
+                </p>
+            </form>
+
+            <section class="painel" style="margin-top:20px">
+                <h2>Enviar arquivo ao servidor</h2>
+                <p id="serverStatus" class="upload-server-status" role="status" aria-live="polite" hidden>
+                    Servidor inativo ou indisponível. Os links cadastrados neste navegador continuam funcionando,
+                    mas o envio de arquivos depende do servidor.
+                </p>
+                <p class="nota">O arquivo será armazenado no servidor e ficará disponível para download na categoria escolhida.</p>
+                <form id="uploadForm">
+                    <label for="uploadNome">Nome do arquivo</label>
+                    <input type="text" id="uploadNome" name="nome" maxlength="80" required autocomplete="off">
+
+                    <label for="uploadDescricao">Descrição (opcional)</label>
+                    <textarea id="uploadDescricao" name="descricao" maxlength="300" rows="3"></textarea>
+
+                    <div class="linha">
+                        <div>
+                            <label for="section">Seção</label>
+                            <select id="section" name="section" required disabled>
+                                <option value="">Carregando seções...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="subcategory">Categoria</label>
+                            <select id="subcategory" name="subcategory" required disabled>
+                                <option value="">Selecione uma seção</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <label for="arquivo">Arquivo</label>
+                    <input type="file" id="arquivo" name="arquivo"
+                        accept=".pdf,.txt,.md,.png,.jpg,.jpeg,.webp,.gif" required>
+                    <p class="nota" id="fileHint">PDF, TXT, MD, PNG, JPG, WEBP ou GIF. Máximo: 25 MiB.</p>
+
+                    <button id="submitUpload" type="submit" disabled>Enviar arquivo</button>
+                    <p id="uploadStatus" class="nota" role="status" aria-live="polite"></p>
+                </form>
+                <p class="nota">O envio é público. Não envie arquivos pessoais ou conteúdo que você não tenha autorização para compartilhar.</p>
+            </section>
+
+            <section class="painel" style="margin-top:20px">
+                <h2>DevTools · Publicar código</h2>
+                <p class="nota">Os códigos publicados ficam visíveis para todos. Qualquer visitante com acesso a este painel pode publicar.</p>
+                <p id="devtoolsServerWarning" class="devtools-server-warning" role="status" aria-live="polite" hidden>
+                    Servidor inativo ou indisponível. Não é possível carregar ou publicar códigos.
+                </p>
+                <form id="devtoolsForm" class="devtools-form">
+                    <label for="devtoolsTitle">Título</label>
+                    <input id="devtoolsTitle" name="title" type="text" maxlength="100" required>
+
+                    <label for="devtoolsDescription">Descrição (opcional)</label>
+                    <textarea id="devtoolsDescription" name="description" maxlength="300" rows="2"></textarea>
+
+                    <label for="devtoolsLanguage">Linguagem</label>
+                    <select id="devtoolsLanguage" name="language" required></select>
+
+                    <label for="devtoolsCode">Código (máximo 20.000 caracteres)</label>
+                    <textarea id="devtoolsCode" name="code" rows="10" maxlength="20000"
+                        spellcheck="false" required></textarea>
+
+                    <button type="submit">Publicar código</button>
+                    <p id="devtoolsStatus" class="devtools-status" role="status" aria-live="polite"></p>
+                </form>
+            </section>
+        </section>
+
+        <!-- LISTA -->
+        <section>
+            <div class="painel">
+                <h2>Itens cadastrados</h2>
+                <div class="chips" id="chips"></div>
+
+                <div class="filtros">
+                    <div>
+                        <label for="fSecao">Seção</label>
+                        <select id="fSecao"></select>
+                    </div>
+                    <div>
+                        <label for="fSub">Categoria</label>
+                        <select id="fSub"></select>
+                    </div>
+                    <div>
+                        <label for="fTexto">Buscar</label>
+                        <input type="search" id="fTexto" placeholder="nome, descrição ou link">
+                    </div>
+                </div>
+
+                <div class="contagem" id="contagem"></div>
+                <ul class="lista" id="lista"></ul>
+            </div>
+
+            <div class="painel" style="margin-top:20px">
+                <h2>Backup e dados</h2>
+                <div class="ferramentas">
+                    <button type="button" class="sec" id="btnExportar">⬇ Exportar JSON</button>
+                    <select id="modoImport" aria-label="Modo de importação">
+                        <option value="mesclar">Importar: mesclar com os atuais</option>
+                        <option value="substituir">Importar: substituir tudo</option>
+                    </select>
+                    <button type="button" class="sec" id="btnImportar">⬆ Importar JSON</button>
+                    <input type="file" id="arquivoImport" accept="application/json,.json" hidden>
+                    <button type="button" class="perigo" id="btnLimpar">Apagar tudo</button>
+                </div>
+                <p class="nota">
+                    Os itens ficam salvos no <b>navegador deste computador</b> (localStorage). Exporte um backup de
+                    tempos em tempos: limpar os dados do navegador apaga tudo.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="content.js"></script>
+    <script src="painel.js"></script>
+    <script src="../backend/upload.js" defer></script>
+    <script src="../backend/devtools.js" defer></script>
+</body>
+</html>

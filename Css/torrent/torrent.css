@@ -1,0 +1,499 @@
+
+/* ---------- Página do jogo ---------- */
+.game-page {
+    --cor-botao: #e60023;
+    --cor-botao-hover: #ff1a3d;
+    --cor-dublagem: #008000;
+    --cor-dublagem-hover: #00aa00;
+    --imagem-fundo: none;
+
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background: var(--imagem-fundo);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: 1000;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ---------- Botão voltar ---------- */
+.game-page .btn-voltar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    padding: 10px 20px;
+    background: var(--cor-botao);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    z-index: 1001;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- Hero ---------- */
+.game-page .hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 80px 20px 60px;
+    background: rgba(0, 0, 0, 0.4);
+    position: relative;
+    backdrop-filter: blur(3px);
+}
+
+.game-page .hero-content {
+    max-width: 800px;
+    margin-bottom: 30px;
+}
+
+.game-page .hero-title {
+    font-size: 3.5em;
+    color: var(--cor-botao);
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+}
+
+.game-page .hero-subtitle {
+    font-size: 1.8em;
+    color: #fff;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+/* Imagem principal e vídeo */
+.game-page .hero-image-container,
+.game-page .demo-videos {
+    width: 100%;
+    max-width: 600px;
+}
+
+.game-page .hero-image-container {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(230, 0, 35, 0.4);
+    border: 2px solid rgba(230, 0, 35, 0.3);
+}
+
+.game-page .hero-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* ---------- Imagens demo ---------- */
+.game-page .demo-images {
+    width: 100%;
+    max-width: 900px;
+    margin: 32px auto 0;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.game-page .demo-images img {
+    width: 260px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: 0 0 18px #ff0000;
+    background: #111;
+    margin-bottom: 12px;
+}
+
+/* ---------- Vídeos demo ---------- */
+.game-page .demo-videos {
+    margin: 32px auto 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.game-page .video-item {
+    width: 100%;
+    text-align: center;
+}
+
+.game-page .video-frame {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(230, 0, 35, 0.4);
+    border: 2px solid rgba(230, 0, 35, 0.3);
+    background: #111;
+}
+
+.game-page .video-frame iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+}
+
+.game-page .video-label {
+    font-size: 1.1em;
+    color: var(--cor-botao-hover);
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(255, 26, 61, 0.5);
+    margin: 8px 0 0;
+}
+
+/* ---------- Divisor ---------- */
+.game-page .divider {
+    width: 80%;
+    max-width: 1000px;
+    height: 1px;
+    margin: 0 auto;
+    background: linear-gradient(
+        to right,
+        rgba(230, 0, 35, 0),
+        rgba(230, 0, 35, 0.5),
+        rgba(230, 0, 35, 0)
+    );
+    box-shadow: 0 0 10px rgba(230, 0, 35, 0.5);
+}
+
+.game-page .divider--curto {
+    max-width: 100px;
+}
+
+/* ---------- Requisitos ---------- */
+.game-page .requirements-section {
+    padding: 60px 20px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.game-page .requirements-section h3 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.game-page .requirements-section > p {
+    color: #ccc;
+    font-size: 1.1em;
+}
+
+.game-page .requirements-grid {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin: 40px auto 30px;
+    max-width: 900px;
+}
+
+.game-page .req-box {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+    backdrop-filter: blur(10px);
+}
+
+.game-page .req-box h4 {
+    text-align: center;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+.game-page .req-box.intel {
+    box-shadow: 0 0 30px rgba(0, 100, 200, 0.3);
+    border: 1px solid rgba(0, 100, 200, 0.2);
+}
+
+.game-page .req-box.intel h4 {
+    color: #0071c5;
+}
+
+.game-page .req-box.amd {
+    box-shadow: 0 0 30px rgba(237, 28, 36, 0.3);
+    border: 1px solid rgba(237, 28, 36, 0.2);
+}
+
+.game-page .req-box.amd h4 {
+    color: #ed1c24;
+}
+
+.game-page .requirements-cta-group {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* ---------- Downloads ---------- */
+.game-page .download-card {
+    background-color: #0a0a0a;
+    border: 2px solid red;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+}
+
+.game-page .download-card h3 {
+    color: #ff4040;
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    text-shadow: none;
+}
+
+.game-page .download-card iframe {
+    border-radius: 8px;
+}
+
+.game-page .game-download-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background: rgba(20, 20, 20, 0.8);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255, 26, 61, 0.4);
+}
+
+.game-page .download-title {
+    color: #ffcc00;
+    font-weight: bold;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+}
+
+.game-page .btn-download {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 15px 30px;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    white-space: nowrap;
+    background: var(--cor-botao);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(230, 0, 35, 0.6);
+    transition: all 0.3s ease;
+}
+
+.game-page .btn-download:hover {
+    transform: scale(1.05);
+    background: var(--cor-botao-hover);
+    box-shadow: 0 4px 25px rgba(255, 26, 61, 0.8);
+}
+
+.game-page .btn-download.btn-dublagem {
+    background: var(--cor-dublagem);
+    box-shadow: 0 4px 15px rgba(0, 128, 0, 0.6);
+}
+
+.game-page .btn-download.btn-dublagem:hover {
+    background: var(--cor-dublagem-hover);
+    box-shadow: 0 4px 25px rgba(0, 170, 0, 0.8);
+}
+
+/* ---------- Feedback ---------- */
+.game-page .feedback-section {
+    padding: 60px 20px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    backdrop-filter: blur(8px);
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+.game-page .feedback-logo {
+    width: 80px;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.game-page .feedback-resumo {
+    margin-bottom: 40px;
+}
+
+.game-page #estrelasMedia {
+    font-size: 2.5em;
+    color: #ffcc00;
+    text-shadow: 0 0 10px #ffcc00;
+}
+
+.game-page .feedback-resumo p {
+    font-size: 1.2em;
+    margin-top: 5px;
+}
+
+.game-page #textoMedia {
+    color: var(--cor-botao-hover);
+}
+
+.game-page #contagemAvaliacoes {
+    color: #999;
+}
+
+.game-page .feedback-section h2 {
+    font-size: 2em;
+    margin-bottom: 8px;
+}
+
+.game-page .feedback-subtitle {
+    color: #ccc;
+    margin-bottom: 35px;
+}
+
+.game-page .feedback-card,
+.game-page .feedback-lista-wrapper {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.game-page .feedback-card,
+.game-page #listaFeedback {
+    background: rgba(20, 20, 20, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.game-page .feedback-card {
+    padding: 25px;
+}
+
+.game-page .feedback-card h3 {
+    text-align: left;
+    color: var(--cor-botao-hover);
+    margin-bottom: 20px;
+}
+
+.game-page .campo {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.game-page .campo label {
+    margin-bottom: 5px;
+}
+
+.game-page .campo input,
+.game-page .campo textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    outline: none;
+}
+
+.game-page .campo textarea {
+    height: 100px;
+    resize: none;
+}
+
+.game-page #estrelasFeedback {
+    font-size: 30px;
+    margin: 20px 0;
+    cursor: pointer;
+}
+
+.game-page #enviarFeedback {
+    background: var(--cor-botao);
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 0 10px rgba(255, 26, 61, 0.6);
+}
+
+.game-page #enviarFeedback:hover {
+    background: var(--cor-botao-hover);
+}
+
+.game-page .feedback-lista-wrapper {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.game-page .feedback-lista-wrapper h3 {
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.game-page #listaFeedback {
+    padding: 20px;
+    min-height: 50px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.game-page .sem-comentarios {
+    color: #999;
+    text-align: center;
+}
+
+/* ---------- Rodapé ---------- */
+.game-page .game-footer {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #666;
+    backdrop-filter: blur(5px);
+}
+.game-download-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 300px) minmax(0, 1fr);
+    align-items: start;
+    gap: 16px;
+    width: min(100%, 1100px);
+    margin: 50px auto 0;
+    text-align: center;
+}
+
+.game-download-card,
+.game-download-links {
+    width: 100%;
+    justify-self: center;
+}
+
+.game-download-card {
+    max-width: 360px;
+}
+
+.game-download-links {
+    max-width: 340px;
+}
+
+.game-download-video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+}

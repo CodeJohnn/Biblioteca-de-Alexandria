@@ -1,0 +1,16 @@
+{
+  "name": "biblioteca-alexandria",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site Biblioteca de Alexandria com upload seguro de arquivos",
+  "scripts": {
+    "start": "node backend/server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "multer": "^2.0.2"
+  }
+}

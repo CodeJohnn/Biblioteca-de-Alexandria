@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Enviar arquivo | Biblioteca de Alexandria</title>
+    <link rel="icon" type="image/png" href="Assets/banner/1.png" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="upload.css" />
+</head>
+
+<body class="upload-page">
+    <main class="upload-shell">
+        <a class="upload-back" href="index.html">← Voltar à Biblioteca</a>
+        <section class="upload-panel">
+            <p class="upload-eyebrow">BIBLIOTECA DE ALEXANDRIA</p>
+            <h1>Enviar um arquivo</h1>
+            <p class="upload-intro">Preencha os dados para adicionar um arquivo à categoria correspondente.</p>
+
+            <form id="uploadForm">
+                <label for="nome">Nome do arquivo na biblioteca</label>
+                <input id="nome" name="nome" type="text" maxlength="80" required autocomplete="off">
+
+                <label for="descricao">Descrição <span>(opcional)</span></label>
+                <textarea id="descricao" name="descricao" maxlength="300" rows="3"></textarea>
+
+                <div class="upload-category-row">
+                    <div>
+                        <label for="section">Seção</label>
+                        <select id="section" name="section" required disabled>
+                            <option value="">Carregando seções...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="subcategory">Categoria</label>
+                        <select id="subcategory" name="subcategory" required disabled>
+                            <option value="">Selecione uma seção</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label for="arquivo">Arquivo</label>
+                <input id="arquivo" name="arquivo" type="file"
+                    accept=".pdf,.txt,.md,.png,.jpg,.jpeg,.webp,.gif" required>
+                <p class="upload-hint" id="fileHint">PDF, TXT, MD, PNG, JPG, WEBP ou GIF. Máximo: 25 MiB.</p>
+
+                <button id="submitUpload" type="submit" disabled>Enviar arquivo</button>
+                <p id="uploadStatus" class="upload-status" role="status" aria-live="polite"></p>
+            </form>
+
+            <p class="upload-warning">Os envios são públicos e podem ser baixados por qualquer visitante. Não envie
+                informações pessoais, conteúdo protegido sem autorização ou arquivos que você não queira compartilhar.
+            </p>
+        </section>
+    </main>
+    <script src="upload.js" defer></script>
+</body>
+
+</html>
