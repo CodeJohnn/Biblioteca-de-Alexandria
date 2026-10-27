@@ -5,6 +5,62 @@
     position: relative;
 }
 
+.devtools-modal-card [hidden] {
+    display: none !important;
+}
+
+.devtools-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 18px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #293329;
+}
+
+.devtools-tab {
+    padding: 10px 14px;
+    border: 1px solid #315331;
+    border-radius: 8px;
+    background: #101410;
+    color: #bbb;
+    font: inherit;
+    cursor: pointer;
+}
+
+.devtools-tab[aria-selected="true"] {
+    color: #071007;
+    background: #00dd4b;
+    border-color: #00dd4b;
+}
+
+.devtools-tab:focus-visible,
+.devtools-search:focus-visible {
+    outline: 2px solid #00ff41;
+    outline-offset: 3px;
+}
+
+.devtools-search-label {
+    display: block;
+    margin: 16px 0 8px;
+    color: #bbb;
+}
+
+.devtools-search {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #315331;
+    border-radius: 8px;
+    background: #0a0d0a;
+    color: #f5f5f5;
+    font: inherit;
+}
+
+.devtools-entry a.devtools-copy {
+    text-decoration: none;
+}
+
 .devtools-modal-card > p {
     color: #aaa;
 }

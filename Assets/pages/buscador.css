@@ -1,0 +1,55 @@
+/* ======================================================================
+   RESULTADOS DA PESQUISA GLOBAL
+   Cole no FINAL do seu style.css
+   ====================================================================== */
+.resultados-globais {
+    list-style: none;
+    max-width: 700px;
+    margin: 12px auto 0;
+    padding: 0;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.resultados-globais li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: #121212;
+    border-left: 3px solid #00ff00;
+    margin-bottom: 6px;
+    border-radius: 6px;
+}
+
+.resultados-globais .list-icon {
+    width: 40px;
+    height: 40px;
+    max-width: 40px;
+    flex: 0 0 40px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.resultados-globais a {
+    color: #00ff00;
+    text-decoration: none;
+}
+
+.resultados-globais a:hover {
+    text-decoration: underline;
+}
+
+.resultados-globais small {
+    margin-left: auto;
+    color: #777;
+    white-space: nowrap;
+}
+
+.resultados-globais .resultados-contador {
+    background: transparent;
+    border-left: none;
+    color: #999;
+    font-size: 13px;
+    padding: 0 4px;
+}

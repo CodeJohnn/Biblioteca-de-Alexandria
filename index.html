@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/Css/torrent/torrent.css" />
     <link rel="stylesheet" href="backend/devtools.css" />
     <script src="backend/devtools.js" defer></script>
+    <script src="backend/technology-tools.js" defer></script>
     <!-- MONITORAR QUEM ACESSA MEU SITE -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-S2QJ2BQSRZ"></script>
     <script>
@@ -162,7 +163,7 @@
          gap: 32px;
          margin: 24px 0;">
 
-        <a href="#" onclick="openModal('modalNovidades');voltarDevTools();return false;
+        <a href="#" onclick="openModal('modalDevTools');document.getElementById('devtoolsToolsTab').click();return false;
                     "style="
                         width: 320px;
                         border: 1px solid #00ff00;
@@ -535,11 +536,24 @@
             <button class="modal-close" type="button" onclick="closeModal('modalDevTools')" aria-label="Fechar">
                 &times;
             </button>
-            <h2>DevTools · Códigos da comunidade</h2>
+            <h2>DevTools</h2>
+            <div class="devtools-tabs" role="tablist" aria-label="Conteúdo DevTools">
+                <button id="devtoolsCodesTab" class="devtools-tab" type="button" role="tab" aria-selected="true" aria-controls="devtoolsCodesPanel" tabindex="0">Códigos da comunidade</button>
+                <button id="devtoolsToolsTab" class="devtools-tab" type="button" role="tab" aria-selected="false" aria-controls="devtoolsToolsPanel" tabindex="-1">Ferramentas de tecnologia</button>
+            </div>
+            <section id="devtoolsCodesPanel" role="tabpanel" aria-labelledby="devtoolsCodesTab">
             <p>Veja e copie os códigos publicados pela comunidade.</p>
             <ul id="devtoolsList" class="modal-list devtools-list">
                 <li class="devtools-empty">Carregando códigos...</li>
             </ul>
+            </section>
+            <section id="devtoolsToolsPanel" role="tabpanel" aria-labelledby="devtoolsToolsTab" hidden>
+                <p>Encontre ferramentas de desenvolvimento, infraestrutura, segurança e outras áreas de tecnologia.</p>
+                <label class="devtools-search-label" for="technologyToolsSearch">Buscar ferramenta</label>
+                <input id="technologyToolsSearch" class="devtools-search" type="search" placeholder="Pesquise por nome, descrição ou categoria...">
+                <p id="technologyToolsCount" class="devtools-status" role="status" aria-live="polite"></p>
+                <ul id="technologyToolsList" class="modal-list devtools-list"></ul>
+            </section>
         </div>
     </div>
 
